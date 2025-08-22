@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Cielo The Sky</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para el título arriba */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f8ff; /* Azul cielo claro */
+    font-family: 'Arial Rounded MT Bold', sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .titulo-principal {
+    font-size: 3em; /* Tamaño grande para el título */
+    color: #333;
+    margin-bottom: 40px; /* Espacio entre el título y las tarjetas */
+    text-align: center;
+  }
+
+  .contenedor-tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Espacio entre tarjetas aumentado */
+  }
+
+  .tarjeta {
+    width: 250px; /* Ancho aumentado */
+    height: 350px; /* Alto aumentado */
+    perspective: 1000px;
+    cursor: pointer;
+    border-radius: 20px; /* Bordes más redondeados */
+  }
+
+  .contenido-tarjeta {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Sombra más pronunciada */
+    border-radius: 20px;
+  }
+
+  .tarjeta.volteada .contenido-tarjeta {
+    transform: rotateY(180deg);
+  }
+
+  .cara {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .cara-frontal {
+    background-color: #ffecb3; /* Amarillo pastel por defecto */
+    color: #333;
+  }
+
+  .cara-trasera {
+    background-color: #c8e6c9; /* Verde pastel por defecto */
+    color: #333;
+    transform: rotateY(180deg);
+  }
+
+  .emoji {
+    font-size: 120px; /* Tamaño de emoji aumentado */
+    margin-bottom: 20px; /* Espacio debajo del emoji aumentado */
+  }
+
+  .texto-emocion {
+    font-size: 40px; /* Tamaño de texto aumentado */
+    font-weight: bold;
+  }
+
+  /* Colores específicos por tarjeta para los elementos celestes (se ajustan los nth-child) */
+  .tarjeta:nth-child(1) .cara-frontal { background-color: #F0F8FF; /* AliceBlue (Nube) */ }
+  .tarjeta:nth-child(1) .cara-trasera { background-color: #FFFFFF; /* Blanco */ }
+
+  .tarjeta:nth-child(2) .cara-frontal { background-color: #FFD700; /* Oro (Sol) */ }
+  .tarjeta:nth-child(2) .cara-trasera { background-color: #FFEB3B; /* Amarillo intenso */ }
+
+  .tarjeta:nth-child(3) .cara-frontal { background-color: #D3D3D3; /* Gris claro (Luna) */ }
+  .tarjeta:nth-child(3) .cara-trasera { background-color: #E0E0E0; /* Gris más claro */ }
+
+  .tarjeta:nth-child(4) .cara-frontal { background-color: #4682B4; /* Azul Acero (Estrella) */ }
+  .tarjeta:nth-child(4) .cara-trasera { background-color: #87CEEB; /* Azul Cielo para la trasera */ }
+
+
+  /* Estilos para pantallas más pequeñas */
+  @media (max-width: 600px) {
+    .tarjeta {
+      width: 180px;
+      height: 280px;
+    }
+    .emoji {
+      font-size: 80px;
+    }
+    .texto-emocion {
+      font-size: 30px;
+    }
+    .contenedor-tarjetas {
+      gap: 20px;
+    }
+    .titulo-principal {
+      font-size: 2.2em;
+      margin-bottom: 25px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .tarjeta {
+      width: 150px;
+      height: 230px;
+    }
+    .emoji {
+      font-size: 60px;
+    }
+    .texto-emocion {
+      font-size: 24px;
+    }
+    .titulo-principal {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<h1 class="titulo-principal">El Cielo - The Sky</h1>
+
+<div class="contenedor-tarjetas">
+  <!-- Tarjetas de Elementos Celestes -->
+
+  <div class="tarjeta" ontouchstart="this.classList.toggle('volteada');">
+    <div class="contenido-tarjeta">
+      <div class="cara cara-frontal">
+        <div class="emoji">☁️</div>
+        <div class="texto-emocion">La Nube</div>
+      </div>
+      <div class="cara cara-trasera">
+        <div class="emoji">☁️</div>
+        <div class="texto-emocion">The Cloud</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarjeta" ontouchstart="this.classList.toggle('volteada');">
+    <div class="contenido-tarjeta">
+      <div class="cara cara-frontal">
+        <div class="emoji">☀️</div>
+        <div class="texto-emocion">El Sol</div>
+      </div>
+      <div class="cara cara-trasera">
+        <div class="emoji">☀️</div>
+        <div class="texto-emocion">The Sun</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarjeta" ontouchstart="this.classList.toggle('volteada');">
+    <div class="contenido-tarjeta">
+      <div class="cara cara-frontal">
+        <div class="emoji">🌙</div>
+        <div class="texto-emocion">La Luna</div>
+      </div>
+      <div class="cara cara-trasera">
+        <div class="emoji">🌙</div>
+        <div class="texto-emocion">The Moon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarjeta" ontouchstart="this.classList.toggle('volteada');">
+    <div class="contenido-tarjeta">
+      <div class="cara cara-frontal">
+        <div class="emoji">⭐</div>
+        <div class="texto-emocion">La Estrella</div>
+      </div>
+      <div class="cara cara-trasera">
+        <div class="emoji">⭐</div>
+        <div class="texto-emocion">The Star</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Para compatibilidad con clics en escritorio además del táctil
+  const tarjetas = document.querySelectorAll('.tarjeta');
+  tarjetas.forEach(tarjeta => {
+    tarjeta.addEventListener('click', function() {
+      this.classList.toggle('volteada');
+    });
+  });
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Clima en Español</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-blue-100 flex items-center justify-center min-h-screen p-4">
+    <div id="app-container" class="bg-white p-6 md:p-10 rounded-3xl shadow-2xl max-w-xl w-full text-center flex flex-col items-center">
+        <!-- Contenido dinámico (imagen, texto, botón) se inyectará aquí -->
+    </div>
+
+    <script>
+        // Array de objetos con la información de cada página.
+        // Array of objects with the information for each page.
+        const pages = [
+            {
+                image: 'https://okdiario.com/img/2020/09/25/como-vestir-a-los-ninos-evitar-que-se-resfrien-cuando-hace-frio-620x349.jpg',
+                alt: 'Niños con ropa de invierno.',
+                phraseEs: 'hace frío',
+                phraseEn: 'it\'s cold',
+                emoji: '🥶'
+            },
+            {
+                image: 'https://www.clikisalud.net/wp-content/uploads/2017/01/calor.jpg',
+                alt: 'Niños jugando bajo el sol.',
+                phraseEs: 'hace calor',
+                phraseEn: 'it\'s hot',
+                emoji: '🥵'
+            },
+            {
+                image: 'https://media.istockphoto.com/id/155482741/es/foto/luchar-contra-el-viento.jpg?s=612x612&w=0&k=20&c=2Oz4q4F6N6gisHzlBs57qcuZB864_UTCC89M6c__rF4=',
+                alt: 'Una niña luchando contra el viento.',
+                phraseEs: 'hace viento',
+                phraseEn: 'it\'s windy',
+                emoji: '🌬️'
+            },
+            {
+                image: 'https://www.ecoticias.com/userfiles/2016/Jun_21/AZQ11_99_original.jpg',
+                alt: 'Un niño bajo el sol.',
+                phraseEs: 'está soleado',
+                phraseEn: 'it\'s sunny',
+                emoji: '☀️'
+            },
+            {
+                image: 'https://img.europapress.es/fotoweb/fotonoticia_20210727155311_690.jpg',
+                alt: 'Niños mirando las nubes.',
+                phraseEs: 'está nublado',
+                phraseEn: 'it\'s cloudy',
+                emoji: '☁️'
+            },
+            {
+                image: 'https://i.blogs.es/de6ead/1366_2000---2021-12-24t093527.803/840_560.jpg',
+                alt: 'Un niño con ropa de nieve.',
+                phraseEs: 'está nevando',
+                phraseEn: 'it\'s snowing',
+                emoji: '🌨️'
+            },
+            {
+                image: 'https://st4.depositphotos.com/2627021/21088/i/450/depositphotos_210884746-stock-photo-happy-child-rainbow-umbrella-rain.jpg',
+                alt: 'Una niña con un paraguas.',
+                phraseEs: 'está lloviendo',
+                phraseEn: 'it\'s raining',
+                emoji: '🌧️'
+            }
+        ];
+
+        let currentPage = 0;
+        const appContainer = document.getElementById('app-container');
+        let selectedSpanishCard = null;
+        let selectedEnglishCard = null;
+
+        // Función para renderizar la página actual (o el juego).
+        // Function to render the current page (or the game).
+        function renderPage() {
+            if (currentPage < pages.length) {
+                const pageData = pages[currentPage];
+                appContainer.innerHTML = `
+                    <img src="${pageData.image}" alt="${pageData.alt}" class="w-full h-auto object-cover rounded-2xl shadow-md mb-6">
+                    <p class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">${pageData.phraseEs} ${pageData.emoji}</p>
+                    <p class="text-xl md:text-2xl text-gray-600 mb-6">${pageData.phraseEn}</p>
+                    <button onclick="nextPage()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200 shadow-lg">
+                        Siguiente / Next
+                    </button>
+                `;
+            } else {
+                renderGame();
+            }
+        }
+
+        // Función para avanzar a la siguiente página.
+        // Function to move to the next page.
+        function nextPage() {
+            currentPage++;
+            renderPage();
+        }
+
+        // Función para renderizar el juego de emparejar.
+        // Function to render the matching game.
+        function renderGame() {
+            const spanishCards = shuffleArray(pages.map(p => ({ text: p.phraseEs, emoji: p.emoji, id: p.phraseEs })));
+            const englishCards = shuffleArray(pages.map(p => ({ text: p.phraseEn, emoji: p.emoji, id: p.phraseEn })));
+
+            appContainer.innerHTML = `
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">¡Juega a emparejar!</h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8">Match the Spanish phrases with their English translations.</p>
+                <div class="flex flex-col md:flex-row gap-4 w-full justify-center">
+                    <div id="spanish-column" class="flex-1 flex flex-col gap-3">
+                        ${spanishCards.map(card => `
+                            <button id="card-${card.id}" onclick="selectCard(this, 'spanish')" class="matching-card bg-orange-400 text-white p-4 rounded-xl shadow-md cursor-pointer text-lg font-semibold transition-transform hover:scale-105">
+                                ${card.text} ${card.emoji}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="english-column" class="flex-1 flex flex-col gap-3">
+                        ${englishCards.map(card => `
+                            <button id="card-${card.id}" onclick="selectCard(this, 'english')" class="matching-card bg-teal-400 text-white p-4 rounded-xl shadow-md cursor-pointer text-lg font-semibold transition-transform hover:scale-105">
+                                ${card.text} ${card.emoji}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                <div id="message-box" class="mt-8 text-xl font-bold text-gray-700 h-8"></div>
+                <button id="restart-button" onclick="restartGame()" class="hidden mt-8 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200 shadow-lg">
+                    Jugar de nuevo / Play Again
+                </button>
+            `;
+        }
+
+        // Función para seleccionar una tarjeta en el juego.
+        // Function to select a card in the game.
+        function selectCard(card, type) {
+            const messageBox = document.getElementById('message-box');
+            messageBox.textContent = '';
+            
+            // Si la tarjeta ya está emparejada, no hacer nada.
+            // If the card is already matched, do nothing.
+            if (card.classList.contains('matched')) {
+                return;
+            }
+
+            if (type === 'spanish') {
+                if (selectedSpanishCard) {
+                    selectedSpanishCard.classList.remove('ring-4', 'ring-indigo-500');
+                }
+                selectedSpanishCard = card;
+                card.classList.add('ring-4', 'ring-indigo-500');
+            } else {
+                if (selectedEnglishCard) {
+                    selectedEnglishCard.classList.remove('ring-4', 'ring-indigo-500');
+                }
+                selectedEnglishCard = card;
+                card.classList.add('ring-4', 'ring-indigo-500');
+            }
+
+            // Comprobar si se han seleccionado ambas tarjetas para hacer el emparejamiento.
+            // Check if both cards have been selected to make the match.
+            if (selectedSpanishCard && selectedEnglishCard) {
+                const spanishEmoji = selectedSpanishCard.textContent.trim().slice(-2).trim();
+                const englishEmoji = selectedEnglishCard.textContent.trim().slice(-2).trim();
+
+                if (spanishEmoji === englishEmoji) {
+                    messageBox.textContent = '¡Correcto!';
+                    messageBox.classList.add('text-green-600');
+                    
+                    // Aplicar el nuevo estilo para tarjetas emparejadas.
+                    // Apply the new style for matched cards.
+                    selectedSpanishCard.disabled = true;
+                    selectedEnglishCard.disabled = true;
+                    selectedSpanishCard.classList.remove('ring-4', 'ring-indigo-500', 'hover:scale-105', 'bg-orange-400');
+                    selectedEnglishCard.classList.remove('ring-4', 'ring-indigo-500', 'hover:scale-105', 'bg-teal-400');
+                    selectedSpanishCard.classList.add('border-4', 'border-green-500', 'bg-green-100', 'text-green-800', 'matched', 'hover:scale-100');
+                    selectedEnglishCard.classList.add('border-4', 'border-green-500', 'bg-green-100', 'text-green-800', 'matched', 'hover:scale-100');
+                    
+                    // Deseleccionar las tarjetas.
+                    // Deselect cards.
+                    selectedSpanishCard = null;
+                    selectedEnglishCard = null;
+
+                    // Comprobar si el juego ha terminado.
+                    // Check if the game is over.
+                    const allCards = document.querySelectorAll('.matching-card');
+                    const allDisabled = Array.from(allCards).every(card => card.classList.contains('matched'));
+                    if (allDisabled) {
+                        messageBox.textContent = '¡Felicidades, has emparejado todas las frases!';
+                        document.getElementById('restart-button').classList.remove('hidden');
+                    }
+
+                } else {
+                    messageBox.textContent = 'Inténtalo de nuevo.';
+                    messageBox.classList.remove('text-green-600');
+                    messageBox.classList.add('text-red-600');
+                    
+                    // Deseleccionar las tarjetas.
+                    // Deselect cards.
+                    setTimeout(() => {
+                        selectedSpanishCard.classList.remove('ring-4', 'ring-indigo-500');
+                        selectedEnglishCard.classList.remove('ring-4', 'ring-indigo-500');
+                        selectedSpanishCard = null;
+                        selectedEnglishCard = null;
+                        messageBox.textContent = '';
+                        messageBox.classList.remove('text-red-600');
+                    }, 1000);
+                }
+            }
+        }
+
+        // Función para reiniciar el juego.
+        // Function to restart the game.
+        function restartGame() {
+            currentPage = 0;
+            renderPage();
+        }
+
+        // Función para mezclar un array.
+        // Function to shuffle an array.
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Inicializar la aplicación.
+        // Initialize the application.
+        renderPage();
+    </script>
+</body>
+</html>
