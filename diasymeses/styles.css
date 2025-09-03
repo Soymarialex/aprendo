@@ -1,0 +1,98 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header h1 {
+    color: #4682B4;
+    font-size: 3em;
+    text-shadow: 2px 2px #b0c4de;
+}
+
+header p {
+    color: #5f9ea0;
+    font-size: 1.2em;
+    margin-bottom: 50px;
+}
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.activity-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-option {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    background-color: white;
+    padding: 30px 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    border-color: #ffb6c1;
+}
+
+.card h2 {
+    font-size: 2em;
+    margin: 0;
+    color: #4682B4;
+}
+
+.card p {
+    font-size: 1.2em;
+    color: #5f9ea0;
+    margin-top: 5px;
+}
+
+.song-button {
+    text-decoration: none;
+    background-color: #34d399;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1em;
+    box-shadow: 0 4px #047857;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.song-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px #047857;
+}
+
+.song-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px #047857;
+}

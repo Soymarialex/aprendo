@@ -1,0 +1,122 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #e0f7fa; /* Un azul claro y refrescante */
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header h1 {
+    color: #00796b; /* Un verde azulado oscuro */
+    font-size: 3em;
+    text-shadow: 2px 2px #b2dfdb;
+}
+
+header p {
+    color: #4db6ac; /* Un verde azulado más claro */
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 900px; /* Ancho ajustado para 7 días */
+    margin: auto;
+}
+
+.days-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.english-row {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 3px dashed #80cbc4; /* Verde azulado claro */
+}
+
+.spanish-row {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 3px dashed #b2dfdb; /* Verde azulado muy claro */
+    min-height: 80px;
+}
+
+/* Estilo para los días en español (arrastrables) */
+.day-item {
+    background-color: #ff9800; /* Naranja vibrante */
+    color: white;
+    padding: 12px 20px;
+    margin: 6px;
+    border-radius: 20px;
+    font-size: 1.3em;
+    font-weight: bold;
+    cursor: grab;
+    box-shadow: 0 4px #e65100; /* Naranja oscuro para el efecto 3D */
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex-shrink: 0;
+}
+
+.day-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px #e65100;
+}
+
+.day-item:active {
+    cursor: grabbing;
+    transform: translateY(0);
+    box-shadow: 0 3px #e65100;
+}
+
+/* Estilo para los objetivos en inglés (zonas para soltar) */
+.drop-target {
+    background-color: #81c784; /* Verde claro */
+    color: #388e3c; /* Verde oscuro */
+    padding: 12px 20px;
+    margin: 6px;
+    border-radius: 20px;
+    font-size: 1.3em;
+    font-weight: bold;
+    border: 2px solid #a5d6a7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    height: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+
+/* Estilo para un drop target correcto */
+.drop-target.correct {
+    background-color: #00e676; /* Verde lima */
+    color: white;
+    border-color: #388e3c;
+    box-shadow: 0 4px #00c853;
+}
+
+/* Mensajes */
+.message-box {
+    margin-top: 30px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1.6em;
+    font-weight: bold;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 500px;
+    width: 80%;
+}
