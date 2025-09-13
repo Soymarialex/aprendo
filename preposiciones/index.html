@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prepositions Activity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fffbeb; /* Light yellow */
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <!-- Main page -->
+    <div id="main-page" class="flex flex-col items-center justify-center text-center p-8 bg-white rounded-3xl card-shadow w-full max-w-2xl transition-opacity duration-500 ease-in-out opacity-100">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-blue-500 mb-6">Prepositions in Spanish</h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-8">Welcome to the prepositions activity! Choose an option to start.</p>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full">
+            <button onclick="showLearnPage()" class="w-full md:w-1/3 py-4 px-6 text-white font-bold rounded-full bg-pink-500 transition transform hover:scale-105 hover:bg-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-400">Aprende / Learn</button>
+            <button onclick="window.location.href='https://www.youtube.com/watch?v=f4g9Fyyczj8'" class="w-full md:w-1/3 py-4 px-6 text-white font-bold rounded-full bg-blue-500 transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-400">Canción / Song</button>
+            <button onclick="showGamePage()" class="w-full md:w-1/3 py-4 px-6 text-white font-bold rounded-full bg-yellow-500 transition transform hover:scale-105 hover:bg-yellow-600 focus:outline-none focus:ring-4 focus:ring-yellow-400">Jugar / Play</button>
+        </div>
+    </div>
+
+    <!-- Learn page container -->
+    <div id="learn-page" class="hidden flex-col items-center justify-center text-center p-8 bg-white rounded-3xl card-shadow w-full max-w-2xl transition-opacity duration-500 ease-in-out opacity-0">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-700 mb-6">Aprende las Preposiciones</h2>
+        <div id="image-container" class="w-full flex justify-center items-center mb-6 h-64 md:h-96">
+            <img id="main-image" src="" alt="Learning image" class="max-w-full max-h-full object-contain rounded-xl card-shadow transition-transform duration-300">
+            <img id="side-image" src="" alt="Learning image 2" class="max-w-full max-h-full object-contain ml-4 rounded-xl card-shadow hidden transition-transform duration-300">
+        </div>
+        <div class="flex space-x-4 w-full justify-between">
+            <button onclick="prevImage()" class="py-3 px-6 text-white font-bold rounded-full bg-blue-500 transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-400">Anterior</button>
+            <span id="page-counter" class="text-xl font-semibold text-gray-500 self-center">1 / 10</span>
+            <button onclick="nextImage()" class="py-3 px-6 text-white font-bold rounded-full bg-blue-500 transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-400">Siguiente</button>
+        </div>
+        <button onclick="backToMain()" class="mt-6 py-2 px-4 text-sm text-white font-bold rounded-full bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400">Regresar</button>
+    </div>
+
+    <!-- Game page container -->
+    <div id="game-page" class="hidden flex-col items-center justify-center text-center p-8 bg-white rounded-3xl card-shadow w-full max-w-2xl transition-opacity duration-500 ease-in-out opacity-0">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-700 mb-6">Juguemos!</h2>
+        <div id="match-container" class="flex flex-col space-y-4 w-full items-center">
+            <div id="game-round-1" class="w-full">
+                <div class="grid grid-cols-2 gap-4 w-full">
+                    <!-- Left column (Spanish) -->
+                    <div id="spanish-words-1" class="flex flex-col items-end space-y-2 p-2 bg-yellow-50 rounded-lg"></div>
+                    <!-- Right column (English) -->
+                    <div id="english-words-1" class="flex flex-col items-start space-y-2 p-2 bg-yellow-50 rounded-lg"></div>
+                </div>
+            </div>
+            <div id="game-round-2" class="w-full hidden">
+                <div class="grid grid-cols-2 gap-4 w-full">
+                    <!-- Left column (Spanish) -->
+                    <div id="spanish-words-2" class="flex flex-col items-end space-y-2 p-2 bg-yellow-50 rounded-lg"></div>
+                    <!-- Right column (English) -->
+                    <div id="english-words-2" class="flex flex-col items-start space-y-2 p-2 bg-yellow-50 rounded-lg"></div>
+                </div>
+            </div>
+            <p id="game-message" class="mt-4 text-xl font-semibold text-blue-600 hidden"></p>
+            <button id="next-game-button" onclick="nextGame()" class="mt-6 py-3 px-6 text-white font-bold rounded-full bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400 hidden">Seguir jugando / Keep playing</button>
+        </div>
+        <button onclick="backToMain()" class="mt-6 py-2 px-4 text-sm text-white font-bold rounded-full bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400">Regresar</button>
+    </div>
+    
+    <script>
+        const mainPage = document.getElementById('main-page');
+        const learnPage = document.getElementById('learn-page');
+        const gamePage = document.getElementById('game-page');
+        const imageContainer = document.getElementById('image-container');
+        const mainImage = document.getElementById('main-image');
+        const sideImage = document.getElementById('side-image');
+        const pageCounter = document.getElementById('page-counter');
+        const gameRound1 = document.getElementById('game-round-1');
+        const gameRound2 = document.getElementById('game-round-2');
+        const gameMessage = document.getElementById('game-message');
+        const nextGameButton = document.getElementById('next-game-button');
+
+        const images = [
+            'actividad/imagen1.jpg',
+            'actividad/imagen2.jpg',
+            'actividad/imagen3.jpg',
+            'actividad/imagen4.jpg',
+            'actividad/imagen5.jpg',
+            'actividad/imagen6.jpg',
+            'actividad/imagen7.jpg',
+            'actividad/imagen8.jpg',
+            'actividad/imagen9.jpg',
+            'actividad/imagen10.jpg',
+            'actividad/imagen11.jpg',
+            'actividad/imagen12.jpg',
+            'actividad/imagen13.jpg',
+            'actividad/imagen14.jpg',
+            'actividad/imagen15.jpg',
+            'actividad/imagen16.jpg',
+        ];
+
+        let currentPage = 0;
+
+        const vocabulary = {
+            round1: {
+                "encima": "on top",
+                "debajo": "under",
+                "delante": "in front",
+                "detrás": "behind",
+                "al lado": "next to",
+                "izquierda": "left",
+                "derecha": "right"
+            },
+            round2: {
+                "cerca": "near",
+                "lejos": "far",
+                "fuera": "outside",
+                "dentro": "inside",
+                "arriba": "up",
+                "abajo": "down"
+            }
+        };
+
+        let currentRound = 1;
+        let selectedSpanish = null;
+        let selectedEnglish = null;
+        let pairsFound = 0;
+        let totalPairs = 0;
+
+        // Function to show learn page
+        function showLearnPage() {
+            mainPage.classList.remove('opacity-100');
+            mainPage.classList.add('opacity-0', 'hidden');
+            setTimeout(() => {
+                mainPage.classList.add('hidden');
+                learnPage.classList.remove('hidden');
+                setTimeout(() => learnPage.classList.remove('opacity-0'), 20);
+                currentPage = 0;
+                displayImage();
+            }, 500);
+        }
+
+        // Function to display images for learn page
+        function displayImage() {
+            pageCounter.textContent = `${currentPage + 1} / 10`;
+            let img1 = '';
+            let img2 = '';
+
+            switch(currentPage) {
+                case 0:
+                    img1 = images[0];
+                    img2 = '';
+                    break;
+                case 1:
+                    img1 = images[1];
+                    img2 = images[2];
+                    break;
+                case 2:
+                    img1 = images[3];
+                    img2 = images[4];
+                    break;
+                case 3:
+                    img1 = images[5];
+                    img2 = '';
+                    break;
+                case 4:
+                    img1 = images[6];
+                    img2 = images[7];
+                    break;
+                case 5:
+                    img1 = images[8];
+                    img2 = images[9];
+                    break;
+                case 6:
+                    img1 = images[10];
+                    img2 = images[11];
+                    break;
+                case 7:
+                    img1 = images[12];
+                    img2 = images[13];
+                    break;
+                case 8:
+                    img1 = images[14];
+                    img2 = '';
+                    break;
+                case 9:
+                    img1 = images[15];
+                    img2 = '';
+                    break;
+            }
+
+            mainImage.src = img1;
+            sideImage.classList.add('hidden');
+            mainImage.classList.remove('w-full', 'w-1/2');
+            sideImage.classList.remove('w-1/2');
+
+            if (img2) {
+                sideImage.src = img2;
+                sideImage.classList.remove('hidden');
+                mainImage.classList.add('w-1/2');
+                sideImage.classList.add('w-1/2');
+                imageContainer.classList.add('flex-row', 'space-x-4');
+                imageContainer.classList.remove('justify-center');
+            } else {
+                imageContainer.classList.remove('flex-row', 'space-x-4');
+                imageContainer.classList.add('justify-center');
+                mainImage.classList.add('w-full');
+            }
+        }
+        
+        // Function to go to the next image
+        function nextImage() {
+            if (currentPage < 9) {
+                currentPage++;
+                displayImage();
+            }
+        }
+
+        // Function to go to the previous image
+        function prevImage() {
+            if (currentPage > 0) {
+                currentPage--;
+                displayImage();
+            }
+        }
+        
+        // Function to show game page
+        function showGamePage() {
+            mainPage.classList.remove('opacity-100');
+            mainPage.classList.add('opacity-0', 'hidden');
+            setTimeout(() => {
+                mainPage.classList.add('hidden');
+                gamePage.classList.remove('hidden');
+                setTimeout(() => gamePage.classList.remove('opacity-0'), 20);
+                setupGame(1);
+            }, 500);
+        }
+
+        // Function to shuffle an array
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Function to set up the game
+        function setupGame(round) {
+            currentRound = round;
+            pairsFound = 0;
+            selectedSpanish = null;
+            selectedEnglish = null;
+            gameMessage.classList.add('hidden');
+            nextGameButton.classList.add('hidden');
+
+            const currentVocab = vocabulary[`round${round}`];
+            const spanishWords = Object.keys(currentVocab);
+            const englishWords = Object.values(currentVocab);
+            totalPairs = spanishWords.length;
+
+            const shuffledSpanish = shuffle([...spanishWords]);
+            const shuffledEnglish = shuffle([...englishWords]);
+            
+            const spanishContainer = document.getElementById(`spanish-words-${round}`);
+            const englishContainer = document.getElementById(`english-words-${round}`);
+            spanishContainer.innerHTML = '';
+            englishContainer.innerHTML = '';
+
+            for (let i = 0; i < shuffledSpanish.length; i++) {
+                const spanishBtn = document.createElement('button');
+                spanishBtn.textContent = shuffledSpanish[i];
+                spanishBtn.classList.add('py-2', 'px-4', 'bg-pink-200', 'hover:bg-pink-300', 'rounded-md', 'transition', 'duration-200', 'w-full', 'text-right');
+                spanishBtn.onclick = () => selectWord(spanishBtn, 'spanish');
+                spanishContainer.appendChild(spanishBtn);
+            }
+
+            for (let i = 0; i < shuffledEnglish.length; i++) {
+                const englishBtn = document.createElement('button');
+                englishBtn.textContent = shuffledEnglish[i];
+                englishBtn.classList.add('py-2', 'px-4', 'bg-blue-200', 'hover:bg-blue-300', 'rounded-md', 'transition', 'duration-200', 'w-full', 'text-left');
+                englishBtn.onclick = () => selectWord(englishBtn, 'english');
+                englishContainer.appendChild(englishBtn);
+            }
+
+            if (round === 1) {
+                gameRound1.classList.remove('hidden');
+                gameRound2.classList.add('hidden');
+            } else {
+                gameRound1.classList.add('hidden');
+                gameRound2.classList.remove('hidden');
+            }
+        }
+        
+        // Function to handle word selection
+        function selectWord(button, type) {
+            if (button.classList.contains('bg-pink-500') || button.classList.contains('bg-blue-500')) return;
+
+            if (type === 'spanish') {
+                if (selectedSpanish) {
+                    selectedSpanish.classList.remove('bg-pink-400');
+                }
+                selectedSpanish = button;
+                selectedSpanish.classList.add('bg-pink-400');
+            } else {
+                if (selectedEnglish) {
+                    selectedEnglish.classList.remove('bg-blue-400');
+                }
+                selectedEnglish = button;
+                selectedEnglish.classList.add('bg-blue-400');
+            }
+
+            checkMatch();
+        }
+
+        // Function to check for a match
+        function checkMatch() {
+            if (selectedSpanish && selectedEnglish) {
+                const spanishText = selectedSpanish.textContent;
+                const englishText = selectedEnglish.textContent;
+                const currentVocab = vocabulary[`round${currentRound}`];
+
+                if (currentVocab[spanishText] === englishText) {
+                    pairsFound++;
+                    selectedSpanish.classList.remove('bg-pink-400', 'bg-pink-200', 'hover:bg-pink-300');
+                    selectedEnglish.classList.remove('bg-blue-400', 'bg-blue-200', 'hover:bg-blue-300');
+                    selectedSpanish.classList.add('bg-pink-500', 'cursor-not-allowed', 'opacity-70');
+                    selectedEnglish.classList.add('bg-blue-500', 'cursor-not-allowed', 'opacity-70');
+                    
+                    // Add yellow star
+                    const starSpan = '<span class="ml-2">⭐</span>';
+                    selectedSpanish.innerHTML += starSpan;
+                    selectedEnglish.innerHTML += starSpan;
+                    
+                    selectedSpanish = null;
+                    selectedEnglish = null;
+
+                    if (pairsFound === totalPairs) {
+                        gameMessage.textContent = 'Congratulations, you have completed the round!';
+                        gameMessage.classList.remove('hidden');
+                        if (currentRound === 1) {
+                            nextGameButton.classList.remove('hidden');
+                            nextGameButton.textContent = 'Seguir jugando / Keep playing';
+                        } else {
+                            nextGameButton.classList.remove('hidden');
+                            nextGameButton.textContent = 'Volver al inicio / Back to home';
+                            nextGameButton.onclick = backToMain;
+                        }
+                    }
+                } else {
+                    gameMessage.textContent = 'Inténtalo de nuevo.';
+                    gameMessage.classList.remove('hidden');
+                    setTimeout(() => {
+                        selectedSpanish.classList.remove('bg-pink-400');
+                        selectedEnglish.classList.remove('bg-blue-400');
+                        selectedSpanish = null;
+                        selectedEnglish = null;
+                        gameMessage.classList.add('hidden');
+                    }, 500);
+                }
+            }
+        }
+
+        // Function to move to the next game round
+        function nextGame() {
+            gameRound1.classList.add('hidden');
+            gameRound2.classList.remove('hidden');
+            setupGame(2);
+        }
+
+        // Function to go back to the main page
+        function backToMain() {
+            learnPage.classList.remove('opacity-100');
+            learnPage.classList.add('opacity-0');
+            gamePage.classList.remove('opacity-100');
+            gamePage.classList.add('opacity-0');
+            setTimeout(() => {
+                learnPage.classList.add('hidden');
+                gamePage.classList.add('hidden');
+                mainPage.classList.remove('hidden');
+                setTimeout(() => mainPage.classList.remove('opacity-0'), 20);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
