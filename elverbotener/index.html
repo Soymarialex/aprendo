@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yo tengo - Tú tienes / I have - You have</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #fce7f3; /* Rosa claro para un fondo divertido */
+        }
+        .container-bg {
+            background-color: #fff;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background-color: #a78bfa; /* Morado suave */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        .btn-secondary {
+            background-color: #fcd34d; /* Amarillo alegre */
+            color: #4b5563;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        .drag-word {
+            cursor: move;
+            background-color: #93c5fd; /* Azul claro */
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            touch-action: none; /* Evita el comportamiento de arrastre por defecto del navegador en móviles */
+        }
+        .drag-word:hover {
+            transform: scale(1.05);
+        }
+        .drop-zone {
+            display: inline-block;
+            width: 80px;
+            height: 24px;
+            border: 2px dashed #93c5fd;
+            border-radius: 0.5rem;
+            vertical-align: middle;
+            margin-right: 0.25rem;
+            background-color: #e0f2fe;
+            position: relative;
+        }
+        .drop-zone.filled {
+            border-color: #34d399;
+            background-color: #d1fae5;
+        }
+        .success-message {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 2px solid #34d399;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .star-icon {
+            font-size: 1.5rem;
+            color: #fcd34d;
+        }
+        .matched {
+            background-color: #dcfce7 !important; /* light green */
+            color: #1e3a8a !important; /* Dark blue, now with !important */
+            border: 2px solid #34d399;
+            font-weight: bold;
+            transition: background-color 0.5s;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .card-primary-purple {
+            background-color: #a78bfa; /* Morado suave */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-purple-100 min-h-screen flex items-center justify-center p-4">
+
+    <div id="app" class="container-bg w-full max-w-4xl rounded-3xl p-8 lg:p-12">
+        <!-- Main page -->
+        <div id="main-page" class="page">
+            <h1 class="text-3xl lg:text-5xl font-extrabold text-center text-purple-700 mb-6 lg:mb-10">
+                Yo tengo - Tú tienes<br>
+                <span class="text-xl font-normal text-gray-500">I have - you have</span>
+            </h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <button onclick="showPage('vocabulario1')" class="btn-primary">La granja / the farm</button>
+                <button onclick="showPage('vocabulario2')" class="btn-primary">Vocabulario</button>
+                <button onclick="showPage('jugar')" class="btn-primary">Jugar / Play</button>
+                <button onclick="showPage('cancion')" class="btn-primary">Canción / Song</button>
+                <button onclick="playVideo()" class="btn-secondary">Vamos a cantar / Let's sing</button>
+                <button onclick="showPage('oraciones')" class="btn-primary">Yo tengo - Tú tienes</button>
+            </div>
+        </div>
+
+        <!-- Vocabulario 1 Page -->
+        <div id="vocabulario1-page" class="page hidden text-center">
+            <h2 class="text-3xl font-bold text-gray-700 mb-6">La granja / the farm</h2>
+            <div id="vocabulario1-image-container" class="flex justify-center mb-6">
+                <!-- Image will be loaded here -->
+            </div>
+
+            <div id="vocabulario1-content" class="hidden">
+                <h3 class="text-xl font-semibold text-gray-600 mb-4">Drag the correct word to complete the sentence.</h3>
+                <div class="space-y-4 mb-6">
+                    <p class="text-lg">
+                        El <span class="drop-zone" data-correct-word="árbol"></span> es verde y marrón.
+                    </p>
+                    <p class="text-lg">
+                        El <span class="drop-zone" data-correct-word="cerdo"></span> es rosado.
+                    </p>
+                    <p class="text-lg">
+                        El <span class="drop-zone" data-correct-word="sol"></span> es amarillo.
+                    </p>
+                    <p class="text-lg">
+                        La <span class="drop-zone" data-correct-word="vaca"></span> es blanca y negra.
+                    </p>
+                    <p class="text-lg">
+                        La <span class="drop-zone" data-correct-word="cabaña"></span> es roja.
+                    </p>
+                </div>
+                <div id="drag-words-container" class="flex flex-wrap justify-center gap-4 text-white font-bold text-xl">
+                    <span class="drag-word bg-green-500" draggable="true" data-word="cerdo">cerdo</span>
+                    <span class="drag-word bg-yellow-500" draggable="true" data-word="árbol">árbol</span>
+                    <span class="drag-word bg-blue-500" draggable="true" data-word="sol">sol</span>
+                    <span class="drag-word bg-red-500" draggable="true" data-word="cabaña">cabaña</span>
+                    <span class="drag-word bg-pink-500" draggable="true" data-word="vaca">vaca</span>
+                </div>
+            </div>
+
+            <div id="vocabulario1-success-message" class="hidden success-message mt-8">
+                <p class="mb-4">Congratulations, you have completed the sentences correctly.</p>
+                <button onclick="showPage('main')" class="btn-primary">Volver a la página principal / Back to main page</button>
+            </div>
+            
+            <button id="vocabulario1-next-btn" onclick="nextVocabulario1Image()" class="btn-secondary mt-6">Siguiente / Next</button>
+        </div>
+
+        <!-- Vocabulario 2 Page -->
+        <div id="vocabulario2-page" class="page hidden text-center">
+            <h2 class="text-3xl font-bold text-gray-700 mb-6">Vocabulario</h2>
+            <div id="vocabulario2-image-container" class="flex justify-center mb-6">
+                <!-- Image will be loaded here -->
+            </div>
+            <h3 id="vocabulario2-text" class="text-2xl font-bold text-gray-600 mb-6"></h3>
+            <div class="flex justify-center gap-4">
+                <button id="vocabulario2-next-btn" onclick="nextVocabulario2Image()" class="btn-secondary">Siguiente / Next</button>
+                <button id="vocabulario2-back-btn" onclick="showPage('main')" class="btn-primary hidden">Volver a la página principal / Back to main page</button>
+            </div>
+        </div>
+
+        <!-- Jugar (Matching Game) Page -->
+        <div id="jugar-page" class="page hidden text-center">
+            <h2 class="text-3xl font-bold text-gray-700 mb-6">Empareja las palabras / Match the words</h2>
+            <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto">
+                <div id="spanish-words" class="flex flex-col gap-4">
+                    <!-- Spanish words will be rendered here -->
+                </div>
+                <div id="english-words" class="flex flex-col gap-4">
+                    <!-- English words will be rendered here -->
+                </div>
+            </div>
+            <div id="jugar-success-message" class="hidden success-message mt-8">
+                <p class="mb-4">Congratulations, you have matched the words correctly.</p>
+                <button onclick="showPage('main')" class="btn-primary">Volver a la página principal / Back to main page</button>
+            </div>
+        </div>
+        
+        <!-- Canción Page -->
+        <div id="cancion-page" class="page hidden text-center">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold text-gray-700">Canción / Song</h2>
+                <button id="cancion-next-btn" onclick="nextCancionImage()" class="btn-secondary">Siguiente / Next</button>
+            </div>
+            <div id="cancion-image-container" class="flex justify-center mb-6">
+                <!-- Image will be loaded here -->
+            </div>
+            <div class="flex justify-center gap-4">
+                <button id="cancion-back-btn" onclick="showPage('main')" class="btn-primary hidden">Volver a la página principal / Back to main page</button>
+            </div>
+        </div>
+
+        <!-- Oraciones Page -->
+        <div id="oraciones-page" class="page hidden text-center">
+            <h2 class="text-3xl font-bold text-gray-700 mb-6">Yo tengo - Tú tienes</h2>
+            <p class="text-lg text-gray-600 mb-6">Click on the sentences below to see their English translation!</p>
+            <div id="oraciones-container" class="space-y-4">
+                <!-- Buttons will be generated here by JavaScript -->
+            </div>
+            <button onclick="showPage('main')" class="btn-primary mt-8">Volver a la página principal / Back to main page</button>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentPage = 'main';
+        let vocabulario1ImageIndex = 0;
+        let vocabulario2ImageIndex = 0;
+        let cancionImageIndex = 0;
+        let matchedPairs = 0;
+        let selectedSpanishWord = null;
+        let selectedEnglishWord = null;
+
+        // Image data
+        const vocabulario1Images = [
+            'Actividad/Imagen1.jpg', 
+            'Actividad/Imagen2.jpg'
+        ];
+
+        const vocabulario2Images = [
+            { src: 'Actividad/Oveja.jpg', text: 'OVEJA / Sheep' },
+            { src: 'Actividad/Leche.jpg', text: 'LECHE / Milk' },
+            { src: 'Actividad/Lana.jpg', text: 'LANA / Wool' },
+            { src: 'Actividad/Mantequilla.jpg', text: 'MANTEQUILLA / Butter' },
+            { src: 'Actividad/Caballito.jpg', text: 'CABALLITO / Little horse' },
+            { src: 'Actividad/Pueblo.jpg', text: 'PUEBLO / Town' }
+        ];
+        
+        const cancionImages = [
+            'Actividad/Imagen3.jpg',
+            'Actividad/Imagen4.jpg',
+            'Actividad/Imagen5.jpg',
+            'Actividad/Imagen6.jpg',
+            'Actividad/Imagen7.jpg',
+            'Actividad/Imagen8.jpg'
+        ];
+
+        const matchingWords = {
+            'oveja': 'sheep',
+            'leche': 'milk',
+            'lana': 'wool',
+            'mantequilla': 'butter',
+            'caballito': 'little horse',
+            'pueblo': 'town'
+        };
+
+        const oraciones = [
+            { es: 'Yo tengo una oveja.', en: 'I have a sheep.' },
+            { es: 'Tú tienes dos ovejas.', en: 'You have two sheep.' },
+            { es: 'Yo tengo una cabaña.', en: 'I have a cabin.' },
+            { es: 'Tú tienes un caballito.', en: 'You have a little horse.' },
+            { es: 'Yo tengo mantequilla.', en: 'I have butter.' },
+            { es: '¿Tú tienes leche?', en: 'Do you have milk?' },
+            { es: 'Yo tengo una vaca.', en: 'I have a cow.' },
+            { es: '¿Tú tienes un cerdo?', en: 'Do you have a pig?' }
+        ];
+
+        // UI functions
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+            document.getElementById(`${pageId}-page`).classList.remove('hidden');
+            currentPage = pageId;
+
+            // Reset activities when returning to main page
+            if (pageId === 'main') {
+                resetVocabulario1();
+                resetVocabulario2();
+                resetJugar();
+                resetCancion();
+                resetOraciones();
+            }
+
+            // Specific page setups
+            if (pageId === 'vocabulario1') {
+                loadVocabulario1Image();
+            } else if (pageId === 'vocabulario2') {
+                loadVocabulario2Image();
+            } else if (pageId === 'jugar') {
+                renderMatchingGame();
+            } else if (pageId === 'cancion') {
+                loadCancionImage();
+            } else if (pageId === 'oraciones') {
+                renderOracionesPage();
+            }
+        }
+
+        function playVideo() {
+            // Redirect to YouTube video
+            window.location.href = 'https://youtu.be/Q43M8fd_Y78';
+        }
+
+        // Vocabulario 1 logic (Drag and Drop)
+        
+        let draggedElement = null; // Elemento que se está arrastrando
+        let offsetX, offsetY; // Posición inicial del cursor/toque
+
+        function loadVocabulario1Image() {
+            const container = document.getElementById('vocabulario1-image-container');
+            let imgClass = 'rounded-xl shadow-lg transition-transform duration-500 transform-gpu';
+            if (vocabulario1ImageIndex === 0) {
+                imgClass += ' w-full max-w-lg'; // Larger size for the first image
+            } else if (vocabulario1ImageIndex === 1) {
+                imgClass += ' w-full max-w-xs'; // Smaller size for the second image
+            }
+            container.innerHTML = `<img src="${vocabulario1Images[vocabulario1ImageIndex]}" class="${imgClass}" />`;
+            document.getElementById('vocabulario1-next-btn').style.display = 'block';
+            document.getElementById('vocabulario1-content').classList.add('hidden');
+        }
+
+        function nextVocabulario1Image() {
+            vocabulario1ImageIndex++;
+            if (vocabulario1ImageIndex < vocabulario1Images.length) {
+                loadVocabulario1Image();
+                if (vocabulario1ImageIndex === 1) {
+                    document.getElementById('vocabulario1-content').classList.remove('hidden');
+                    document.getElementById('vocabulario1-next-btn').style.display = 'none';
+                    addDragDropListeners();
+                }
+            }
+        }
+
+        function addDragDropListeners() {
+            // Listeners para arrastrar con el mouse
+            document.querySelectorAll('.drag-word').forEach(word => {
+                word.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', e.target.dataset.word);
+                    e.target.style.opacity = 0.5; // Efecto visual
+                });
+                word.addEventListener('dragend', e => {
+                    e.target.style.opacity = '';
+                });
+            });
+
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    zone.classList.add('scale-110');
+                });
+
+                zone.addEventListener('dragleave', e => {
+                    zone.classList.remove('scale-110');
+                });
+
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    zone.classList.remove('scale-110');
+                    if (zone.children.length === 0) {
+                        const word = e.dataTransfer.getData('text/plain');
+                        const draggedElement = document.querySelector(`[data-word="${word}"]`);
+                        if (word === zone.dataset.correctWord) {
+                            zone.textContent = word.charAt(0).toUpperCase() + word.slice(1);
+                            zone.classList.add('filled');
+                            draggedElement.remove();
+                            checkVocabulario1Completion();
+                        }
+                    }
+                });
+            });
+
+            // Listeners para arrastrar con el tacto (touch)
+            document.querySelectorAll('.drag-word').forEach(word => {
+                word.addEventListener('touchstart', e => {
+                    e.preventDefault();
+                    draggedElement = e.target;
+                    draggedElement.style.position = 'absolute';
+                    draggedElement.style.zIndex = 1000;
+                    const touch = e.touches[0];
+                    offsetX = touch.clientX - draggedElement.getBoundingClientRect().left;
+                    offsetY = touch.clientY - draggedElement.getBoundingClientRect().top;
+                });
+            });
+
+            document.addEventListener('touchmove', e => {
+                if (draggedElement) {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    draggedElement.style.left = `${touch.clientX - offsetX}px`;
+                    draggedElement.style.top = `${touch.clientY - offsetY}px`;
+                }
+            });
+
+            document.addEventListener('touchend', e => {
+                if (draggedElement) {
+                    const touch = e.changedTouches[0];
+                    const dropZone = document.elementFromPoint(touch.clientX, touch.clientY);
+
+                    if (dropZone && dropZone.classList.contains('drop-zone') && dropZone.children.length === 0) {
+                        const word = draggedElement.dataset.word;
+                        if (word === dropZone.dataset.correctWord) {
+                            dropZone.textContent = word.charAt(0).toUpperCase() + word.slice(1);
+                            dropZone.classList.add('filled');
+                            draggedElement.remove();
+                            checkVocabulario1Completion();
+                        } else {
+                            // Si no coincide, regresa la palabra a su lugar original (reinicio visual)
+                            draggedElement.style.position = '';
+                            draggedElement.style.left = '';
+                            draggedElement.style.top = '';
+                            draggedElement.style.zIndex = '';
+                        }
+                    } else {
+                        // Si no se soltó sobre una zona válida, regresa la palabra a su lugar original
+                        draggedElement.style.position = '';
+                        draggedElement.style.left = '';
+                        draggedElement.style.top = '';
+                        draggedElement.style.zIndex = '';
+                    }
+                    draggedElement = null;
+                }
+            });
+        }
+
+
+        function checkVocabulario1Completion() {
+            const allFilled = document.querySelectorAll('.drop-zone').length === document.querySelectorAll('.drop-zone.filled').length;
+            if (allFilled) {
+                document.getElementById('vocabulario1-success-message').classList.remove('hidden');
+                document.getElementById('vocabulario1-content').classList.add('hidden');
+            }
+        }
+
+        function resetVocabulario1() {
+            vocabulario1ImageIndex = 0;
+            document.getElementById('vocabulario1-content').classList.add('hidden');
+            document.getElementById('vocabulario1-success-message').classList.add('hidden');
+            document.getElementById('vocabulario1-next-btn').style.display = 'block';
+            const dragWordsContainer = document.getElementById('drag-words-container');
+            const words = ['cerdo', 'árbol', 'sol', 'cabaña', 'vaca'];
+            dragWordsContainer.innerHTML = '';
+            words.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('drag-word', 'bg-blue-500');
+                span.setAttribute('draggable', 'true');
+                span.dataset.word = word;
+                span.textContent = word;
+                dragWordsContainer.appendChild(span);
+            });
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.textContent = '';
+                zone.classList.remove('filled');
+            });
+        }
+        
+        // Vocabulario 2 logic (Image slideshow)
+        function loadVocabulario2Image() {
+            const container = document.getElementById('vocabulario2-image-container');
+            const textEl = document.getElementById('vocabulario2-text');
+            if (vocabulario2ImageIndex < vocabulario2Images.length) {
+                const img = vocabulario2Images[vocabulario2ImageIndex];
+                container.innerHTML = `<img src="${img.src}" class="rounded-xl shadow-lg transition-transform duration-500 transform-gpu w-full max-w-xs" />`;
+                textEl.textContent = img.text;
+                document.getElementById('vocabulario2-next-btn').classList.remove('hidden');
+                document.getElementById('vocabulario2-back-btn').classList.add('hidden');
+            } else {
+                container.innerHTML = '';
+                textEl.textContent = '';
+                document.getElementById('vocabulario2-next-btn').classList.add('hidden');
+                document.getElementById('vocabulario2-back-btn').classList.remove('hidden');
+            }
+        }
+
+        function nextVocabulario2Image() {
+            vocabulario2ImageIndex++;
+            loadVocabulario2Image();
+        }
+
+        function resetVocabulario2() {
+            vocabulario2ImageIndex = 0;
+        }
+
+        // Jugar logic (Matching game)
+        function renderMatchingGame() {
+            const spanishContainer = document.getElementById('spanish-words');
+            const englishContainer = document.getElementById('english-words');
+            spanishContainer.innerHTML = '';
+            englishContainer.innerHTML = '';
+            matchedPairs = 0;
+            selectedSpanishWord = null;
+            selectedEnglishWord = null;
+            document.getElementById('jugar-success-message').classList.add('hidden');
+
+            const spanishWords = Object.keys(matchingWords).sort(() => Math.random() - 0.5);
+            const englishWords = Object.values(matchingWords).sort(() => Math.random() - 0.5);
+
+            spanishWords.forEach(word => {
+                const button = createMatchingButton(word, 'spanish');
+                spanishContainer.appendChild(button);
+            });
+
+            englishWords.forEach(word => {
+                const button = createMatchingButton(word, 'english');
+                englishContainer.appendChild(button);
+            });
+        }
+
+        function createMatchingButton(word, type) {
+            const button = document.createElement('button');
+            button.className = 'card card-primary-purple text-base';
+            button.textContent = word;
+            button.dataset.word = word;
+            button.dataset.type = type;
+            button.onclick = () => handleMatchingClick(button);
+            return button;
+        }
+
+        function handleMatchingClick(button) {
+            const type = button.dataset.type;
+            
+            // Clear previous selection of the same type
+            if (type === 'spanish' && selectedSpanishWord) {
+                selectedSpanishWord.classList.remove('bg-yellow-300');
+            } else if (type === 'english' && selectedEnglishWord) {
+                selectedEnglishWord.classList.remove('bg-yellow-300');
+            }
+            
+            button.classList.add('bg-yellow-300');
+            
+            if (type === 'spanish') {
+                selectedSpanishWord = button;
+            } else {
+                selectedEnglishWord = button;
+            }
+
+            if (selectedSpanishWord && selectedEnglishWord) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const spanishWord = selectedSpanishWord.dataset.word;
+            const englishWord = selectedEnglishWord.dataset.word;
+            
+            if (matchingWords[spanishWord] === englishWord) {
+                selectedSpanishWord.classList.add('matched');
+                selectedEnglishWord.classList.add('matched');
+                selectedSpanishWord.disabled = true;
+                selectedEnglishWord.disabled = true;
+                selectedSpanishWord.innerHTML += ' <span class="star-icon">⭐</span>';
+                selectedEnglishWord.innerHTML += ' <span class="star-icon">⭐</span>';
+                
+                matchedPairs++;
+                if (matchedPairs === Object.keys(matchingWords).length) {
+                    document.getElementById('jugar-success-message').classList.remove('hidden');
+                }
+            } else {
+                selectedSpanishWord.classList.remove('bg-yellow-300');
+                selectedEnglishWord.classList.remove('bg-yellow-300');
+            }
+
+            selectedSpanishWord = null;
+            selectedEnglishWord = null;
+        }
+
+        function resetJugar() {
+            renderMatchingGame();
+        }
+
+        // Canción logic (Image slideshow)
+        function loadCancionImage() {
+            const container = document.getElementById('cancion-image-container');
+            if (cancionImageIndex < cancionImages.length) {
+                const img = cancionImages[cancionImageIndex];
+                container.innerHTML = `<img src="${img}" class="rounded-xl shadow-lg transition-transform duration-500 transform-gpu" />`;
+                document.getElementById('cancion-next-btn').classList.remove('hidden');
+                document.getElementById('cancion-back-btn').classList.add('hidden');
+            } else {
+                container.innerHTML = '';
+                document.getElementById('cancion-next-btn').classList.add('hidden');
+                document.getElementById('cancion-back-btn').classList.remove('hidden');
+            }
+        }
+
+        function nextCancionImage() {
+            cancionImageIndex++;
+            loadCancionImage();
+        }
+
+        function resetCancion() {
+            cancionImageIndex = 0;
+        }
+
+        // Oraciones logic
+        function renderOracionesPage() {
+            const container = document.getElementById('oraciones-container');
+            container.innerHTML = ''; // Limpia el contenido anterior
+            oraciones.forEach(oracion => {
+                const oracionDiv = document.createElement('div');
+                oracionDiv.className = 'flex flex-col md:flex-row items-center justify-center space-x-0 md:space-x-4 space-y-2 md:space-y-0';
+
+                const button = document.createElement('button');
+                button.textContent = oracion.es;
+                button.className = 'btn-primary px-6 py-3 text-lg w-full md:w-auto text-center';
+                button.onclick = () => showTranslation(button, oracion.en);
+                
+                const translationSpan = document.createElement('span');
+                translationSpan.className = 'text-xl font-semibold text-gray-600 hidden';
+
+                oracionDiv.appendChild(button);
+                oracionDiv.appendChild(translationSpan);
+                container.appendChild(oracionDiv);
+            });
+        }
+
+        function showTranslation(button, translation) {
+            const translationSpan = button.nextElementSibling;
+            
+            // Oculta todas las traducciones
+            document.querySelectorAll('#oraciones-container span').forEach(span => {
+                span.classList.add('hidden');
+                span.textContent = '';
+            });
+
+            // Muestra solo la traducción del botón presionado
+            translationSpan.textContent = translation;
+            translationSpan.classList.remove('hidden');
+        }
+
+        function resetOraciones() {
+            const container = document.getElementById('oraciones-container');
+            container.innerHTML = '';
+        }
+
+        // Initial setup on page load
+        window.onload = () => {
+            showPage('main');
+        };
+    </script>
+</body>
+</html>
