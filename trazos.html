@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Trazos Interactiva</title>
+    <!-- Loads Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Loads Andika font, ideal for education due to simple and clear letter shapes -->
+    <link href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Andika', sans-serif; 
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main tracing area container */
+        #tracingContainer {
+            position: relative; 
+            width: 100%;
+            border: 4px solid #3b82f6;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        /* Text guide area - NOW VERTICALLY AND HORIZONTALLY CENTERED */
+        #guideArea {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            user-select: none;
+            text-align: center;
+            line-height: 1.2;
+            pointer-events: none; 
+            z-index: 10;
+            
+            /* KEY PROPERTIES FOR CENTERING */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centers content vertically */
+            align-items: center; /* Centers content horizontally */
+        }
+        
+        /* Drawing Canvas */
+        #drawingCanvas {
+            position: relative; 
+            width: 100%;
+            min-height: 400px; 
+            touch-action: none;
+            cursor: crosshair;
+            z-index: 20; 
+        }
+        
+        /* Style for individual phrases (outline effect) - NOW MUCH LARGER */
+        .guide-phrase {
+            color: transparent; 
+            text-shadow: 
+                -1px -1px 0 #bfdbfe,  
+                1px -1px 0 #bfdbfe,   
+                -1px 1px 0 #bfdbfe,   
+                1px 1px 0 #bfdbfe,    
+                3px 3px 0 #bfdbfe,    /* Thicker strokes */
+                -3px -3px 0 #bfdbfe;  /* Thicker strokes */
+            font-weight: 900; 
+            font-size: 7rem; /* MUCH LARGER! (Approx 112px) */
+            line-height: 1.1; 
+            margin-bottom: 0; 
+        }
+
+        /* Mobile adjustment: reduces font size to fit on small screens */
+        @media (max-width: 640px) {
+            .guide-phrase {
+                font-size: 4rem; /* More manageable size on mobile */
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Andika', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl w-full bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
+        <!-- Title and Controls - IN ENGLISH -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-center text-blue-700 mb-2">Tracing Practice!</h1>
+        <!-- Instructions updated to use <strong> tag for clear bolding -->
+        <p class="text-center text-gray-600 mb-6">Use your mouse or finger to <strong>fill</strong> the light blue outlines.</p>
+
+        <div class="flex flex-wrap justify-center gap-4 mb-6 p-4 bg-blue-50 rounded-lg">
+            <!-- Color Selector -->
+            <label class="flex items-center space-x-2 text-gray-700">
+                <span class="font-medium text-sm">Color:</span>
+                <input type="color" id="colorPicker" value="#0000FF" class="w-10 h-10 rounded-full border-2 border-blue-300 cursor-pointer">
+            </label>
+            <!-- Size Selector -->
+            <label class="flex items-center space-x-2 text-gray-700">
+                <span class="font-medium text-sm">Size:</span>
+                <input type="range" id="sizeSlider" min="5" max="30" value="15" class="w-32 h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer range-lg">
+                <span id="currentSize" class="text-sm font-semibold">15</span>
+            </label>
+             <!-- Clear Traces Button - IN ENGLISH -->
+            <button id="clearButton" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full transition duration-150 shadow-md">
+                Clear Traces
+            </button>
+            <!-- Next Phrase Button - IN ENGLISH -->
+            <button id="nextButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full transition duration-150 shadow-md">
+                Next Phrase
+            </button>
+        </div>
+        
+        <!-- TRACING CONTAINER -->
+        <div id="tracingContainer">
+            
+            <!-- Guide Area (Centered) -->
+            <div id="guideArea">
+                <!-- Guide text - IN ENGLISH -->
+                <p class="text-2xl md:text-3xl font-extrabold text-blue-500">Phrase to Trace:</p>
+                <!-- Current phrase injected here -->
+                <div id="currentPhrase" class="guide-phrase"></div>
+            </div>
+
+            <!-- Drawing Canvas -->
+            <canvas id="drawingCanvas"></canvas>
+        </div>
+
+        <!-- Additional Resources (NEW SECTION - NOW IN ENGLISH) -->
+        <div class="mt-8 pt-6 border-t-2 border-blue-200 text-center">
+            <h2 class="text-xl font-bold text-blue-700 mb-4">Additional Resources for the Verb "Tener"</h2>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://soymarialex.github.io/aprendo/usosdelverbotener" target="_blank" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full transition duration-150 shadow-lg transform hover:scale-105">
+                    1. Common Uses of "Tener"
+                </a>
+                <a href="https://soymarialex.github.io/aprendo/elverbotener/" target="_blank" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-full transition duration-150 shadow-lg transform hover:scale-105">
+                    2. Learn the Verb "Tener"
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('drawingCanvas');
+            const ctx = canvas.getContext('2d');
+            const clearButton = document.getElementById('clearButton');
+            const colorPicker = document.getElementById('colorPicker');
+            const sizeSlider = document.getElementById('sizeSlider');
+            const currentSizeSpan = document.getElementById('currentSize');
+            const tracingContainer = document.getElementById('tracingContainer');
+            // Elements and logic for phrase control
+            const nextButton = document.getElementById('nextButton');
+            const currentPhraseElement = document.getElementById('currentPhrase');
+            
+            // Drawing state
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            let currentToolColor = colorPicker.value;
+            let currentToolSize = parseInt(sizeSlider.value);
+
+            // --- Phrase Logic (Updated to remove dots and specific phrases) ---
+            const phrases = [
+                "Tengo hambre",
+                "Tengo sed",
+                "Tengo sueño",
+                "Tengo prisa",
+                "Tengo frío",
+                "Tengo calor",
+                "Tengo miedo",
+                "Tengo 6 años"
+            ];
+            let currentPhraseIndex = 0;
+
+            // Displays the current phrase in the div element
+            function displayCurrentPhrase() {
+                // Uses the modulo operator to loop back to the first phrase if the end is reached
+                const phrase = phrases[currentPhraseIndex % phrases.length];
+                currentPhraseElement.textContent = phrase;
+                
+                // Ensures the canvas adjusts to the container size after loading the phrase
+                setTimeout(resizeCanvas, 50); 
+            }
+
+            // Loads the next phrase, clears the canvas, and advances the index
+            function loadNextPhrase() {
+                // Increments the index and handles the loop
+                currentPhraseIndex++;
+                
+                // 1. Automatically clears the canvas for the new phrase
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 2. Displays the new phrase
+                displayCurrentPhrase();
+            }
+            
+            // --- Simple and Robust Resizing Logic ---
+            function resizeCanvas() {
+                const rect = tracingContainer.getBoundingClientRect();
+                // Sets the internal canvas dimensions (important for resolution)
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+
+            // Initializes position and size
+            resizeCanvas();
+            // Ensures resizing if the browser changes size
+            window.addEventListener('resize', resizeCanvas);
+
+
+            // --- Drawing Logic (Improved precision) ---
+            
+            function getPointerPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                let clientX, clientY;
+
+                if (e.touches && e.touches.length > 0) {
+                    // Touch events
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    // Mouse events
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
+
+            function startDrawing(e) {
+                isDrawing = true;
+                const pos = getPointerPos(e);
+                [lastX, lastY] = [pos.x, pos.y];
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                e.preventDefault(); 
+
+                const pos = getPointerPos(e);
+
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.strokeStyle = currentToolColor;
+                ctx.lineWidth = currentToolSize;
+                ctx.lineCap = 'round'; 
+                ctx.stroke();
+
+                [lastX, lastY] = [pos.x, pos.y];
+            }
+
+            function stopDrawing() {
+                isDrawing = false;
+            }
+
+            // --- Drawing Event Handlers ---
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            canvas.addEventListener('touchstart', startDrawing);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('touchcancel', stopDrawing);
+
+
+            // --- UI Controls ---
+            clearButton.addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // Listener for the "Next Phrase" button
+            nextButton.addEventListener('click', loadNextPhrase);
+
+            colorPicker.addEventListener('input', (e) => {
+                currentToolColor = e.target.value;
+            });
+
+            sizeSlider.addEventListener('input', (e) => {
+                currentToolSize = parseInt(e.target.value);
+                currentSizeSpan.textContent = currentToolSize;
+            });
+
+            // Initialization: Displays the first phrase on page load
+            displayCurrentPhrase();
+            setTimeout(resizeCanvas, 100);
+        });
+    </script>
+</body>
+</html>
