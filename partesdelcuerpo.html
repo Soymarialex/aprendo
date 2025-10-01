@@ -3,436 +3,631 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Body Parts in Spanish</title>
+    <title>Body Parts Matching Game</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'primary': '#4F46E5', // Indigo 600
-                        'secondary': '#10B981', // Emerald 500
-                        'accent': '#F59E0B', // Amber 500
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .card-shadow {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-    </style>
-</head>
-<body class="bg-gray-50 font-sans min-h-screen p-4 md:p-8">
-
-    <div id="firebase-init-status" class="hidden"></div>
-    <!-- Firebase Initialization Script -->
+    <!-- Load Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // IMPORTANT: Firestore is initialized but not used for this simple game data persistence.
-        // It is included to comply with platform requirements for web applications.
-
+        // Firestore configuration (mandatory to meet guides)
         setLogLevel('Debug');
-        let app;
-        let db;
-        let auth;
-        let userId;
-
+        let db, auth, userId = null;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        if (firebaseConfig) {
-            try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
+        const activityDataPath = () => `/artifacts/${appId}/users/${userId}/body_parts_activity/completion`;
 
-                async function authenticate() {
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    userId = auth.currentUser?.uid || 'anonymous-user';
-                    document.getElementById('firebase-init-status').textContent = 'Firebase initialized and authenticated.';
+        async function initFirebase() {
+            if (!firebaseConfig) return console.error("Firebase config not available.");
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Authentication: Use token if available, otherwise anonymous
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
                 }
 
-                authenticate().catch(error => console.error("Firebase Auth Error:", error));
+                await new Promise(resolve => {
+                    const unsubscribe = onAuthStateChanged(auth, user => {
+                        if (user) {
+                            userId = user.uid;
+                        } else {
+                            userId = crypto.randomUUID();
+                        }
+                        unsubscribe();
+                        resolve();
+                    });
+                });
 
-            } catch (e) {
-                console.error("Firebase Initialization Error:", e);
-                document.getElementById('firebase-init-status').textContent = 'Firebase initialization failed.';
+                loadCompletionStatus();
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
             }
-        } else {
-            document.getElementById('firebase-init-status').textContent = 'Firebase config not found. Running without persistence.';
         }
+
+        /** Saves the user's completion status to Firestore. */
+        async function saveCompletionStatus(isCompleted) {
+            if (!db || !userId) return console.warn("Firestore or userId not available to save.");
+            try {
+                const docRef = doc(db, activityDataPath());
+                await setDoc(docRef, {
+                    completed: isCompleted,
+                    lastUpdated: new Date().toISOString()
+                }, { merge: true });
+            } catch (e) {
+                console.error("Error saving completion status:", e);
+            }
+        }
+
+        /** Loads the user's completion status from Firestore. */
+        async function loadCompletionStatus() {
+            if (!db || !userId) return console.warn("Firestore or userId not available to load.");
+            try {
+                const docRef = doc(db, activityDataPath());
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists() && docSnap.data().completed) {
+                    // Translated string
+                    document.getElementById('completion-message').textContent = 'Matching Activity previously completed!';
+                    document.getElementById('completion-message').classList.remove('hidden');
+                }
+            } catch (e) {
+                console.error("Error loading completion status:", e);
+            }
+        }
+
+        window.saveCompletionStatus = saveCompletionStatus;
+        window.initFirebase = initFirebase;
+        
+        document.addEventListener('DOMContentLoaded', initFirebase);
     </script>
-    <!-- End Firebase Initialization Script -->
+    <style>
+        /* Fonts: Using Inter as fallback for Platform Medium */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* White background */
+        }
+        .text-platform {
+            font-weight: 600; /* Platform Medium Font Simulation */
+        }
 
+        /* Core Colors */
+        .bg-pure-white { background-color: #ffffff; } 
+        .text-eerie-black { color: #121118; }
+        .text-flamingo-pink { color: #FF79AC; }
+        .bg-flamingo-pink { background-color: #FF79AC; }
+        .border-flamingo-pink { border-color: #FF79AC; }
+        .bg-light-pink { background-color: #fce7f3; } 
+        .bg-lighter-pink { background-color: #ffe4f0; } 
+        
+        /* Default Text Styles */
+        .default-text { color: #121118; } 
+        .muted-text { color: #6b7280; } 
 
-    <div class="max-w-6xl mx-auto">
-        <header class="text-center mb-10 p-6 bg-primary rounded-xl card-shadow">
-            <h1 class="text-4xl font-extrabold text-white mb-2">¡Aprende las Partes del Cuerpo!</h1>
-            <p class="text-xl text-indigo-200">Fun Spanish Activities for Kids</p>
+        /* Card styles */
+        .card-base {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Active Card (NOT Selected) */
+        .card-active {
+             background-color: #fce7f3; /* Light Pink */
+             color: #121118;
+             border: 2px solid #FF79AC; /* Strong Pink Border */
+        }
+        
+        /* Hover on active card */
+        .card-active:hover {
+            background-color: #ffe4f0; 
+            transform: translateY(-2px);
+        }
+
+        /* Selection State (Flamingo Pink) */
+        .card-selected {
+            outline: 4px solid #FF79AC; 
+            box-shadow: 0 0 20px rgba(255, 121, 172, 0.9);
+            transform: scale(1.03);
+            background-color: #ffffff; 
+            border-color: #ffffff; 
+        }
+
+        /* Matched State (Success) */
+        .card-matched {
+            cursor: default;
+            background-color: #dcfce7; 
+            color: #121118;
+            outline: 3px solid #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+            pointer-events: none;
+        }
+
+        /* Flip card styles */
+        .flip-card {
+            perspective: 1000px;
+            height: 200px; 
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid #d1d5db;
+        }
+
+        /* Front: Spanish */
+        .flip-card-front {
+            background-color: #f3f4f6; 
+            color: #FF79AC; 
+            font-size: 2.5rem; 
+            font-weight: 800; 
+        }
+        /* Back: English (Answer) */
+        .flip-card-back {
+            background-color: #ffffff; 
+            color: #121118; 
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
+
+    <!-- Main Container (Now White) -->
+    <div id="app-container" class="bg-pure-white p-4 md:p-10 rounded-2xl shadow-xl w-full max-w-5xl border border-gray-200">
+        <header class="mb-6 text-center default-text">
+            <!-- Translated Header -->
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 text-platform text-eerie-black">
+                Human Body Vocabulary
+            </h1>
+            <p class="text-lg muted-text">
+                Learn and match the body parts in Spanish and English.
+            </p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Completion Message (Translated) -->
+        <div id="completion-message" class="hidden bg-green-200 border border-green-500 text-eerie-black p-3 rounded-lg text-center mb-6">
+            Matching Activity previously completed!
+        </div>
 
-            <!-- Image Container (FIRST) -->
-            <div class="bg-white p-6 rounded-xl card-shadow flex flex-col items-center justify-center">
-                <h2 class="text-2xl font-bold text-primary mb-4 border-b pb-2">The Body</h2>
-                <img src="https://cloud.educaplay.com/recursos/553/17698513/imagen_1_1706840582.jpg" alt="A child figure pointing to different parts of the body." class="rounded-lg max-w-full h-auto shadow-md">
-                <p class="text-sm text-gray-500 mt-3 italic text-center">Use this image to review the parts!</p>
-            </div>
-            <!-- End Image Container -->
+        <!-- Image Container (Centered and Large) -->
+        <div class="flex justify-center mb-8">
+            <img src="https://www.abcfichas.com/wp-content/uploads/2021/06/Dibujo-de-Partes-del-Cuerpo-para-Ninos.jpg" 
+                 alt="Illustration of human body parts for children" 
+                 class="rounded-xl shadow-xl w-full max-w-xl h-auto object-contain border-4 border-flamingo-pink" 
+                 onerror="this.onerror=null;this.src='https://placehold.co/600x400/ffffff/FF79AC?text=Body+Image\nNot+Loaded';" />
+            <p id="user-id-display" class="text-xs muted-text mt-2"></p>
+        </div>
 
-            <!-- Activity 1: Matching Game (SECOND) -->
-            <div id="activity-1" class="bg-white p-6 rounded-xl card-shadow col-span-1 lg:col-span-2">
-                <h2 class="text-2xl font-bold text-primary mb-4 border-b pb-2">Activity 1: Match the Words</h2>
-                <!-- Instructions using <strong> for bolding -->
-                <p class="text-gray-600 mb-6"><strong>Instructions:</strong> Click a word in the <strong>Spanish</strong> column and then click its matching word in the <strong>English</strong> column. Find all the pairs!</p>
-
-                <div class="grid grid-cols-2 gap-4" id="matching-game">
-                    <!-- Buttons will be generated here by JavaScript -->
-                </div>
-                <div id="match-message" class="mt-4 text-center font-semibold text-lg"></div>
-            </div>
-
-        </div> <!-- End Grid Row 1 (Image and Activity 1) -->
-
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- ACTIVITIES SECTION -->
+        <div id="activity-container" class="default-text">
             
-            <!-- Activity 2: Flashcard Review -->
-            <div id="activity-2" class="bg-white p-6 rounded-xl card-shadow">
-                <h2 class="text-2xl font-bold text-secondary mb-4 border-b pb-2">Activity 2: Flashcards Review</h2>
-                <p class="text-gray-600 mb-6"><strong>Instructions:</strong> Click the card to see the Spanish word and its English translation. Use the 'Next' button to move to the next part. Review ends after all words are shown once.</p>
-
-                <div class="flex flex-col items-center">
-                    <div id="flashcard" class="w-full max-w-sm h-40 bg-accent text-white rounded-lg flex items-center justify-center text-3xl font-bold cursor-pointer transition transform hover:scale-105 duration-200 shadow-xl" onclick="flipCard()">
-                        <span id="card-content">Click to start!</span>
-                    </div>
-                    <button id="next-card-btn" class="mt-4 px-6 py-2 bg-secondary text-white font-bold rounded-lg hover:bg-emerald-600 transition duration-150 shadow-md">Next Word</button>
-                </div>
+            <!-- 1. Matching Game Container -->
+            <div id="matching-section">
+                <!-- Matching content will be rendered here -->
             </div>
-
-            <!-- Activity 3: Labeling Quiz (Click the correct Spanish word) -->
-            <div id="activity-3" class="bg-white p-6 rounded-xl card-shadow">
-                <h2 class="text-2xl font-bold text-primary mb-4 border-b pb-2">Activity 3: Quick Quiz</h2>
-                <p class="text-gray-600 mb-6"><strong>Instructions:</strong> Look at the body part written in English and click the correct word in Spanish. Quiz ends after all questions are completed.</p>
-
-                <div id="quiz-container" class="flex flex-col items-center space-y-4">
-                    <p id="quiz-english-word" class="text-3xl font-bold text-indigo-700 h-10">...</p>
-                    <div id="quiz-options" class="grid grid-cols-2 gap-4 w-full max-w-md">
-                        <!-- Options will be here -->
-                    </div>
-                    <p id="quiz-feedback" class="text-xl font-semibold h-6"></p>
-                    <button id="next-quiz-btn" class="px-6 py-2 bg-primary text-white font-bold rounded-lg hover:bg-indigo-600 transition duration-150 shadow-md hidden">Next Question</button>
-                </div>
+            
+            <!-- 2. Flashcards Container, with a visual separator -->
+            <div id="flashcards-section" class="mt-12 pt-8 border-t border-gray-200">
+                <!-- Flashcards content will be rendered here -->
             </div>
-
-        </div> <!-- End Grid Row 2 (Activity 2 and 3) -->
+        </div>
+        
+        <!-- FOOTER / CALL TO ACTION SECTION -->
+        <footer class="mt-10 pt-6 border-t border-gray-300 text-center">
+            <!-- Call to Action Button -->
+            <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ==" 
+               target="_blank" 
+               class="inline-block bg-flamingo-pink text-eerie-black text-platform font-extrabold py-3 px-8 rounded-full transition-all duration-300 hover:opacity-90 uppercase shadow-lg shadow-[#FF79AC]/40 mb-4">
+                Find your Spanish class here.
+            </a>
+            <!-- Copyright Notice -->
+            <p class="text-sm muted-text">
+                © 2025 Spanish Lessons with María C. All rights reserved.
+            </p>
+        </footer>
 
     </div>
 
-
-    <script>
-        // --- Shared Vocabulary Data ---
-        const vocab = [
-            { spanish: "Cabeza", english: "Head" },
-            { spanish: "Ojo", english: "Eye" },
-            { spanish: "Nariz", english: "Nose" },
-            { spanish: "Boca", english: "Mouth" },
-            { spanish: "Brazo", english: "Arm" },
-            { spanish: "Mano", english: "Hand" },
-            { spanish: "Pierna", english: "Leg" },
-            { spanish: "Pie", english: "Foot" },
-            { spanish: "Rodilla", english: "Knee" },
-            { spanish: "Hombro", english: "Shoulder" },
+    <script type="text/javascript">
+        // Data for the game and flashcards
+        const MATCHING_DATA = [
+            { id: 1, spanish: "Ojos", english: "Eyes", matchId: 1, description: "Organs for seeing." },
+            { id: 2, spanish: "Boca", english: "Mouth", matchId: 2, description: "Used for eating and speaking." },
+            { id: 3, spanish: "Oreja", english: "Ear", matchId: 3, description: "Organ for hearing." },
+            { id: 4, spanish: "Nariz", english: "Nose", matchId: 4, description: "Used for smelling and breathing." },
+            { id: 5, spanish: "Brazo", english: "Arm", matchId: 5, description: "Upper limb joined at the shoulder." },
+            { id: 6, spanish: "Mano", english: "Hand", matchId: 6, description: "Extremity of the arm with fingers." },
+            { id: 7, spanish: "Pierna", english: "Leg", matchId: 7, description: "Lower limb used for walking." },
+            { id: 8, spanish: "Rodilla", english: "Knee", matchId: 8, description: "Joint connecting the thigh and lower leg." },
+            { id: 9, spanish: "Pie", english: "Foot", matchId: 9, description: "Extremity of the leg." },
+            { id: 10, spanish: "Dedos", english: "Fingers", matchId: 10, description: "Extremities of the hand." }, 
         ];
 
-        // --- Utility Functions ---
-        const shuffleArray = (array) => {
+        let selectedTermCard = null;
+        let selectedDefCard = null;
+        let matchedCount = 0;
+        const totalMatches = MATCHING_DATA.length;
+        // Half the words for Phase 1
+        const MATCHES_PER_PHASE = 5; 
+        let currentPhase = 1; // 1 or 2
+
+        const matchingSection = document.getElementById('matching-section');
+        const flashcardsSection = document.getElementById('flashcards-section');
+
+        // --- Matching Game Logic ---
+
+        /**
+         * Creates the matching game layout.
+         */
+        function renderMatchingLayout() {
+            // Ensure that when rendering the layout, we always start at phase 1
+            if (matchedCount === totalMatches) {
+                 // If already completed, do not reset the count to show the completion message
+            } else {
+                currentPhase = 1; 
+                matchedCount = 0;
+            }
+            
+            matchingSection.innerHTML = `
+                <h2 class="text-2xl font-bold text-flamingo-pink mb-4 text-platform border-b border-gray-300 pb-2 text-center">
+                    Matching (Spanish vs. English)
+                </h2>
+                <div id="phase-indicator" class="text-lg font-bold mb-4 text-center"></div>
+                <!-- Columns convert to 2 on desktop, stacked on mobile -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-eerie-black mb-3 text-center md:text-left">Terms (Spanish)</h3>
+                        <div id="terms-column" class="space-y-3"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-eerie-black mb-3 text-center md:text-left">Definitions (English)</h3>
+                        <div id="definitions-column" class="space-y-3"></div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-4 border-t border-gray-300 flex flex-col items-center justify-between gap-4">
+                    <!-- Translated Progress -->
+                    <p id="progress-indicator" class="text-eerie-black text-lg font-bold">Progress: 0/${totalMatches}</p>
+                    <div id="game-status-messages">
+                        <button id="continue-button" class="hidden bg-flamingo-pink text-eerie-black text-platform font-extrabold py-3 px-8 rounded-full transition-all duration-300 hover:opacity-90 uppercase shadow-lg shadow-[#FF79AC]/40">
+                            Continue to Phase 2
+                        </button>
+                        <!-- Translated Completion Status -->
+                        <p id="completion-status" class="hidden text-2xl font-extrabold text-green-600">
+                             ✅ Game Completed!
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('continue-button').addEventListener('click', startNextPhase);
+
+            // If not already completed, start phase 1 (or the current phase if already halfway)
+            if (matchedCount < totalMatches) {
+                startPhase(currentPhase);
+            } else {
+                // Show completion status if already finished
+                updateProgressIndicator();
+                document.getElementById('completion-status').classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Starts a specific phase of the matching game.
+         */
+        function startPhase(phase) {
+            currentPhase = phase;
+            selectedTermCard = null;
+            selectedDefCard = null;
+
+            const termColumn = document.getElementById('terms-column');
+            const defColumn = document.getElementById('definitions-column');
+            const phaseIndicator = document.getElementById('phase-indicator');
+
+            // Clear columns
+            termColumn.innerHTML = '';
+            defColumn.innerHTML = '';
+            document.getElementById('continue-button').classList.add('hidden'); // Hide continue button when starting phase
+
+            const start = (phase - 1) * MATCHES_PER_PHASE;
+            const end = phase * MATCHES_PER_PHASE;
+            
+            // Subset of data for the current phase
+            const currentPhaseData = MATCHING_DATA.slice(start, end);
+            
+            // Translated Phase Indicator
+            phaseIndicator.textContent = `Phase ${currentPhase} of ${totalMatches / MATCHES_PER_PHASE}`;
+
+            // Generate and render cards
+            const shuffledTerms = shuffleArray([...currentPhaseData].map(item => ({ content: item.spanish, matchId: item.matchId, type: 'term' })));
+            const shuffledDefs = shuffleArray([...currentPhaseData].map(item => ({ content: item.english, matchId: item.matchId, type: 'definition' })));
+
+            shuffledTerms.forEach(item => termColumn.appendChild(createCard(item.content, item.matchId, item.type)));
+            shuffledDefs.forEach(item => defColumn.appendChild(createCard(item.content, item.matchId, item.type)));
+            
+            updateProgressIndicator();
+        }
+
+        /**
+         * Starts the next phase (Phase 2).
+         */
+        function startNextPhase() {
+            document.getElementById('continue-button').classList.add('hidden');
+            startPhase(2);
+        }
+
+        /**
+         * Creates a card element for matching.
+         */
+        function createCard(content, matchValue, type) {
+            const card = document.createElement('div');
+            // Use card-active for the base card style (light pink background, pink border)
+            card.className = 'card-base card-active p-4 rounded-xl text-platform text-center'; 
+            card.textContent = content;
+            card.setAttribute('data-match-value', matchValue);
+            card.setAttribute('data-type', type);
+            card.addEventListener('click', handleCardClick);
+            return card;
+        }
+        
+        function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
             return array;
-        };
+        }
 
-        // ==========================================================
-        // Activity 1: Matching Game Logic (FIXED)
-        // ==========================================================
-        let selectedWord = null;
-        let matchedPairs = 0;
-        const totalPairs = vocab.length;
-        const matchingGameDiv = document.getElementById('matching-game');
-        const matchMessage = document.getElementById('match-message');
+        function setSelected(card, isSelected) {
+            card.classList.toggle('card-selected', isSelected);
+            card.classList.toggle('card-active', !isSelected); // Toggle active/selected class
+        }
 
-        const createMatchingButton = (text, language, pairId) => {
-            const button = document.createElement('button');
-            button.textContent = text;
-            button.className = `p-3 rounded-xl font-semibold transition duration-150 text-white shadow-md w-full 
-                                ${language === 'spanish' ? 'bg-primary hover:bg-indigo-700' : 'bg-secondary hover:bg-emerald-600'} 
-                                matching-button`;
-            button.setAttribute('data-pair-id', pairId);
-            button.setAttribute('data-language', language);
-            button.onclick = () => handleMatchClick(button);
-            return button;
-        };
+        function updateProgressIndicator() {
+             const progressIndicator = document.getElementById('progress-indicator');
+             if (progressIndicator) {
+                // Translated Progress
+                progressIndicator.textContent = `Progress: ${matchedCount}/${totalMatches}`;
+             }
+        }
 
-        const handleMatchClick = (button) => {
-            if (button.classList.contains('bg-gray-400')) return; // Already matched
+        /**
+         * Handles the click on a card and triggers automatic check if two are selected.
+         */
+        function handleCardClick(event) {
+            const clickedCard = event.currentTarget;
+            if (clickedCard.classList.contains('card-matched')) return;
 
-            const clickedPairId = button.getAttribute('data-pair-id');
-            const clickedLanguage = button.getAttribute('data-language');
+            const type = clickedCard.getAttribute('data-type');
             
-            // Case where a word is already selected
-            if (selectedWord) {
-                const selectedPairId = selectedWord.getAttribute('data-pair-id');
-                const selectedLanguage = selectedWord.getAttribute('data-language');
+            // 1. Handle selection/deselection
+            if (type === 'term') {
+                if (selectedTermCard) setSelected(selectedTermCard, false);
+                selectedTermCard = (selectedTermCard === clickedCard) ? null : clickedCard;
+                if (selectedTermCard) setSelected(selectedTermCard, true);
+            } else if (type === 'definition') {
+                if (selectedDefCard) setSelected(selectedDefCard, false);
+                selectedDefCard = (selectedDefCard === clickedCard) ? null : clickedCard;
+                if (selectedDefCard) setSelected(selectedDefCard, true);
+            }
 
-                // Case 1: Matching Click (Different languages, same ID)
-                if (selectedLanguage !== clickedLanguage && selectedPairId === clickedPairId) {
-                    // Match found!
-                    matchMessage.textContent = "Great job! That's a match!";
-                    matchMessage.classList.remove('text-red-500');
-                    matchMessage.classList.add('text-secondary');
+            // 2. Check if one card from EACH column is selected to start checking
+            if (selectedTermCard && selectedDefCard) {
+                checkMatch();
+            }
+        }
 
-                    const buttonsToMatch = [selectedWord, button];
-                    buttonsToMatch.forEach(btn => {
-                        btn.classList.remove('ring-4', 'ring-offset-2', 'ring-yellow-400', 'bg-primary', 'bg-secondary', 'hover:bg-indigo-700', 'hover:bg-emerald-600');
-                        btn.classList.add('bg-gray-400', 'cursor-not-allowed', 'shadow-none');
-                        btn.onclick = null;
-                    });
+        function checkMatch() {
+            if (!selectedTermCard || !selectedDefCard) return;
 
-                    selectedWord = null;
-                    matchedPairs++;
+            const termValue = selectedTermCard.getAttribute('data-match-value');
+            const defValue = selectedDefCard.getAttribute('data-match-value');
 
-                    if (matchedPairs === totalPairs) {
-                        matchMessage.textContent = "🥳 You matched all the words! Excellent work!";
-                        matchMessage.classList.add('text-4xl', 'animate-pulse');
-                    }
-                    return;
+            if (termValue === defValue) {
+                handleSuccess();
+            } else {
+                handleError();
+            }
+        }
 
-                // Case 2: Wrong Match Click (Different languages, different ID)
-                } else if (selectedLanguage !== clickedLanguage && selectedPairId !== clickedPairId) {
-                    matchMessage.textContent = "Try again! Those words don't match. Selection reset.";
-                    matchMessage.classList.remove('text-secondary');
-                    matchMessage.classList.add('text-red-500');
+        function handleSuccess() {
+            const continueButton = document.getElementById('continue-button');
 
-                    // Briefly show wrong selection, then reset selection
-                    selectedWord.classList.remove('ring-4', 'ring-offset-2', 'ring-yellow-400');
-                    button.classList.add('ring-4', 'ring-offset-2', 'ring-red-500');
-                    
-                    setTimeout(() => {
-                        button.classList.remove('ring-4', 'ring-offset-2', 'ring-red-500');
-                        matchMessage.textContent = "";
-                    }, 800);
-                    selectedWord = null; // Clear selection
-                    return;
+            // Temporarily disable clicks on all active cards to prevent spam
+            document.querySelectorAll('.card-active, .card-selected').forEach(card => card.style.pointerEvents = 'none');
 
-                // Case 3: Same Language Click (Deselect old, Select new)
-                } else if (selectedLanguage === clickedLanguage) {
-                    selectedWord.classList.remove('ring-4', 'ring-offset-2', 'ring-yellow-400');
-                    button.classList.add('ring-4', 'ring-offset-2', 'ring-yellow-400');
-                    selectedWord = button;
-                    matchMessage.textContent = "Select its pair in the other column.";
-                    matchMessage.classList.remove('text-secondary', 'text-red-500');
-                    return;
+
+            // Animation and success marking
+            [selectedTermCard, selectedDefCard].forEach(card => {
+                card.classList.remove('card-selected', 'card-active');
+                card.classList.add('card-matched');
+                card.removeEventListener('click', handleCardClick);
+            });
+
+            matchedCount++;
+
+            // Reset selection and allow clicks after a short delay
+            selectedTermCard = null;
+            selectedDefCard = null;
+            
+            setTimeout(() => {
+                // Re-enable clicks on unmatched cards
+                document.querySelectorAll('.card-base:not(.card-matched)').forEach(card => card.style.pointerEvents = 'auto');
+                
+                updateProgressIndicator();
+
+                // Phase logic
+                if (matchedCount === MATCHES_PER_PHASE && currentPhase === 1) {
+                    // End of Phase 1: Show Continue button
+                    continueButton.classList.remove('hidden');
+                } else if (matchedCount === totalMatches) {
+                    // End of Phase 2 (Game Complete)
+                    document.getElementById('completion-status').classList.remove('hidden');
+                    window.saveCompletionStatus(true);
                 }
-            }
-            
-            // Initial selection (selectedWord is null)
-            if (!selectedWord) {
-                button.classList.add('ring-4', 'ring-offset-2', 'ring-yellow-400');
-                selectedWord = button;
-                matchMessage.textContent = `You selected ${button.textContent}. Now choose its pair in the ${clickedLanguage === 'spanish' ? 'English' : 'Spanish'} column.`;
-                matchMessage.classList.remove('text-secondary', 'text-red-500');
-            }
-        };
+            }, 50); // Small delay to ensure UI updates
+        }
 
-        const initializeMatchingGame = () => {
-            const shuffledVocab = shuffleArray([...vocab]);
-            const spanishWords = shuffleArray(shuffledVocab.map((item, index) => ({ word: item.spanish, pairId: index })));
-            const englishWords = shuffleArray(shuffledVocab.map((item, index) => ({ word: item.english, pairId: index })));
-            
-            matchingGameDiv.innerHTML = `
-                <div class="flex flex-col space-y-3">
-                    <h3 class="text-xl font-bold text-primary">Spanish</h3>
-                    ${spanishWords.map(item => `<div id="sp-${item.pairId}"></div>`).join('')}
+        function handleError() {
+            // Temporarily disable clicks on all active cards to prevent spam
+            document.querySelectorAll('.card-active, .card-selected').forEach(card => card.style.pointerEvents = 'none');
+
+            // Remove selection and mark as temporary error
+            [selectedTermCard, selectedDefCard].forEach(card => {
+                card.classList.remove('card-selected');
+                card.classList.add('bg-red-200', 'ring-2', 'ring-red-500');
+            });
+
+            setTimeout(() => {
+                // Restore active state and clean errors
+                [selectedTermCard, selectedDefCard].forEach(card => {
+                    card.classList.remove('bg-red-200', 'ring-2', 'ring-red-500');
+                    // Only if the card is NOT a match, restore to 'card-active'
+                    if(!card.classList.contains('card-matched')) {
+                        card.classList.add('card-active');
+                    }
+                });
+                
+                // Reset selection
+                selectedTermCard = null;
+                selectedDefCard = null;
+                
+                // Allow clicks again
+                document.querySelectorAll('.card-base:not(.card-matched)').forEach(card => card.style.pointerEvents = 'auto');
+            }, 1000);
+        }
+
+        // --- Flashcards Logic ---
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+        let flashcardData = shuffleArray([...MATCHING_DATA]);
+
+        function renderFlashcardsLayout() {
+            currentCardIndex = 0;
+            flashcardData = shuffleArray([...MATCHING_DATA]);
+
+            flashcardsSection.innerHTML = `
+                <h2 class="text-2xl font-bold text-flamingo-pink mb-4 text-platform border-b border-gray-300 pb-2 text-center">
+                    Flashcards (Study)
+                </h2>
+                <div class="flex justify-center mb-6">
+                    <p id="flashcard-counter" class="muted-text">Card 1 of ${totalMatches}</p>
                 </div>
-                <div class="flex flex-col space-y-3">
-                    <h3 class="text-xl font-bold text-secondary">English</h3>
-                    ${englishWords.map(item => `<div id="en-${item.pairId}"></div>`).join('')}
+                <div id="flashcard-display" class="flip-card mx-auto max-w-md">
+                    <!-- Flashcard will be inserted here -->
+                </div>
+                <div class="flex justify-center gap-6 mt-8">
+                    <button id="prev-card" class="bg-gray-200 text-eerie-black font-bold p-3 rounded-full border border-gray-300 hover:bg-flamingo-pink hover:text-eerie-black disabled:opacity-50 transition-colors">
+                        &larr; Previous
+                    </button>
+                    <button id="flip-card" class="bg-flamingo-pink text-eerie-black font-bold p-3 rounded-full hover:opacity-90 transition-colors shadow-lg shadow-[#FF79AC]/40">
+                        View Answer
+                    </button>
+                    <button id="next-card" class="bg-gray-200 text-eerie-black font-bold p-3 rounded-full border border-gray-300 hover:bg-flamingo-pink hover:text-eerie-black disabled:opacity-50 transition-colors">
+                        Next &rarr;
+                    </button>
                 </div>
             `;
             
-            spanishWords.forEach(item => {
-                document.getElementById(`sp-${item.pairId}`).appendChild(createMatchingButton(item.word, 'spanish', item.pairId));
-            });
-            englishWords.forEach(item => {
-                document.getElementById(`en-${item.pairId}`).appendChild(createMatchingButton(item.word, 'english', item.pairId));
-            });
-        };
-        
-        // ==========================================================
-        // Activity 2: Flashcard Logic (FIXED END GOAL)
-        // ==========================================================
-        let currentCardIndex = 0;
-        let isFlipped = false;
-        const flashcardDiv = document.getElementById('flashcard');
-        const cardContent = document.getElementById('card-content');
-        const nextCardBtn = document.getElementById('next-card-btn');
-        let flashcardVocab = shuffleArray([...vocab]);
-
-        const showCard = (index) => {
-            const card = flashcardVocab[index];
-            cardContent.textContent = card.english;
-            flashcardDiv.classList.remove('bg-secondary', 'bg-primary', 'text-2xl');
-            flashcardDiv.classList.add('bg-accent');
-            isFlipped = false;
-        };
-        
-        const flipCard = () => {
-            const card = flashcardVocab[currentCardIndex];
-            if (!isFlipped) {
-                cardContent.textContent = `${card.spanish} (${card.english})`;
-                flashcardDiv.classList.remove('bg-accent');
-                flashcardDiv.classList.add('bg-secondary');
-                isFlipped = true;
-            } else {
-                showCard(currentCardIndex);
-            }
-        };
-
-        const handleNextCardClick = () => {
-            currentCardIndex++;
-            if (currentCardIndex < flashcardVocab.length) {
-                showCard(currentCardIndex);
-            } else {
-                // End of activity
-                cardContent.textContent = "End of cards! Great review!";
-                flashcardDiv.onclick = null; // Disable flip
-                flashcardDiv.classList.remove('bg-secondary', 'bg-accent');
-                flashcardDiv.classList.add('bg-primary', 'text-2xl');
-                nextCardBtn.textContent = "Start Over";
-                nextCardBtn.onclick = initializeFlashcards; // Set to restart function
-            }
-        };
-
-        const initializeFlashcards = () => {
-            flashcardVocab = shuffleArray([...vocab]);
-            currentCardIndex = 0;
-            flashcardDiv.onclick = flipCard;
-            nextCardBtn.textContent = "Next Word";
-            nextCardBtn.onclick = handleNextCardClick;
-            showCard(currentCardIndex);
-        };
-        
-        // ==========================================================
-        // Activity 3: Labeling Quiz Logic (FIXED END GOAL)
-        // ==========================================================
-        let currentQuizIndex = 0;
-        const quizEnglishWord = document.getElementById('quiz-english-word');
-        const quizOptionsDiv = document.getElementById('quiz-options');
-        const quizFeedback = document.getElementById('quiz-feedback');
-        const nextQuizBtn = document.getElementById('next-quiz-btn');
-        let quizVocab = shuffleArray([...vocab]);
-
-        const generateQuizQuestion = (index) => {
-            const correctWord = quizVocab[index];
-            quizEnglishWord.textContent = correctWord.english;
+            document.getElementById('flip-card').addEventListener('click', flipCard);
+            document.getElementById('next-card').addEventListener('click', nextCard);
+            document.getElementById('prev-card').addEventListener('click', prevCard);
             
-            // Get 3 random incorrect Spanish words
-            const incorrectWords = shuffleArray(vocab.filter(item => item.spanish !== correctWord.spanish))
-                                   .slice(0, 3)
-                                   .map(item => item.spanish);
+            renderCurrentFlashcard();
+        }
 
-            const options = shuffleArray([correctWord.spanish, ...incorrectWords]);
+        function renderCurrentFlashcard() {
+            const cardData = flashcardData[currentCardIndex];
+            const display = document.getElementById('flashcard-display');
+            const counter = document.getElementById('flashcard-counter');
             
-            quizOptionsDiv.innerHTML = options.map(word => `
-                <button data-word="${word}" 
-                        class="p-3 rounded-xl font-semibold bg-gray-200 text-gray-800 hover:bg-gray-300 transition duration-150 shadow-sm quiz-option"
-                        onclick="checkQuizAnswer(this)">
-                    ${word}
-                </button>
-            `).join('');
-
-            quizFeedback.textContent = '';
-            nextQuizBtn.classList.add('hidden');
-            nextQuizBtn.textContent = "Next Question";
-            nextQuizBtn.onclick = handleNextQuizClick;
-        };
-
-        window.checkQuizAnswer = (button) => {
-            const selectedWord = button.getAttribute('data-word');
-            const correctWord = quizVocab[currentQuizIndex].spanish;
+            display.classList.remove('flipped');
+            isCardFlipped = false;
+            document.getElementById('flip-card').textContent = 'View Answer'; // Default text
             
-            // Disable all options
-            document.querySelectorAll('.quiz-option').forEach(btn => {
-                btn.onclick = null;
-                btn.classList.remove('hover:bg-gray-300');
-            });
+            display.innerHTML = `
+                <div class="flip-card-inner">
+                    <!-- Front: Spanish -->
+                    <div class="flip-card-front card-base shadow-xl">
+                        <!-- Content of the card is wrapped in a p tag for better styling control -->
+                        <p class="text-center">${cardData.spanish}</p>
+                    </div>
+                    <!-- Back: English (Answer) -->
+                    <div class="flip-card-back card-base shadow-xl">
+                        <div class="p-4">
+                            <!-- ONLY ENGLISH WORD REMAINS -->
+                            <p class="text-4xl font-extrabold text-flamingo-pink">${cardData.english}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-            if (selectedWord === correctWord) {
-                quizFeedback.textContent = "Correct! ¡Muy bien!";
-                quizFeedback.className = 'text-xl font-semibold text-secondary';
-                button.classList.remove('bg-gray-200');
-                button.classList.add('bg-secondary', 'text-white', 'scale-105');
-            } else {
-                quizFeedback.textContent = "Oops! Try again next time.";
-                quizFeedback.className = 'text-xl font-semibold text-red-500';
-                button.classList.remove('bg-gray-200');
-                button.classList.add('bg-red-500', 'text-white');
-                // Highlight the correct answer
-                document.querySelector(`[data-word="${correctWord}"]`).classList.add('bg-green-500', 'text-white');
-            }
-            nextQuizBtn.classList.remove('hidden');
-        };
+            // Translated Counter
+            counter.textContent = `Card ${currentCardIndex + 1} of ${totalMatches}`;
+            updateFlashcardControls();
+        }
 
-        const handleNextQuizClick = () => {
-            currentQuizIndex++;
-            if (currentQuizIndex < quizVocab.length) {
-                generateQuizQuestion(currentQuizIndex);
-            } else {
-                // End of activity
-                quizEnglishWord.textContent = "Quiz Finished!";
-                quizOptionsDiv.innerHTML = `<p class="text-2xl text-secondary col-span-2 text-center">You completed all ${quizVocab.length} questions!</p>`;
-                quizFeedback.textContent = "Congratulations!";
-                nextQuizBtn.textContent = "Start Over";
-                nextQuizBtn.onclick = initializeQuiz; // Set to restart function
-            }
-        };
-        
-        const initializeQuiz = () => {
-            quizVocab = shuffleArray([...vocab]);
-            currentQuizIndex = 0;
-            generateQuizQuestion(currentQuizIndex);
-        };
+        function flipCard() {
+            const display = document.getElementById('flashcard-display');
+            isCardFlipped = !isCardFlipped;
+            display.classList.toggle('flipped', isCardFlipped);
+            // Translated Flip Text
+            document.getElementById('flip-card').textContent = isCardFlipped ? 'Flip' : 'View Answer';
+        }
 
-        // ==========================================================
-        // Initialization
-        // ==========================================================
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % totalMatches;
+            renderCurrentFlashcard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + totalMatches) % totalMatches;
+            renderCurrentFlashcard();
+        }
+
+        function updateFlashcardControls() {
+            document.getElementById('prev-card').disabled = currentCardIndex === 0;
+            document.getElementById('next-card').disabled = currentCardIndex === totalMatches - 1;
+        }
+
+        // --- Global Initialization ---
+
+        // Initialize both views when the window loads
         window.onload = () => {
-            // Activity 1
-            initializeMatchingGame();
-
-            // Activity 2
-            initializeFlashcards();
-            
-            // Activity 3
-            initializeQuiz();
+            renderMatchingLayout();
+            renderFlashcardsLayout();
         };
-    </script>
 
+    </script>
 </body>
 </html>
