@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn the fruits in Spanish</title>
+    <!-- Carga del CDN de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Uso de una fuente similar a Platform Medium (usaremos Inter con peso 700 para simular la sensación de "Medium" y "Platform") -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo global para aplicar la fuente Inter y el fondo blanco */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Color de fondo: Blanco */
+            color: #121118; /* Color de texto: Eerie Black */
+        }
+    </style>
+    <!-- Configuración personalizada de Tailwind con los colores específicos -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'flamingo-pink': '#FF79AC', // Rosa Flamenco
+                        'eerie-black': '#121118', // Negro Misterioso
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4">
+
+    <!-- Contenedor Principal Centrado y Responsive -->
+    <main class="w-full max-w-4xl flex-grow flex flex-col items-center justify-center space-y-12 py-12">
+
+        <!-- Título de la Página -->
+        <h1 class="text-5xl md:text-7xl font-extrabold text-center text-flamingo-pink tracking-tight drop-shadow-lg p-4">
+            Learn the fruits in Spanish
+        </h1>
+        
+        <!-- Contenedor de Botones de Navegación -->
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Botón 1: Las Frutas -->
+            <a href="las_frutas.html" 
+               class="flex items-center justify-center p-6 bg-flamingo-pink text-white font-black text-2xl uppercase rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-[1.03] active:scale-[0.98] border-b-4 border-eerie-black/30">
+                Las Frutas
+            </a>
+            
+            <!-- Botón 2: Una manzana -->
+            <a href="una_manzana.html" 
+               class="flex items-center justify-center p-6 bg-flamingo-pink text-white font-black text-2xl uppercase rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-[1.03] active:scale-[0.98] border-b-4 border-eerie-black/30">
+                Una manzana
+            </a>
+            
+            <!-- Botón 3: La manzana -->
+            <a href="la_manzana.html" 
+               class="flex items-center justify-center p-6 bg-flamingo-pink text-white font-black text-2xl uppercase rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-[1.03] active:scale-[0.98] border-b-4 border-eerie-black/30">
+                La manzana
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Pie de Página (Footer) -->
+    <footer class="w-full max-w-4xl p-6 text-center text-eerie-black/80 text-sm md:text-base border-t border-eerie-black/10 mt-auto">
+        
+        <!-- Texto de Copyright -->
+        <p class="mb-4 font-medium">
+            © 2025 Spanish Lessons with María C. All rights reserved.
+        </p>
+
+        <!-- Botón de Redirección a Preply -->
+        <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ=="
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="inline-block px-8 py-3 bg-eerie-black text-white font-bold text-lg rounded-full shadow-md hover:bg-eerie-black/90 hover:shadow-xl transition duration-300 transform hover:scale-[1.05] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-flamingo-pink/50">
+            Find your Spanish class here.
+        </a>
+        
+    </footer>
+
+</body>
+</html>

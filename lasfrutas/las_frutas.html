@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>las frutas</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter (estándar de Google) como alternativa a Platform Medium -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Definición de la fuente y colores personalizados */
+        :root {
+            --color-flamingo: #FF79AC;
+            --color-eerie-black: #121118;
+            --color-light-green: #B4FFB4;
+            --color-light-red: #FFB4B4;
+            /* Usamos Inter como fuente base, intentando emular un aspecto claro y moderno */
+            font-family: 'Inter', sans-serif;
+        }
+
+        .text-eerie-black { color: var(--color-eerie-black); }
+        .bg-flamingo-pink { background-color: var(--color-flamingo); }
+        .border-flamingo-pink { border-color: var(--color-flamingo); }
+        .text-flamingo-pink { color: var(--color-flamingo); }
+
+        .btn-game-default {
+             background-color: var(--color-flamingo);
+             color: white;
+             transition: background-color 0.3s, transform 0.1s;
+        }
+        .btn-game-correct { background-color: var(--color-light-green) !important; color: var(--color-eerie-black) !important; }
+        .btn-game-incorrect { background-color: var(--color-light-red) !important; }
+
+        /* Estilo para simular el aspecto de "Platform Medium" con Inter */
+        h1 { font-weight: 800; }
+        .fruit-name { font-weight: 600; }
+        .match-title { font-weight: 800; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'flamingo-pink': '#FF79AC',
+                        'eerie-black': '#121118',
+                        'light-green': '#B4FFB4',
+                        'light-red': '#FFB4B4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-eerie-black min-h-screen p-4 md:p-8">
+
+    <!-- Contenedor Principal Centrado y con Ancho Máximo -->
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl text-eerie-black font-extrabold text-center mb-10 mt-4 uppercase tracking-wider">
+            las frutas
+        </h1>
+
+        <!-- SECCIÓN 1: PRESENTACIÓN DE FRUTAS (CARRUSEL) -->
+        <div id="presentation-section" class="flex flex-col items-center justify-center p-6 border-2 border-flamingo-pink rounded-xl shadow-lg transition-all duration-500">
+            <div id="fruit-container" class="text-center">
+                <!-- Imagen de la fruta -->
+                <img id="fruit-image" src="" alt="Imagen de la fruta actual" class="rounded-lg mb-4 shadow-md mx-auto object-cover max-h-64 w-auto max-w-full">
+                <!-- Nombre de la fruta -->
+                <p id="fruit-name" class="text-3xl fruit-name text-eerie-black mb-6"></p>
+            </div>
+
+            <!-- Botón de navegación -->
+            <button id="next-button" class="bg-flamingo-pink text-white font-bold py-3 px-8 rounded-full shadow-md hover:bg-pink-600 transition duration-300 transform hover:scale-[1.02]">
+                Siguiente / Next
+            </button>
+        </div>
+
+        <!-- SECCIÓN 2: JUEGO DE EMPAREJAMIENTO -->
+        <div id="game-section" class="mt-12 hidden transition-opacity duration-500 opacity-0">
+            <h2 class="text-3xl match-title text-eerie-black text-center mb-8 border-b-4 border-flamingo-pink pb-2">
+                Match the words
+            </h2>
+
+            <!-- Control de Nivel -->
+            <div class="flex justify-center mb-6 space-x-4">
+                <button id="level-1-btn" class="py-2 px-6 rounded-full font-semibold border-2 border-flamingo-pink bg-flamingo-pink text-white transition duration-200" onclick="changeLevel(1)">Nivel 1 (1-5)</button>
+                <button id="level-2-btn" class="py-2 px-6 rounded-full font-semibold border-2 border-flamingo-pink text-eerie-black hover:bg-pink-100 transition duration-200" onclick="changeLevel(2)">Nivel 2 (6-10)</button>
+            </div>
+
+            <!-- Contenedor del juego (Ahora usa Flexbox/Grid para dos columnas separadas) -->
+            <div class="grid grid-cols-2 gap-8">
+                <div id="spanish-column" class="flex flex-col space-y-3">
+                    <p class="text-lg font-bold text-center text-flamingo-pink">Español</p>
+                    <!-- Los botones de Español se inyectarán aquí -->
+                </div>
+                <div id="english-column" class="flex flex-col space-y-3">
+                    <p class="text-lg font-bold text-center text-flamingo-pink">English</p>
+                    <!-- Los botones de Inglés se inyectarán aquí -->
+                </div>
+            </div>
+            
+            <p id="game-message" class="text-center mt-6 text-xl font-bold text-eerie-black min-h-8"></p>
+        </div>
+    </div>
+
+    <script>
+        // Datos de las frutas: Nombre en Español, Nombre en Inglés, URL de la imagen.
+        const FRUITS = [
+            { es: "Manzana", en: "Apple", url: "https://th.bing.com/th/id/R.c6ef1c7c177ba0e205add120ea606bf5?rik=v3wGpu4bFxqMtA&riu=http%3a%2f%2fwww.ibereco.com%2fimagen%2fcompleta%2f0%2f0%2fmanzana-roja-unidad_1.jpg&ehk=YYUtD01LCi9sJPys3KZ4sp83JmIlX0wQrzg79GZBO3w%3d&risl=&pid=ImgRaw&r=0" },
+            { es: "Banana", en: "Banana", url: "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG.jpg" },
+            { es: "Pera", en: "Pear", url: "https://th.bing.com/th/id/R.309002da6781ad3327246e0a04d89f61?rik=42sAz1AWZH%2fVQg&riu=http%3a%2f%2fwww.goodwholefood.com%2fwp-content%2fuploads%2f2016%2f08%2fpear-single-green.jpg&ehk=sPnSKiP2vklPhFC9aSVdE7QrzonbniMvJi%2b4uL4kJi4%3d&risl=&pid=ImgRaw&r=0" },
+            { es: "Sandía", en: "Watermelon", url: "https://arc-anglerfish-arc2-prod-abccolor.s3.amazonaws.com/public/EZZOPPLGEREPNF3KJI26BWMYJM.jpg" },
+            { es: "Naranja", en: "Orange", url: "https://img.freepik.com/premium-photo/orange-fruit-with-leaves-white-table_253984-858.jpg?w=2000" },
+            { es: "Fresa", en: "Strawberry", url: "https://tse4.mm.bing.net/th/id/OIP.JSC-abLl-eP6ibfuwmncAQHaF7?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { es: "Piña", en: "Pineapple", url: "https://www.gob.mx/cms/uploads/image/file/415269/pi_a_1.jpg" },
+            { es: "Arándano", en: "Blueberry", url: "https://1.bp.blogspot.com/-tVC7wvNIea0/XuPyYTssOaI/AAAAAAAACIU/ok-0eI_B6qos7we76I6ZUD6eyvk72H28QCLcBGAsYHQ/s1600/0D25B8C5-D5B3-4428-A22E-805197C8A523.jpeg" },
+            { es: "Mango", en: "Mango", url: "https://tse1.mm.bing.net/th/id/OIP.RaH6bGd4OLQ3Uyh-25j22gHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { es: "Limón", en: "Lemon", url: "https://premierfresh.com.au/wp-content/uploads/2021/01/limes.jpg" }
+        ];
+
+        let currentFruitIndex = 0;
+        let selectedLevel = 1;
+        let selectedButton = null;
+        let matchedPairs = new Set();
+        let isChecking = false;
+
+        const fruitImageEl = document.getElementById('fruit-image');
+        const fruitNameEl = document.getElementById('fruit-name');
+        const nextButtonEl = document.getElementById('next-button');
+        const presentationSectionEl = document.getElementById('presentation-section');
+        const gameSectionEl = document.getElementById('game-section');
+        const spanishColumnEl = document.getElementById('spanish-column');
+        const englishColumnEl = document.getElementById('english-column');
+        const gameMessageEl = document.getElementById('game-message');
+        const level1BtnEl = document.getElementById('level-1-btn');
+        const level2BtnEl = document.getElementById('level-2-btn');
+
+        // --- LÓGICA DE PRESENTACIÓN (CARRUSEL) ---
+
+        /**
+         * Muestra la fruta actual y avanza el índice.
+         * Muestra la sección de juego si se terminan las frutas.
+         */
+        function showCurrentFruit() {
+            if (currentFruitIndex < FRUITS.length) {
+                const fruit = FRUITS[currentFruitIndex];
+                
+                // Carga la imagen y el nombre
+                fruitImageEl.src = fruit.url;
+                fruitImageEl.onerror = () => {
+                    // Fallback si la URL falla (ej: usar un placeholder)
+                    fruitImageEl.src = `https://placehold.co/256x256/FF79AC/121118?text=${fruit.es}`;
+                };
+                fruitNameEl.textContent = fruit.es;
+                
+                currentFruitIndex++;
+                
+                // Actualiza el texto del botón
+                if (currentFruitIndex === FRUITS.length) {
+                    nextButtonEl.textContent = "Comenzar Juego / Start Game";
+                } else {
+                    nextButtonEl.textContent = `Siguiente / Next (${currentFruitIndex} / ${FRUITS.length})`;
+                }
+            } else {
+                // Al terminar la presentación, oculta la sección y muestra el juego
+                presentationSectionEl.style.display = 'none';
+                gameSectionEl.classList.remove('hidden');
+                setTimeout(() => {
+                    gameSectionEl.classList.add('opacity-100');
+                }, 50); 
+                
+                // Inicializa el juego
+                changeLevel(1);
+            }
+        }
+
+        // Evento click para el botón Siguiente/Comenzar
+        nextButtonEl.addEventListener('click', showCurrentFruit);
+
+        // --- LÓGICA DEL JUEGO DE EMPAREJAMIENTO ---
+
+        /**
+         * Genera un array de palabras para el nivel actual, las separa por idioma y las mezcla.
+         * @param {number} level - 1 o 2.
+         * @returns {Object} Objeto con arrays de palabras separadas por idioma y mezcladas.
+         */
+        function prepareGameWords(level) {
+            const startIndex = (level === 1) ? 0 : 5;
+            const endIndex = startIndex + 5;
+            const levelFruits = FRUITS.slice(startIndex, endIndex);
+
+            let spanishWords = [];
+            let englishWords = [];
+            
+            levelFruits.forEach(fruit => {
+                spanishWords.push({ text: fruit.es, lang: 'es', pair: fruit.en });
+                englishWords.push({ text: fruit.en, lang: 'en', pair: fruit.es });
+            });
+
+            // Función para mezclar el array (algoritmo Fisher-Yates)
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            return {
+                spanish: shuffle(spanishWords),
+                english: shuffle(englishWords)
+            };
+        }
+
+        /**
+         * Renderiza los botones del juego para el nivel seleccionado.
+         */
+        function renderGame() {
+            gameMessageEl.textContent = "";
+            matchedPairs = new Set();
+            selectedButton = null;
+            spanishColumnEl.innerHTML = '<p class="text-lg font-bold text-center text-flamingo-pink">Español</p>'; // Mantiene el título
+            englishColumnEl.innerHTML = '<p class="text-lg font-bold text-center text-flamingo-pink">English</p>'; // Mantiene el título
+            isChecking = false;
+
+            const { spanish, english } = prepareGameWords(selectedLevel);
+
+            // Crea los botones de la columna en español
+            spanish.forEach(word => {
+                const button = createGameButton(word);
+                spanishColumnEl.appendChild(button);
+            });
+
+            // Crea los botones de la columna en inglés
+            english.forEach(word => {
+                const button = createGameButton(word);
+                englishColumnEl.appendChild(button);
+            });
+        }
+        
+        /**
+         * Crea un botón de juego con sus atributos.
+         */
+        function createGameButton(word) {
+            const button = document.createElement('button');
+            button.textContent = word.text;
+            button.dataset.text = word.text; // La palabra actual
+            button.dataset.pair = word.pair; // La palabra a emparejar
+            button.dataset.lang = word.lang; // Idioma
+
+            button.className = 'btn-game-default w-full py-3 rounded-xl font-semibold shadow-md focus:outline-none focus:ring-4 focus:ring-flamingo-pink focus:ring-opacity-50 hover:opacity-90';
+            button.onclick = () => handleWordClick(button);
+            return button;
+        }
+
+
+        /**
+         * Maneja el clic en un botón de palabra.
+         * @param {HTMLElement} button - El botón clickeado.
+         */
+        function handleWordClick(button) {
+            if (button.disabled || isChecking) return;
+            
+            // 1. Si es la primera selección
+            if (!selectedButton) {
+                selectedButton = button;
+                button.classList.add('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                return;
+            }
+
+            // 2. Si es la segunda selección y es el mismo botón
+            if (selectedButton === button) {
+                selectedButton.classList.remove('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                selectedButton = null;
+                return;
+            }
+            
+            // 3. Si es la segunda selección y es del mismo idioma (Error Lógico)
+            if (selectedButton.dataset.lang === button.dataset.lang) {
+                 gameMessageEl.textContent = "Error: ¡Selecciona una palabra en otro idioma!";
+                 setTimeout(() => gameMessageEl.textContent = "", 1500);
+                 selectedButton.classList.remove('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                 selectedButton = button; // Se convierte en la nueva primera selección
+                 button.classList.add('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                 return;
+            }
+
+            // Desactiva los clics mientras se verifica
+            isChecking = true;
+            
+            // 4. Verificar coincidencia
+            const word2 = button.dataset.text;
+            const isMatch = (selectedButton.dataset.pair === word2 && button.dataset.pair === selectedButton.dataset.text);
+
+            if (isMatch) {
+                // Éxito: Colorea de verde y deshabilita permanentemente
+                selectedButton.classList.remove('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                selectedButton.classList.add('btn-game-correct');
+                button.classList.add('btn-game-correct');
+                selectedButton.disabled = true;
+                button.disabled = true;
+                
+                // Añade la palabra en español y su par en inglés
+                matchedPairs.add(selectedButton.dataset.text);
+                matchedPairs.add(button.dataset.text);
+                
+                gameMessageEl.textContent = "¡Correcto! Buen trabajo.";
+
+                // Chequeo de fin de nivel (5 pares = 10 palabras)
+                if (matchedPairs.size === 10) {
+                    gameMessageEl.textContent = "¡Felicidades! Has completado este nivel.";
+                }
+
+                selectedButton = null;
+                isChecking = false;
+
+            } else {
+                // Error: Colorea de rojo temporalmente
+                selectedButton.classList.remove('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                selectedButton.classList.add('btn-game-incorrect');
+                button.classList.add('btn-game-incorrect');
+                gameMessageEl.textContent = "Error: Inténtalo de nuevo.";
+
+                // Vuelve al color original después de 1 segundo
+                setTimeout(() => {
+                    selectedButton.classList.remove('btn-game-incorrect');
+                    button.classList.remove('btn-game-incorrect');
+                    selectedButton.classList.remove('border-4', 'border-eerie-black', 'ring-2', 'ring-white');
+                    selectedButton = null;
+                    isChecking = false;
+                    gameMessageEl.textContent = "";
+                }, 1000);
+            }
+        }
+
+        /**
+         * Cambia el nivel de juego y vuelve a renderizar.
+         * @param {number} level - 1 o 2.
+         */
+        function changeLevel(level) {
+            selectedLevel = level;
+            // Estilos para los botones de nivel
+            level1BtnEl.classList.remove('bg-flamingo-pink', 'text-white', 'hover:bg-pink-100');
+            level2BtnEl.classList.remove('bg-flamingo-pink', 'text-white', 'hover:bg-pink-100');
+            level1BtnEl.classList.add('text-eerie-black', 'hover:bg-pink-100', 'bg-white');
+            level2BtnEl.classList.add('text-eerie-black', 'hover:bg-pink-100', 'bg-white');
+            
+            if (level === 1) {
+                level1BtnEl.classList.add('bg-flamingo-pink', 'text-white');
+                level1BtnEl.classList.remove('text-eerie-black', 'hover:bg-pink-100', 'bg-white');
+            } else {
+                level2BtnEl.classList.add('bg-flamingo-pink', 'text-white');
+                level2BtnEl.classList.remove('text-eerie-black', 'hover:bg-pink-100', 'bg-white');
+            }
+            
+            renderGame();
+        }
+
+        // Inicializar la aplicación al cargar la página
+        window.onload = showCurrentFruit; 
+    </script>
+</body>
+</html>
