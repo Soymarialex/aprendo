@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro Mágico de Español A1</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configuración de fuente Inter para mejor legibilidad */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Fondo Aqua muy suave */
+        }
+        .lesson-card {
+            background-color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .emoji {
+            font-size: 8rem; /* Emojis gigantes para captar la atención */
+            line-height: 1;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Estilos específicos para el campo de entrada dentro de la frase */
+        .phrase-input {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            color: #db2777; /* pink-600 */
+            border-bottom: 4px solid #fbcfe8; /* pink-200 */
+            background-color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .phrase-input:focus {
+            border-bottom-color: #ec4899; /* pink-500 */
+            outline: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-2xl">
+        <!-- Título de la Aplicación -->
+        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-6 text-teal-600">
+            📚 Mi Clase de Español 🚀
+        </h1>
+
+        <!-- Contenedor Principal de la Lección -->
+        <div id="lesson-card" class="lesson-card p-6 md:p-10 rounded-3xl border-4 border-yellow-400 transform hover:scale-[1.02]">
+
+            <!-- Área de Contenido Principal -->
+            <div id="content-display" class="text-center">
+                <!-- Emoji de la Lección -->
+                <div id="lesson-emoji" class="emoji mb-4">👋</div>
+
+                <!-- Frase en Español (Solo español aquí) -->
+                <div id="spanish-phrase-container" class="text-center mb-6">
+                    <p class="text-5xl md:text-6xl font-black text-gray-800">¡Hola!</p>
+                </div>
+
+                <!-- Traducción Principal (Ahora ocupa el lugar de las instrucciones) -->
+                <p id="instruction" class="text-2xl text-pink-600 font-extrabold border-t border-b border-pink-200 py-2">
+                    <!-- El contenido será inyectado por JS con la traducción de la frase principal -->
+                </p>
+            </div>
+
+            <!-- Área de Botones y Navegación -->
+            <div class="mt-8 flex justify-between space-x-4">
+                <button id="prev-btn" class="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow-lg transition duration-200 opacity-50 cursor-not-allowed" disabled>
+                    <span class="text-2xl mr-2">◀️</span> Anterior
+                </button>
+
+                <button id="next-btn" class="flex-1 px-4 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl shadow-lg transition duration-200">
+                    Siguiente <span class="text-2xl ml-2">▶️</span>
+                </button>
+            </div>
+
+            <!-- Indicador de Progreso -->
+            <p class="text-center text-sm text-gray-500 mt-4">
+                Frase <span id="current-index">1</span> de <span id="total-lessons"></span>
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Datos de la lección con la nueva secuencia de conversación.
+        const lessons = [
+            { phrase: "¡Hola!", translation: "Hello!", instruction: "Eliminated", emoji: "👋" },
+            // Conversación de Estado
+            { phrase: "¿Cómo estás?", translation: "How are you?", instruction: "Eliminated", emoji: "😊" },
+            { phrase: "Bien, ¿y tú?", translation: "Fine, and you?", instruction: "Eliminated", emoji: "👍" },
+            { phrase: "Bien, gracias.", translation: "Fine, thank you.", instruction: "Eliminated", emoji: "🙏" },
+            
+            // Pregunta y Respuesta de Nombre
+            { phrase: "¿Cómo te llamas?", translation: "What is your name?", instruction: "Eliminated", emoji: "🗣️" },
+            { 
+                phrase: "Me llamo...", 
+                translation: "My name is...",
+                instruction: "Eliminated", 
+                emoji: "🦸",
+                inputType: 'text',
+                inputPlaceholder: '' 
+            },
+            
+            // Pregunta y Respuesta de Edad
+            { phrase: "¿Cuántos años tienes?", translation: "How old are you?", instruction: "Eliminated", emoji: "🤔" },
+            { 
+                phrase: "Yo tengo... años.", 
+                translation: "I am... years old.",
+                instruction: "Eliminated", 
+                emoji: "🖐️",
+                inputType: 'number',
+                inputPlaceholder: '' 
+            },
+            
+            // Pregunta y Respuestas de Domicilio
+            { phrase: "¿Dónde vives?", translation: "Where do you live?", instruction: "Eliminated", emoji: "🏠" },
+            { phrase: "Yo vivo en una casa.", translation: "I live in a house.", instruction: "Eliminated", emoji: "🏡" },
+            { phrase: "Yo vivo en un apartamento.", translation: "I live in an apartment.", instruction: "Eliminated", emoji: "🏢" },
+            
+            // NUEVA SECUENCIA DE DESPEDIDA
+            { phrase: "Hasta luego.", translation: "See you later.", instruction: "Eliminated", emoji: "👋" },
+            { phrase: "¡Adiós!", translation: "Goodbye!", instruction: "Eliminated", emoji: "🌟" },
+            { phrase: "¡Hemos terminado! ¡Muy bien!", translation: "We have finished! Very good!", instruction: "Eliminated", emoji: "🎉" },
+        ];
+
+        let currentLessonIndex = 0;
+        const totalLessons = lessons.length;
+        
+        // Elementos del DOM
+        const spanishPhraseContainer = document.getElementById('spanish-phrase-container');
+        const instructionText = document.getElementById('instruction'); // Este elemento ahora muestra la traducción
+        const lessonEmoji = document.getElementById('lesson-emoji');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const currentIndexSpan = document.getElementById('current-index');
+        const totalLessonsSpan = document.getElementById('total-lessons');
+
+        // Función para renderizar la lección actual
+        function displayLesson(index) {
+            const lesson = lessons[index];
+            
+            // 1. Actualizar contenido estático
+            lessonEmoji.textContent = lesson.emoji;
+            currentIndexSpan.textContent = index + 1;
+            
+            // 2. Manejar la Frase Principal (SOLO ESPAÑOL)
+            let spanishContent = '';
+            
+            if (lesson.inputType) {
+                let inputHtml = '';
+                
+                if (lesson.inputType === 'text') {
+                    // Estructura: Me llamo [Input]
+                    // Se usa un placeholder vacío
+                    inputHtml = `<input type="text" placeholder="${lesson.inputPlaceholder}" class="phrase-input w-48 text-5xl md:text-6xl font-black" maxlength="15">`;
+                    spanishContent = `Me llamo ${inputHtml}.`;
+                } else if (lesson.inputType === 'number') {
+                    // Estructura: Yo tengo [Input] años.
+                    // Se usa un placeholder vacío
+                    inputHtml = `<input type="number" min="1" max="10" placeholder="${lesson.inputPlaceholder}" class="phrase-input w-20 text-5xl md:text-6xl font-black" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);">`;
+                    spanishContent = `Yo tengo ${inputHtml} años.`;
+                }
+                
+                // Inyectar solo la frase en español con input
+                spanishPhraseContainer.innerHTML = `
+                    <p class="flex justify-center items-center space-x-2 text-5xl md:text-6xl font-black text-gray-800">${spanishContent}</p>
+                `;
+                
+            } else {
+                // Modo de texto simple (sin inputs)
+                spanishContent = lesson.phrase;
+                
+                // Inyectar solo la frase en español
+                spanishPhraseContainer.innerHTML = `
+                    <p class="text-5xl md:text-6xl font-black text-gray-800">${spanishContent}</p>
+                `;
+            }
+
+            // 3. Mover la Traducción al área central
+            instructionText.textContent = lesson.translation;
+
+
+            // 4. Control de botones (navegación y estilos)
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+            prevBtn.classList.toggle('bg-red-500', index !== 0);
+            
+            nextBtn.disabled = index === totalLessons - 1;
+            nextBtn.textContent = (index === totalLessons - 1) ? "Finalizar" : "Siguiente ➡️";
+            nextBtn.classList.toggle('bg-green-500', index < totalLessons - 1);
+            nextBtn.classList.toggle('bg-purple-500', index === totalLessons - 1); // Color final
+        }
+
+        // Función para el botón "Siguiente"
+        function nextLesson() {
+            if (currentLessonIndex < totalLessons - 1) {
+                currentLessonIndex++;
+                displayLesson(currentLessonIndex);
+            }
+        }
+
+        // Función para el botón "Anterior"
+        function prevLesson() {
+            if (currentLessonIndex > 0) {
+                currentLessonIndex--;
+                displayLesson(currentLessonIndex);
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            totalLessonsSpan.textContent = totalLessons;
+            displayLesson(currentLessonIndex);
+            
+            // Asignar Event Listeners a los botones
+            nextBtn.addEventListener('click', nextLesson);
+            prevBtn.addEventListener('click', prevLesson);
+        });
+        
+    </script>
+</body>
+</html>
