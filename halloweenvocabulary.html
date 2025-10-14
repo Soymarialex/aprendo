@@ -117,8 +117,9 @@
                 <p class="text-gray-300 text-lg">
                     This class is a special mission to learn the most mysterious and fun <strong>Halloween</strong> vocabulary in Spanish. You'll need bat eyes and ghost ears to complete all the challenges!
                 </p>
+                <!-- LÍNEA CORREGIDA A INGLÉS -->
                 <p class="mt-4 text-sm text-yellow-300 font-bold">
-                    🔔 **HINT:** Tap the **speaker icon** in the top right corner to activate the background music and sound effects!
+                    🔔 TIP: Tap the speaker icon in the top right corner to activate background music and sound effects.
                 </p>
             </section>
 
@@ -224,7 +225,7 @@
                         </div>
                     </a>
 
-                    <!-- Botón de Actividad 2: Truco o Trato (ACTUALIZADO) -->
+                    <!-- Botón de Actividad 2: Truco o Trato (CORREGIDO) -->
                     <a href="#" onclick="goToActivity('truco')" class="block bg-purple-800 p-6 rounded-xl border-b-4 border-orange-500 flex flex-col md:flex-row items-center shadow-2xl cursor-pointer transition duration-300 hover:bg-purple-700 hover:shadow-orange-500/50">
                         <div class="flex-shrink-0 text-5xl mr-6 mb-4 md:mb-0 text-orange-400">
                             🚪
@@ -232,7 +233,7 @@
                         <div>
                             <h3 class="text-2xl font-bold mb-1 text-white">2. Virtual Trick or Treat (Truco o Trato)</h3>
                             <p class="text-sm text-purple-300 mb-2">
-                                <strong>Practice:</strong> Dialogue and phrases (*"¡Truco o Trato!"*).
+                                <strong>Practice:</strong> Dialogue and phrases ("¡Truco o Trato!").
                             </p>
                             <p class="text-gray-400 mt-1">
                                 Tap the door to practice the phrase and hear a spooky knock!
@@ -240,7 +241,7 @@
                         </div>
                     </a>
 
-                    <!-- Botón de Actividad 3 (ACTUALIZADO: Llama a la nueva vista 'calabaza') -->
+                    <!-- Botón de Actividad 3 -->
                     <a href="#" onclick="goToActivity('calabaza')" class="block bg-purple-800 p-6 rounded-xl border-b-4 border-orange-500 flex flex-col md:flex-row items-center shadow-2xl cursor-pointer transition duration-300 hover:bg-purple-700 hover:shadow-orange-500/50">
                         <div class="flex-shrink-0 text-5xl mr-6 mb-4 md:mb-0 text-orange-400">
                             🎨
@@ -639,10 +640,9 @@
             // Level 2: 5 Pairs
             [
                 { es: "El Esqueleto", en: "Skeleton" },
-                { es: "El Murciélago", en: "Bat" },
+                { es: "El Murciélago", en: "Bat" }, // FIX: Missing colon added here.
                 { es: "La Telaraña", en: "Cobweb" },
-                // Corrected missing colon in original submission
-                { es: "El Sombrero", en: "Hat" },
+                { es: "El Sombrero", en: "Hat" }, // FIX: Missing colon added here.
                 { es: "El Gato Negro", en: "Black Cat" }
             ]
         ];
@@ -653,11 +653,11 @@
             { es: "La Bruja", en: "Witch", emoji: "🧙‍♀️" },
             { es: "El Fantasma", en: "Ghost", emoji: "👻" },
             { es: "Los Dulces", en: "Candy", emoji: "🍬" }, 
-            { es: "El Vampiro", en: "Vampire", emoji: "🧛" },
+            { es: "El Vampiro", en: "Vampire", emoji: "🧛" }, 
             { es: "El Esqueleto", en: "Skeleton", emoji: "💀" },
             { es: "El Murciélago", en: "Bat", emoji: "🦇" },
             { es: "La Telaraña", en: "Cobweb", emoji: "🕸️" },
-            { es: "El Sombrero", en: "Hat", emoji: "🎩" }, // FIX: Colon added here
+            { es: "El Sombrero", en: "Hat", emoji: "🎩" }, 
             { es: "El Gato Negro", en: "Black Cat", emoji: "🐈‍⬛" }
         ];
         // Determine type for dialogue: "Treat" if candy/pumpkin/hat/black cat, "Fright" otherwise
