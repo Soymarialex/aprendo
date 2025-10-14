@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween Spanish Class!</title>
+    <!-- Carga de Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- RESTAURADO: Incluimos ambas fuentes, Creepster para títulos y Inter para el cuerpo -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Definimos una fuente temática para los títulos y una fuente legible para el cuerpo */
+        :root {
+            --color-halloween-dark: #1a1a1a;
+            --color-halloween-orange: #ff7f50; /* Coral brillante */
+            --color-halloween-purple: #800080; /* Púrpura */
+        }
+        body {
+            /* RESTAURADO: Inter para el cuerpo */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-halloween-dark);
+        }
+        .spooky-title {
+            /* RESTAURADO: Creepster para los títulos temáticos */
+            font-family: 'Creepster', cursive;
+            color: var(--color-halloween-orange);
+            text-shadow: 3px 3px var(--color-halloween-purple);
+            line-height: 0.9;
+        }
+        /* Estilo específico para la frase "¡TRUCO O TRATO!" */
+        .trick-or-treat-text {
+            color: black; /* CAMBIADO: Negro al frente */
+            text-shadow: 3px 3px white; /* Sombra blanca */
+        }
+
+        /* Estilos específicos para el juego de emparejamiento */
+        .match-card {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .match-card:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .match-card.selected {
+            border: 3px solid #ff7f50; /* Resaltado naranja */
+            background-color: #581c87; /* Morado más claro */
+            box-shadow: 0 0 15px rgba(255, 127, 80, 0.7);
+        }
+        .match-card.matched {
+            pointer-events: none; /* Desactivar clics después de emparejar */
+            opacity: 0.5;
+            background-color: #166534; /* Verde oscuro (Éxito) */
+            border-color: #10b981; /* Verde esmeralda */
+            transform: none;
+            text-decoration: line-through;
+        }
+
+        /* Estilos para la Puerta de Truco o Trato */
+        #spooky-door {
+            background-color: #4a2d1d; /* Marrón oscuro para la madera */
+            border: 8px solid #331f13; /* Borde más oscuro */
+            perspective: 1000px;
+        }
+        .door-open {
+            transform: rotateY(-90deg) translateX(-50%); /* Simula la apertura hacia atrás */
+            transform-origin: left;
+        }
+        #door-interior {
+            background: radial-gradient(circle, #000000 0%, #300030 100%); /* Fondo oscuro con aura púrpura */
+            transition: opacity 0.5s ease;
+        }
+        #spooky-door.open #door-interior {
+            opacity: 1;
+        }
+
+        /* Estilos para la Calabaza de Adjetivos */
+        .adjective-button {
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 0 0 #3b0764;
+        }
+        .adjective-button:active {
+            box-shadow: 0 2px 0 0 #3b0764;
+            transform: translateY(2px);
+        }
+        .adjective-button.active {
+            border: 2px solid #ff7f50;
+            background-color: #4c1d95 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen text-white">
+
+    <!-- Sección Principal (Header) -->
+    <header class="text-center py-12 px-4 bg-purple-900 border-b-4 border-orange-500 shadow-xl">
+        <h1 class="spooky-title text-5xl sm:text-7xl lg:text-8xl mb-2 animate-pulse">
+            Night of Terror and Spanish!
+        </h1>
+        <p class="text-lg sm:text-xl text-orange-200 font-bold">
+            Your online Halloween vocabulary class
+        </p>
+    </header>
+
+    <!-- Contenedor Principal (Centrado y con Padding) -->
+    <main class="container mx-auto p-4 sm:p-8 lg:p-12">
+
+        <!-- VISTA PRINCIPAL DE LA CLASE -->
+        <div id="main-content-view">
+            <!-- Sección 1: Introducción -->
+            <section class="mb-16 bg-gray-800 p-6 rounded-xl shadow-lg border-l-4 border-orange-500">
+                <h2 class="text-3xl spooky-title mb-4 text-orange-400">
+                    Get Ready for the Adventure!
+                </h2>
+                <p class="text-gray-300 text-lg">
+                    This class is a special mission to learn the most mysterious and fun <strong>Halloween</strong> vocabulary in Spanish. You'll need bat eyes and ghost ears to complete all the challenges!
+                </p>
+            </section>
+
+            <!-- Sección 2: Vocabulario Esencial -->
+            <section class="mb-16">
+                <h2 class="spooky-title text-4xl text-center mb-8 text-purple-400">
+                    🔮 Vocabulary from the Magic Cauldron
+                </h2>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    <!-- Tarjeta de Vocabulario: La Calabaza (Pumpkin) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🎃</p>
+                        <p class="text-xl font-bold text-white">La Calabaza</p>
+                        <p class="text-sm text-purple-300"> (Pumpkin)</p>
+                    </div>
+
+                    <!-- Tarjeta de Vocabulario: La Bruja (Witch) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🧙‍♀️</p>
+                        <p class="text-xl font-bold text-white">La Bruja</p>
+                        <p class="text-sm text-purple-300"> (Witch)</p>
+                    </div>
+
+                    <!-- Tarjeta de Vocabulario: El Fantasma (Ghost) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">👻</p>
+                        <p class="text-xl font-bold text-white">El Fantasma</p>
+                        <p class="text-sm text-purple-300"> (Ghost)</p>
+                    </div>
+
+                    <!-- Tarjeta de Vocabulario: Los Dulces (Candy) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🍬</p>
+                        <p class="text-xl font-bold text-white">Los Dulces</p>
+                        <p class="text-sm text-purple-300"> (Candy)</p>
+                    </div>
+
+                    <!-- Tarjeta de Vocabulario: El Vampiro (Vampire) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🧛</p>
+                        <p class="text-xl font-bold text-white">El Vampiro</p>
+                        <p class="text-sm text-purple-300"> (Vampire)</p>
+                    </div>
+
+                    <!-- Más Vocabulario: El Esqueleto (Skeleton) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">💀</p>
+                        <p class="text-xl font-bold text-white">El Esqueleto</p>
+                        <p class="text-sm text-purple-300"> (Skeleton)</p>
+                    </div>
+
+                    <!-- Más Vocabulario: El Murciélago (Bat) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🦇</p>
+                        <p class="text-xl font-bold text-white">El Murciélago</p>
+                        <p class="text-sm text-purple-300"> (Bat)</p>
+                    </div>
+
+                    <!-- Más Vocabulario: La Telaraña (Cobweb) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🕸️</p>
+                        <p class="text-xl font-bold text-white">La Telaraña</p>
+                        <p class="text-sm text-purple-300"> (Cobweb)</p>
+                    </div>
+
+                    <!-- Más Vocabulario: El Sombrero (Hat) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400">
+                        <p class="text-6xl mb-2">🎩</p>
+                        <p class="text-xl font-bold text-white">El Sombrero</p>
+                        <p class="text-sm text-purple-300"> (Hat)</p>
+                    </div>
+
+                    <!-- Más Vocabulario: El Gato Negro (Black Cat) -->
+                    <div class="bg-purple-800 p-4 rounded-xl text-center transform hover:scale-105 transition duration-300 shadow-2xl border-2 border-orange-400 col-span-2 md:col-span-1 lg:col-span-1">
+                        <p class="text-6xl mb-2">🐈‍⬛</p>
+                        <p class="text-xl font-bold text-white">El Gato Negro</p>
+                        <p class="text-sm text-purple-300"> (Black Cat)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 3: Actividades Interactivas (Botones) -->
+            <section class="mb-16">
+                <h2 class="spooky-title text-4xl text-center mb-8 text-orange-400">
+                    🕹️ Let's Play and Learn!
+                </h2>
+
+                <div class="space-y-6">
+                    <!-- Botón de Actividad 1: Emparejamiento -->
+                    <a href="#" onclick="goToActivity('matching')" class="block bg-purple-800 p-6 rounded-xl border-b-4 border-orange-500 flex flex-col md:flex-row items-center shadow-2xl cursor-pointer transition duration-300 hover:bg-purple-700 hover:shadow-orange-500/50">
+                        <div class="flex-shrink-0 text-5xl mr-6 mb-4 md:mb-0 text-orange-400">
+                            🧩
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-1 text-white">1. Match the Monsters!</h3>
+                            <p class="text-sm text-purple-300 mb-2">
+                                <strong>Practice:</strong> Vocabulary (Spanish vs. English).
+                            </p>
+                            <p class="text-gray-400 mt-1">
+                                Tap the Spanish word and then its English translation to make a match.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Botón de Actividad 2: Truco o Trato (ACTUALIZADO) -->
+                    <a href="#" onclick="goToActivity('truco')" class="block bg-purple-800 p-6 rounded-xl border-b-4 border-orange-500 flex flex-col md:flex-row items-center shadow-2xl cursor-pointer transition duration-300 hover:bg-purple-700 hover:shadow-orange-500/50">
+                        <div class="flex-shrink-0 text-5xl mr-6 mb-4 md:mb-0 text-orange-400">
+                            🚪
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-1 text-white">2. Virtual Trick or Treat (Truco o Trato)</h3>
+                            <p class="text-sm text-purple-300 mb-2">
+                                <strong>Practice:</strong> Dialogue and phrases (*"¡Truco o Trato!"*).
+                            </p>
+                            <p class="text-gray-400 mt-1">
+                                Tap the door to practice the phrase and see if you get a new word!
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Botón de Actividad 3 (ACTUALIZADO: Llama a la nueva vista 'calabaza') -->
+                    <a href="#" onclick="goToActivity('calabaza')" class="block bg-purple-800 p-6 rounded-xl border-b-4 border-orange-500 flex flex-col md:flex-row items-center shadow-2xl cursor-pointer transition duration-300 hover:bg-purple-700 hover:shadow-orange-500/50">
+                        <div class="flex-shrink-0 text-5xl mr-6 mb-4 md:mb-0 text-orange-400">
+                            🎨
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-1 text-white">3. My Pumpkin and the Adjectives</h3>
+                            <p class="text-sm text-purple-300 mb-2">
+                                <strong>Practice:</strong> Adjectives (colors, sizes, emotions).
+                            </p>
+                            <p class="text-gray-400 mt-1">
+                                We will draw and describe a pumpkin using Spanish adjectives.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Sección de Frase Clave -->
+            <section class="mb-16 bg-orange-600 p-8 rounded-xl shadow-2xl text-center border-4 border-white">
+                <p class="text-2xl sm:text-3xl font-bold text-white mb-2">
+                    Class Key Phrase!
+                </p>
+                <p class="text-5xl spooky-title trick-or-treat-text">
+                    "¡TRUCO O TRATO!"
+                </p>
+            </section>
+        </div>
+
+        <!-- VISTA DE ACTIVIDAD 1: EMPAREJAMIENTO (Oculta por defecto) -->
+        <div id="matching-game-view" class="hidden">
+            <!-- Indicador de Nivel -->
+            <p id="level-display" class="text-2xl text-center mb-4 text-orange-200 font-bold">Level 1 / 2</p>
+
+            <!-- Título de la Actividad en inglés para consistencia -->
+            <h2 class="spooky-title text-5xl text-center mb-8 text-orange-400">
+                🧩 Match the Monsters! 🧩
+            </h2>
+            <p id="match-game-message" class="text-xl text-center mb-6 text-green-400 font-bold"></p>
+            <div id="matching-game-grid" class="grid grid-cols-2 gap-6 md:gap-12 lg:w-4/5 mx-auto">
+                <!-- Las palabras se inyectarán aquí por JavaScript -->
+            </div>
+
+            <div class="text-center mt-12 space-y-4 md:space-y-0 md:space-x-4">
+                <button onclick="renderGame()" class="px-8 py-3 bg-purple-600 text-white font-bold rounded-lg shadow-lg hover:bg-purple-500 transition duration-150 transform hover:scale-105">
+                    Restart Game
+                </button>
+                <button onclick="goToActivity('main')" class="px-8 py-3 bg-orange-600 text-white font-bold rounded-lg shadow-lg hover:bg-orange-500 transition duration-150 transform hover:scale-105">
+                    Back to Main Class
+                </button>
+            </div>
+        </div>
+
+        <!-- VISTA DE ACTIVIDAD 2: TRUCO O TRATO VIRTUAL -->
+        <div id="door-game-view" class="hidden text-center p-4">
+            <h2 class="spooky-title text-5xl mb-8 text-orange-400">
+                🚪 Virtual Trick or Treat 🍬
+            </h2>
+
+            <p id="door-dialogue" class="text-2xl text-orange-200 mb-8 font-bold">
+                Tap the door to say "¡Truco o Trato!" and see what you get!
+            </p>
+
+            <!-- Door and Vocab Card Container (UPDATED LAYOUT) -->
+            <div id="door-and-vocab-container" class="flex justify-center items-center gap-8 flex-col md:flex-row">
+                <!-- Door Element -->
+                <div id="spooky-door" class="w-64 h-80 border-8 border-yellow-900 rounded-t-lg shadow-2xl relative cursor-pointer transition duration-500" onclick="handleDoorClick(this)">
+                    <!-- Handle/Knob -->
+                    <div class="absolute right-4 top-40 w-6 h-6 bg-yellow-600 rounded-full border-2 border-yellow-800"></div>
+
+                    <!-- Door Interior (Kept for visual effect) -->
+                    <div id="door-interior" class="absolute inset-0 flex flex-col items-center justify-center p-4 opacity-0 rounded-t-lg">
+                        <!-- Content removed from inside door, kept for animation -->
+                    </div>
+                </div>
+
+                <!-- New Vocab Card Display (Starts hidden and scaled to 0) -->
+                <div id="vocab-card-display" class="w-64 p-6 bg-purple-700 rounded-xl shadow-2xl border-2 border-orange-500 text-center transition duration-300 transform scale-0 opacity-0 hidden min-h-[320px] flex flex-col justify-center items-center">
+                    <p class="text-7xl mb-4">👻</p>
+                    <p class="text-3xl font-bold text-orange-400">El Fantasma</p>
+                    <p class="text-lg text-purple-300">(Ghost)</p>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="text-center mt-12 space-y-4 md:space-y-0 md:space-x-4">
+                <button onclick="resetDoorGame()" class="px-8 py-3 bg-purple-600 text-white font-bold rounded-lg shadow-lg hover:bg-purple-500 transition duration-150 transform hover:scale-105">
+                    Knock on Another House
+                </button>
+                <button onclick="goToActivity('main')" class="px-8 py-3 bg-orange-600 text-white font-bold rounded-lg shadow-lg hover:bg-orange-500 transition duration-150 transform hover:scale-105">
+                    Back to Main Class
+                </button>
+            </div>
+        </div>
+
+        <!-- VISTA DE ACTIVIDAD 3: ADJETIVOS DE CALABAZA (NUEVO) -->
+        <div id="adjectives-game-view" class="hidden text-center p-4">
+            <h2 class="spooky-title text-5xl mb-8 text-orange-400">
+                🎨 My Pumpkin and the Adjectives 🎃
+            </h2>
+
+            <div class="flex flex-col lg:flex-row items-center justify-center lg:space-x-12 mb-10">
+                <!-- Pumpkin Visualization -->
+                <div id="pumpkin-display" class="w-56 h-56 flex items-center justify-center relative transition duration-300 mb-8 lg:mb-0">
+                    <!-- Base Pumpkin (SVG or large text) -->
+                    <!-- We use span with a class to change color easily -->
+                    <span id="pumpkin-emoji" class="text-[12rem] transition-all duration-300" style="color: #ff7f50;">🎃</span>
+                </div>
+
+                <!-- Adjective Description -->
+                <div class="max-w-md lg:max-w-lg bg-gray-800 p-6 rounded-xl border-l-4 border-purple-500 shadow-xl">
+                    <h3 class="text-xl font-bold text-orange-400 mb-2">
+                        My Description:
+                    </h3>
+                    <p id="pumpkin-description" class="text-3xl font-extrabold text-white">
+                        Mi calabaza es Naranja, Grande y está Feliz.
+                    </p>
+                    <p class="text-sm text-gray-400 mt-2">
+                        (My pumpkin is Orange, Big, and Happy.)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Adjective Selector Grids -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                <!-- Color Selector -->
+                <div class="bg-purple-900 p-5 rounded-xl shadow-lg border-t-4 border-orange-500">
+                    <h4 class="text-xl spooky-title mb-4 text-orange-300">Color (Color)</h4>
+                    <div id="color-selector" class="flex flex-wrap justify-center gap-3">
+                        <!-- Buttons injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Size Selector -->
+                <div class="bg-purple-900 p-5 rounded-xl shadow-lg border-t-4 border-orange-500">
+                    <h4 class="text-xl spooky-title mb-4 text-orange-300">Tamaño (Size)</h4>
+                    <div id="size-selector" class="flex flex-wrap justify-center gap-3">
+                        <!-- Buttons injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Emotion Selector -->
+                <div class="bg-purple-900 p-5 rounded-xl shadow-lg border-t-4 border-orange-500">
+                    <h4 class="text-xl spooky-title mb-4 text-orange-300">Emoción (Emotion)</h4>
+                    <div id="emotion-selector" class="flex flex-wrap justify-center gap-3">
+                        <!-- Buttons injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="text-center mt-12">
+                <button onclick="goToActivity('main')" class="px-8 py-3 bg-orange-600 text-white font-bold rounded-lg shadow-lg hover:bg-orange-500 transition duration-150 transform hover:scale-105">
+                    Back to Main Class
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer (MODIFICADO) -->
+    <footer class="text-center py-6 bg-purple-900 border-t-4 border-orange-500">
+        <!-- Primer párrafo: Derechos de autor -->
+        <p class="text-sm text-gray-300 mb-2">
+            © 2025 Spanish Lessons with María C. All rights reserved.
+        </p>
+        <!-- Segundo párrafo: Botón de redirección -->
+        <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ==" target="_blank" class="inline-block px-6 py-2 bg-orange-600 text-white font-bold rounded-lg shadow-lg hover:bg-orange-500 transition duration-150 transform hover:scale-105">
+            Find your Spanish class here.
+        </a>
+    </footer>
+
+    <!-- Modal/Message Box (Reemplaza a alert()) -->
+    <div id="message-box" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 items-center justify-center p-4">
+        <div class="bg-gray-900 p-8 rounded-xl shadow-2xl border-4 border-orange-500 max-w-lg w-full text-center">
+            <h3 id="message-title" class="text-3xl spooky-title text-orange-400 mb-4"></h3>
+            <p id="message-text" class="text-gray-300 mb-6"></p>
+            <button onclick="hideMessage()" class="px-6 py-2 bg-purple-700 text-white font-bold rounded-lg shadow-md hover:bg-purple-600 transition duration-150">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- GAME DATA ---
+
+        // Data for Game 1: Matching
+        const VOCABULARY_LEVELS = [
+            // Level 1: 5 Pairs
+            [
+                { es: "La Calabaza", en: "Pumpkin" },
+                { es: "La Bruja", en: "Witch" },
+                { es: "El Fantasma", en: "Ghost" },
+                { es: "Los Dulces", en: "Candy" }, // CORREGIDO: Faltaba el colon (:)
+                { es: "El Vampiro", en: "Vampire" }
+            ],
+            // Level 2: 5 Pairs
+            [
+                { es: "El Esqueleto", en: "Skeleton" },
+                { es: "El Murciélago", en: "Bat" }, // CORRECCIÓN: Se agregó ':' entre 'en' y '"Bat"'
+                { es: "La Telaraña", en: "Cobweb" },
+                { es: "El Sombrero", en: "Hat" },
+                { es: "El Gato Negro", en: "Black Cat" }
+            ]
+        ];
+
+        // Data for Game 2: Trick or Treat (Based directly on combined vocabulary)
+        const ALL_VOCABULARY_FLAT = [
+            { es: "La Calabaza", en: "Pumpkin", emoji: "🎃" },
+            { es: "La Bruja", en: "Witch", emoji: "🧙‍♀️" },
+            { es: "El Fantasma", en: "Ghost", emoji: "👻" },
+            { es: "Los Dulces", en: "Candy", emoji: "🍬" }, // CORREGIDO: Faltaba el colon (:) y se restauró el emoji.
+            { es: "El Vampiro", en: "Vampire", emoji: "🧛" },
+            { es: "El Esqueleto", en: "Skeleton", emoji: "💀" },
+            { es: "El Murciélago", en: "Bat", emoji: "🦇" }, // CORRECCIÓN: Se agregó ':' entre 'en' y '"Bat"'
+            { es: "La Telaraña", en: "Cobweb", emoji: "🕸️" },
+            { es: "El Sombrero", en: "Hat", emoji: "🎩" },
+            { es: "El Gato Negro", en: "Black Cat", emoji: "🐈‍⬛" }
+        ];
+        // Determine type for dialogue: "Treat" if candy/pumpkin/hat/black cat, "Fright" otherwise
+        ALL_VOCABULARY_FLAT.forEach(item => {
+            item.type = (item.es === "Los Dulces" || item.es === "La Calabaza" || item.es === "El Sombrero" || item.es === "El Gato Negro") ? "treat" : "fright";
+        });
+
+        // Data for Game 3: Adjectives
+        const ADJECTIVES = {
+            color: [
+                { es: "Naranja", en: "Orange", hex: "#ff7f50" }, // Bright Coral Orange
+                { es: "Verde", en: "Green", hex: "#10b981" },
+                { es: "Morada", en: "Purple", hex: "#a855f7" },
+                { es: "Amarilla", en: "Yellow", hex: "#fcd34d" },
+            ],
+            size: [
+                { es: "Grande", en: "Big" },
+                { es: "Pequeña", en: "Small" },
+                { es: "Gigante", en: "Giant" },
+                { es: "Minúscula", en: "Tiny" },
+            ],
+            emotion: [
+                { es: "Feliz", en: "Happy" },
+                { es: "Triste", en: "Sad" },
+                { es: "Feroz", en: "Fierce" },
+                { es: "Enojada", en: "Angry" },
+            ]
+        };
+
+
+        // --- GLOBAL STATE ---
+        let currentLevel = 1; // For the matching game
+        let selectedSpanish = null;
+        let selectedEnglish = null;
+        let matchedCount = 0;
+        let isDoorOpen = false; // For the door game
+
+        // For the Adjectives game
+        let currentPumpkin = {
+            color: ADJECTIVES.color[0],
+            size: ADJECTIVES.size[0],
+            emotion: ADJECTIVES.emotion[0]
+        };
+
+        // --- DOM REFERENCES ---
+        const mainContentView = document.getElementById('main-content-view');
+        const matchingGameView = document.getElementById('matching-game-view');
+        const doorGameView = document.getElementById('door-game-view');
+        const adjectivesGameView = document.getElementById('adjectives-game-view'); // NEW REF
+
+        const gameGrid = document.getElementById('matching-game-grid');
+        const matchGameMessage = document.getElementById('match-game-message');
+        const levelDisplay = document.getElementById('level-display');
+
+        const spookyDoor = document.getElementById('spooky-door');
+        const doorDialogue = document.getElementById('door-dialogue');
+        const doorInterior = document.getElementById('door-interior');
+        const vocabCardDisplay = document.getElementById('vocab-card-display');
+
+        // Adjectives Game Refs
+        const colorSelector = document.getElementById('color-selector');
+        const sizeSelector = document.getElementById('size-selector');
+        const emotionSelector = document.getElementById('emotion-selector');
+        const pumpkinDescription = document.getElementById('pumpkin-description');
+        const pumpkinEmoji = document.getElementById('pumpkin-emoji');
+
+
+        // --- Message Box System (Replaces alert()) ---
+        function showMessage(title, message) {
+            const messageBox = document.getElementById('message-box');
+            document.getElementById('message-title').textContent = title;
+            document.getElementById('message-text').textContent = message;
+
+            messageBox.classList.remove('hidden');
+            messageBox.classList.add('flex');
+        }
+
+        function hideMessage() {
+            document.getElementById('message-box').classList.add('hidden');
+            document.getElementById('message-box').classList.remove('flex');
+        }
+
+        // --- View Navigation (UPDATED to include 'calabaza') ---
+        function goToActivity(activityId) {
+            // Hide all activity views
+            matchingGameView.classList.add('hidden');
+            doorGameView.classList.add('hidden');
+adjectivesGameView.classList.add('hidden');
+            mainContentView.classList.add('hidden');
+
+            if (activityId === 'matching') {
+                matchingGameView.classList.remove('hidden');
+                renderGame(); // Start the matching game
+            } else if (activityId === 'truco') {
+                doorGameView.classList.remove('hidden');
+                resetDoorGame(); // Start/reset the door game
+            } else if (activityId === 'calabaza') { // HANDLES NEW ACTIVITY
+                adjectivesGameView.classList.remove('hidden');
+                renderAdjectivesGame(); // Start the adjectives game
+            } else if (activityId === 'main') {
+                mainContentView.classList.remove('hidden');
+            }
+        }
+
+
+        // ------------------------------------------
+        // --- Game Logic 1: Matching ---
+        // ------------------------------------------
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function renderGame() {
+            // 1. Reset state for the current level
+            gameGrid.innerHTML = '';
+            selectedSpanish = null;
+            selectedEnglish = null;
+            matchedCount = 0;
+
+            const currentVocab = VOCABULARY_LEVELS[currentLevel - 1];
+
+            // 2. Update the level display
+            levelDisplay.textContent = `Level ${currentLevel} / ${VOCABULARY_LEVELS.length}`;
+            matchGameMessage.textContent = 'Select a Spanish word and then its English translation!';
+
+            // 3. Prepare word lists and shuffle them
+            const spanishWords = currentVocab.map(item => ({ word: item.es, key: item.en }));
+            const englishWords = currentVocab.map(item => ({ word: item.en, key: item.en }));
+
+            shuffleArray(spanishWords);
+            shuffleArray(englishWords);
+
+            // 4. Create containers and cards
+            const spanishColumn = document.createElement('div');
+            spanishColumn.className = 'space-y-4';
+
+            spanishWords.forEach(item => {
+                const card = createCard(item.word, 'es', item.key);
+                spanishColumn.appendChild(card);
+            });
+
+            const englishColumn = document.createElement('div');
+            englishColumn.className = 'space-y-4';
+
+            englishWords.forEach(item => {
+                const card = createCard(item.word, 'en', item.key);
+                englishColumn.appendChild(card);
+            });
+
+            // 5. Add to the grid
+            gameGrid.appendChild(spanishColumn);
+            gameGrid.appendChild(englishColumn);
+        }
+
+        function createCard(word, type, key) {
+            const card = document.createElement('div');
+            card.className = `match-card p-4 rounded-xl text-center font-bold text-xl transition duration-200 shadow-lg ${type === 'es' ? 'bg-purple-700' : 'bg-orange-700'}`;
+            card.textContent = word;
+            card.dataset.type = type;
+            card.dataset.key = key;
+            card.onclick = () => selectWord(card);
+            return card;
+        }
+
+        function selectWord(card) {
+            const type = card.dataset.type;
+            const key = card.dataset.key;
+
+            // Clear selection of the same type
+            document.querySelectorAll(`.match-card[data-type="${type}"]`).forEach(c => c.classList.remove('selected'));
+
+            card.classList.add('selected');
+
+            if (type === 'es') {
+                selectedSpanish = { element: card, key: key };
+                selectedEnglish = null;
+            } else {
+                selectedEnglish = { element: card, key: key };
+            }
+
+            matchGameMessage.textContent = 'Selected: ' + card.textContent;
+
+            if (selectedSpanish && selectedEnglish) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            if (selectedSpanish.key === selectedEnglish.key) {
+                // Success
+                matchGameMessage.textContent = `Correct! ${selectedSpanish.element.textContent} is ${selectedEnglish.element.textContent}.`;
+
+                selectedSpanish.element.classList.remove('selected');
+                selectedEnglish.element.classList.remove('selected');
+                selectedSpanish.element.classList.add('matched');
+                selectedEnglish.element.classList.add('matched');
+
+                matchedCount++;
+
+                const currentVocab = VOCABULARY_LEVELS[currentLevel - 1];
+
+                if (matchedCount === currentVocab.length) {
+                    if (currentLevel < VOCABULARY_LEVELS.length) {
+                        currentLevel++;
+                        showMessage("Level Complete!", `Congratulations! Moving to Level ${currentLevel}. Click Close to continue.`);
+                        setTimeout(renderGame, 50);
+                    } else {
+                        showMessage("Congratulations, Apprentice!", "You have mastered ALL the Halloween vocabulary! Game Over.");
+                    }
+                }
+
+            } else {
+                // Failure
+                matchGameMessage.textContent = "Oops! That is not correct. Try again.";
+
+                setTimeout(() => {
+                    if(selectedSpanish && selectedSpanish.element) selectedSpanish.element.classList.remove('selected');
+                    if(selectedEnglish && selectedEnglish.element) selectedEnglish.element.classList.remove('selected');
+                }, 500);
+            }
+
+            selectedSpanish = null;
+            selectedEnglish = null;
+        }
+
+        // ------------------------------------------
+        // --- Game Logic 2: Trick or Treat ---
+        // ------------------------------------------
+
+        function handleDoorClick(doorElement) {
+            if (isDoorOpen) {
+                // If the door is already open, do nothing or give a hint.
+                doorDialogue.textContent = "The door is already open. Tap 'Knock on Another House' to continue.";
+                return;
+            }
+
+            isDoorOpen = true;
+
+            // 1. Simulate door opening with CSS
+            doorElement.classList.add('door-open');
+            doorInterior.classList.remove('opacity-0');
+
+            // 2. Play the key phrase
+            doorDialogue.textContent = "¡TRUCO O TRATO! (Trick or Treat!)";
+
+            // 3. Choose a random vocabulary item (reward)
+            const vocabIndex = Math.floor(Math.random() * ALL_VOCABULARY_FLAT.length);
+            const reward = ALL_VOCABULARY_FLAT[vocabIndex];
+
+            // 4. Show the reward card and update dialogue
+            setTimeout(() => {
+
+                // Build the Vocab Card content
+                const cardContent = `
+                    <p class="text-7xl mb-4">${reward.emoji}</p>
+                    <p class="text-3xl font-bold text-orange-400">${reward.es}</p>
+                    <p class="text-lg text-purple-300">(${reward.en})</p>
+                `;
+                vocabCardDisplay.innerHTML = cardContent;
+
+                // Show and animate the card
+                vocabCardDisplay.classList.remove('hidden', 'opacity-0', 'scale-0');
+                vocabCardDisplay.classList.add('opacity-100', 'scale-100', 'flex');
+
+                // Update Dialogue based on type (Treat/Fright)
+                let message;
+                let messageColor;
+
+                if (reward.type === 'treat') {
+                    // Mensaje actualizado a inglés
+                    message = `Awesome! You got the ${reward.en.toLowerCase()}!`;
+                    messageColor = 'text-green-400';
+                } else {
+                    // Mensaje actualizado a inglés
+                    message = `A fright! Look out for the ${reward.en.toLowerCase()}!`;
+                    messageColor = 'text-red-400';
+                }
+
+                doorDialogue.classList.remove('text-orange-200', 'text-green-400', 'text-red-400');
+                doorDialogue.classList.add(messageColor);
+                doorDialogue.textContent = message;
+
+            }, 500);
+        }
+
+        function resetDoorGame() {
+            isDoorOpen = false;
+
+            // 1. Close the door
+            spookyDoor.classList.remove('door-open');
+            doorInterior.classList.add('opacity-0');
+
+            // 2. Hide and reset the vocab card
+            vocabCardDisplay.classList.add('hidden', 'opacity-0', 'scale-0');
+            vocabCardDisplay.classList.remove('opacity-100', 'scale-100', 'flex');
+            vocabCardDisplay.innerHTML = ''; // Clear content
+
+            // 3. Reset dialogue to instruction
+            doorDialogue.classList.remove('text-green-400', 'text-red-400');
+            doorDialogue.classList.add('text-orange-200');
+            doorDialogue.textContent = "Tap the door to say \"¡Truco o Trato!\" and see what you get!";
+        }
+
+
+        // ------------------------------------------
+        // --- Game Logic 3: Adjectives ---
+        // ------------------------------------------
+
+        function createAdjectiveButton(adjective, category) {
+            const button = document.createElement('button');
+            const isActive = currentPumpkin[category].es === adjective.es;
+
+            // Tailwind classes for styling, using bg-purple-700 for default color
+            let classes = "adjective-button px-4 py-2 rounded-full font-bold text-white transition duration-150 transform hover:scale-105 bg-purple-700 border-2 border-transparent";
+
+            if (isActive) {
+                classes += " active";
+            }
+
+            // Special color treatment for 'color' category buttons
+            if (category === 'color') {
+                button.style.backgroundColor = adjective.hex;
+                button.classList.remove('bg-purple-700'); // Remove default background if using hex
+                if (adjective.es === 'Amarilla') {
+                    button.style.color = '#3b0764'; // Dark text for yellow background
+                }
+            }
+
+            button.className = classes;
+            button.textContent = `${adjective.es} (${adjective.en})`;
+            button.dataset.category = category;
+            button.dataset.es = adjective.es;
+            button.dataset.en = adjective.en;
+            button.onclick = (event) => selectAdjective(adjective, category, event); // Pass event object
+
+            return button;
+        }
+
+        function selectAdjective(adjective, category, event) {
+            // 1. Update state
+            currentPumpkin[category] = adjective;
+
+            // 2. Update button active states
+            // Find all buttons in the same category and remove 'active' class
+            const selector = document.getElementById(`${category}-selector`);
+            selector.querySelectorAll('.adjective-button').forEach(btn => btn.classList.remove('active'));
+
+            // Add 'active' class to the clicked button using the event target
+            event.currentTarget.classList.add('active');
+
+            // 3. Update the description and visualization
+            updatePumpkinDescription();
+        }
+
+        function updatePumpkinDescription() {
+            // Description in Spanish: Mi calabaza es [color], [size] y está [emotion].
+            const colorEs = currentPumpkin.color.es;
+            const sizeEs = currentPumpkin.size.es;
+            const emotionEs = currentPumpkin.emotion.es;
+            const emotionEn = currentPumpkin.emotion.en;
+
+            // Simple rule: 'está' or 'es' depending on the adjective type (emotion uses 'está')
+            let emotionVerb = "está";
+            if (emotionEs === 'Feroz') emotionVerb = "es"; // Feroz fits better with "es" (characteristic)
+
+            const spanishText = `Mi calabaza es ${colorEs}, ${sizeEs} y ${emotionVerb} ${emotionEs}.`;
+            const englishText = `My pumpkin is ${currentPumpkin.color.en}, ${currentPumpkin.size.en}, and ${emotionEn}.`;
+
+            // Update DOM text
+            pumpkinDescription.innerHTML = `
+                <span class="text-orange-400">Mi calabaza es</span>
+                <span style="color: ${currentPumpkin.color.hex || 'white'}; font-weight: bold;">${colorEs}</span>,
+                <span class="font-bold">${sizeEs}</span> y
+                <span class="font-bold">${emotionVerb} ${emotionEs}</span>.
+            `;
+
+            // Update the translation below
+            pumpkinDescription.nextElementSibling.textContent = `(${englishText})`;
+
+            // Update Pumpkin Visual Style
+            // Note: Since we are using an emoji (🎃), we can only change its color, not its shape/size easily via CSS in this simplified setup.
+            pumpkinEmoji.style.color = currentPumpkin.color.hex || '#ff7f50';
+
+            // Optional: Change the size class based on selection (e.g., scale transformation)
+            pumpkinEmoji.style.transform = ''; // Reset
+            if (sizeEs === 'Gigante') {
+                pumpkinEmoji.style.transform = 'scale(1.2)';
+            } else if (sizeEs === 'Minúscula') {
+                pumpkinEmoji.style.transform = 'scale(0.8)';
+            }
+        }
+
+        function renderAdjectivesGame() {
+            // Clear previous buttons
+            colorSelector.innerHTML = '';
+            sizeSelector.innerHTML = '';
+            emotionSelector.innerHTML = '';
+
+            // Render Color Buttons
+            ADJECTIVES.color.forEach(adj => {
+                colorSelector.appendChild(createAdjectiveButton(adj, 'color'));
+            });
+
+            // Render Size Buttons
+            ADJECTIVES.size.forEach(adj => {
+                sizeSelector.appendChild(createAdjectiveButton(adj, 'size'));
+            });
+
+            // Render Emotion Buttons
+            ADJECTIVES.emotion.forEach(adj => {
+                emotionSelector.appendChild(createAdjectiveButton(adj, 'emotion'));
+            });
+
+            // Ensure initial description is set
+            updatePumpkinDescription();
+        }
+
+
+        // Load the main view on startup
+        window.onload = function() {
+            goToActivity('main');
+        }
+
+    </script>
+
+</body>
+</html>
