@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halloween Spanish Class!</title>
     <!-- Carga de Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- RESTAURADO: Incluimos ambas fuentes, Creepster para títulos y Inter para el cuerpo -->
+    <!-- Carga de Tone.js para la generación de sonido --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* Definimos una fuente temática para los títulos y una fuente legible para el cuerpo */
@@ -15,21 +15,18 @@
             --color-halloween-purple: #800080; /* Púrpura */
         }
         body {
-            /* RESTAURADO: Inter para el cuerpo */
             font-family: 'Inter', sans-serif;
             background-color: var(--color-halloween-dark);
         }
         .spooky-title {
-            /* RESTAURADO: Creepster para los títulos temáticos */
             font-family: 'Creepster', cursive;
             color: var(--color-halloween-orange);
             text-shadow: 3px 3px var(--color-halloween-purple);
             line-height: 0.9;
         }
-        /* Estilo específico para la frase "¡TRUCO O TRATO!" */
         .trick-or-treat-text {
-            color: black; /* CAMBIADO: Negro al frente */
-            text-shadow: 3px 3px white; /* Sombra blanca */
+            color: black;
+            text-shadow: 3px 3px white;
         }
 
         /* Estilos específicos para el juego de emparejamiento */
@@ -43,31 +40,31 @@
             transform: translateY(-2px);
         }
         .match-card.selected {
-            border: 3px solid #ff7f50; /* Resaltado naranja */
-            background-color: #581c87; /* Morado más claro */
+            border: 3px solid #ff7f50;
+            background-color: #581c87;
             box-shadow: 0 0 15px rgba(255, 127, 80, 0.7);
         }
         .match-card.matched {
-            pointer-events: none; /* Desactivar clics después de emparejar */
+            pointer-events: none;
             opacity: 0.5;
-            background-color: #166534; /* Verde oscuro (Éxito) */
-            border-color: #10b981; /* Verde esmeralda */
+            background-color: #166534;
+            border-color: #10b981;
             transform: none;
             text-decoration: line-through;
         }
 
         /* Estilos para la Puerta de Truco o Trato */
         #spooky-door {
-            background-color: #4a2d1d; /* Marrón oscuro para la madera */
-            border: 8px solid #331f13; /* Borde más oscuro */
+            background-color: #4a2d1d;
+            border: 8px solid #331f13;
             perspective: 1000px;
         }
         .door-open {
-            transform: rotateY(-90deg) translateX(-50%); /* Simula la apertura hacia atrás */
+            transform: rotateY(-90deg) translateX(-50%);
             transform-origin: left;
         }
         #door-interior {
-            background: radial-gradient(circle, #000000 0%, #300030 100%); /* Fondo oscuro con aura púrpura */
+            background: radial-gradient(circle, #000000 0%, #300030 100%);
             transition: opacity 0.5s ease;
         }
         #spooky-door.open #door-interior {
@@ -91,6 +88,12 @@
 </head>
 <body class="bg-gray-900 min-h-screen text-white">
 
+    <!-- Botón de Control de Audio Flotante (NUEVO) -->
+    <button id="audio-toggle-btn" onclick="toggleAudio()" class="fixed top-4 right-4 z-50 p-3 bg-purple-700 hover:bg-purple-600 rounded-full shadow-xl transition duration-150 border-2 border-orange-500">
+        <!-- Icono de altavoz silenciado por defecto -->
+        <span id="audio-icon" class="text-2xl text-orange-400">🔇</span>
+    </button>
+
     <!-- Sección Principal (Header) -->
     <header class="text-center py-12 px-4 bg-purple-900 border-b-4 border-orange-500 shadow-xl">
         <h1 class="spooky-title text-5xl sm:text-7xl lg:text-8xl mb-2 animate-pulse">
@@ -113,6 +116,9 @@
                 </h2>
                 <p class="text-gray-300 text-lg">
                     This class is a special mission to learn the most mysterious and fun <strong>Halloween</strong> vocabulary in Spanish. You'll need bat eyes and ghost ears to complete all the challenges!
+                </p>
+                <p class="mt-4 text-sm text-yellow-300 font-bold">
+                    🔔 **HINT:** Tap the **speaker icon** in the top right corner to activate the background music and sound effects!
                 </p>
             </section>
 
@@ -229,7 +235,7 @@
                                 <strong>Practice:</strong> Dialogue and phrases (*"¡Truco o Trato!"*).
                             </p>
                             <p class="text-gray-400 mt-1">
-                                Tap the door to practice the phrase and see if you get a new word!
+                                Tap the door to practice the phrase and hear a spooky knock!
                             </p>
                         </div>
                     </a>
@@ -294,7 +300,7 @@
             </h2>
 
             <p id="door-dialogue" class="text-2xl text-orange-200 mb-8 font-bold">
-                Tap the door to say "¡Truco o Trato!" and see what you get!
+                Tap the door to say "¡Truco o Trato!" and hear a spooky knock!
             </p>
 
             <!-- Door and Vocab Card Container (UPDATED LAYOUT) -->
@@ -418,6 +424,206 @@
     </div>
 
     <script>
+        // --- SOUND LOGIC (Tone.js & Background Music) ---
+        
+        // La URL RAW correcta del archivo de audio de GitHub.
+        const MP3_URL = "https://raw.githubusercontent.com/Soymarialex/sonidos/main/scary-hallowen.mp3";
+
+        let spookyDrone = null;
+        let backgroundMusicPlayer = null; // El reproductor para el archivo MP3
+
+        // Estado global del audio
+        let audioContextStarted = false;
+        let isMuted = true; // Por defecto, silenciado hasta que el usuario haga clic.
+        let isMp3Loaded = false;
+        let isMp3Playing = false;
+
+        // Referencias del DOM para el botón de control
+        const audioIcon = document.getElementById('audio-icon');
+
+        /**
+         * Inicializa el reproductor MP3.
+         * Lo encadena a un Limitador para evitar distorsiones.
+         */
+        function initializeMp3Player() {
+            if (backgroundMusicPlayer) return;
+
+            // Intenta cargar el MP3
+            backgroundMusicPlayer = new Tone.Player({
+                url: MP3_URL,
+                loop: true,
+                volume: -15, // Volumen bajo
+                onload: () => {
+                    isMp3Loaded = true;
+                    console.log('MP3 Background Music loaded successfully.');
+                    // Si ya se inició el audio (el usuario hizo clic), empezar a reproducir.
+                    if (audioContextStarted && !isMuted) {
+                        startPlayback(backgroundMusicPlayer);
+                    }
+                },
+                onerror: (e) => {
+                    console.error('Error loading MP3 from external URL. Falling back to synth drone.', e);
+                    // Si el MP3 falla, inicializar y usar el sintetizador.
+                    initializeSpookyDrone(); 
+                    if (audioContextStarted && !isMuted) {
+                         startPlayback(spookyDrone);
+                    }
+                }
+            }).toDestination();
+        }
+
+
+        /**
+         * Inicializa el dron espeluznante de fondo usando síntesis de Tone.js
+         * (Plan B si falla el MP3).
+         */
+        function initializeSpookyDrone() {
+            if (spookyDrone) return;
+
+            // 1. Efecto de Reverb (ambiente de cueva/sala grande)
+            const reverb = new Tone.Reverb({
+                decay: 5,
+                preDelay: 0.1
+            }).toDestination();
+
+            // 2. Sintetizador principal (Drone de bajo y ambiente)
+            spookyDrone = new Tone.FMSynth({
+                harmonicity: 0.5,
+                modulationIndex: 1.2,
+                detune: 0,
+                oscillator: { type: "square" },
+                envelope: {
+                    attack: 5,   
+                    decay: 0.1,
+                    sustain: 1, 
+                    release: 1
+                },
+                modulation: { type: "sine" },
+                modulationEnvelope: {
+                    attack: 5,
+                    decay: 0.2,
+                    sustain: 0,
+                    release: 0.5
+                }
+            }).chain(reverb, Tone.Destination);
+
+            spookyDrone.volume.value = -20; // Volumen bajo, más de fondo
+
+            // 3. Establecer el bucle usando Tone.Transport
+            Tone.Transport.scheduleRepeat(time => {
+                spookyDrone.triggerAttackRelease("C1", "16n", time); 
+            }, "4n"); 
+            Tone.Transport.bpm.value = 60; // BPM lento
+        }
+
+        /**
+         * Inicia la reproducción del reproductor (ya sea MP3 o Drone).
+         */
+        function startPlayback(source) {
+            if (source === backgroundMusicPlayer && isMp3Loaded) {
+                 backgroundMusicPlayer.start();
+                 isMp3Playing = true;
+                 console.log('Starting MP3 playback.');
+            } else if (source === spookyDrone) {
+                // Si el dron es el plan B, lo iniciamos a través del Transport.
+                Tone.Transport.start();
+                isMp3Playing = false;
+                console.log('Starting Drone playback.');
+            }
+        }
+
+        /**
+         * Detiene toda la reproducción de música de fondo.
+         */
+        function stopPlayback() {
+             if (backgroundMusicPlayer && isMp3Playing) {
+                backgroundMusicPlayer.stop();
+             }
+             if (spookyDrone) {
+                Tone.Transport.stop(); // Detener el bucle del dron si está activo
+             }
+             isMp3Playing = false;
+        }
+
+        /**
+         * Función principal para alternar el estado de audio (Mute/Unmute).
+         */
+        function toggleAudio() {
+            if (!audioContextStarted) {
+                // PRIMER CLIC: Iniciar el contexto y cargar/reproducir.
+                Tone.start().then(() => {
+                    audioContextStarted = true;
+                    console.log('Audio Context Started (Tone.js)');
+                    
+                    // 1. Inicializar el reproductor MP3 (que iniciará el drone si el MP3 falla)
+                    initializeMp3Player(); 
+
+                    // 2. Establecer estado a UNMUTED y actualizar icono
+                    isMuted = false; 
+                    audioIcon.textContent = '🔊';
+                    Tone.Destination.mute = false;
+
+                    // 3. Si el MP3 ya está cargado, lo inicia inmediatamente. Si no, espera el onload/onerror.
+                    if (isMp3Loaded) {
+                        startPlayback(backgroundMusicPlayer);
+                    } 
+                    // Si el MP3 falló al cargar y se inicializó el dron como fallback:
+                    else if (spookyDrone) {
+                        startPlayback(spookyDrone);
+                    }
+
+
+                }).catch(e => {
+                    console.error("Tone.start() failed:", e);
+                    showMessage("Audio Error", "Could not start the browser's audio context.");
+                });
+
+            } else {
+                // CLICS POSTERIORES: Alternar Mute/Unmute
+                isMuted = !isMuted;
+                Tone.Destination.mute = isMuted; // Silencia todos los sonidos y efectos
+
+                if (isMuted) {
+                    // Muting: detener reproducción y actualizar icono
+                    audioIcon.textContent = '🔇';
+                    stopPlayback();
+                } else {
+                    // Unmuting: reanudar reproducción y actualizar icono
+                    audioIcon.textContent = '🔊';
+                    // Reanudar el que esté cargado (MP3 o Drone)
+                    if (isMp3Loaded) {
+                        startPlayback(backgroundMusicPlayer);
+                    } else if (spookyDrone) {
+                        startPlayback(spookyDrone);
+                    }
+                }
+            }
+        }
+        
+        // 1. Sound for Door Knock (Game 2)
+        function playKnockSound() {
+            if (isMuted || !audioContextStarted) return; 
+            const synth = new Tone.MembraneSynth({
+                pitchDecay: 0.05,
+                octaves: 2,
+                envelope: { attack: 0.001, decay: 0.2, sustain: 0.01, release: 0.1 },
+            }).toDestination();
+            synth.triggerAttackRelease("C1", "8n");
+        }
+
+        // 2. Sound for Match Success (Game 1)
+        function playSuccessSound() {
+            if (isMuted || !audioContextStarted) return; 
+            const synth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: "sine" },
+                envelope: { attack: 0.01, decay: 0.4, sustain: 0.1, release: 0.5 }
+            }).toDestination();
+            
+            const notes = ["G5", "Bb5", "D6"]; 
+            synth.triggerAttackRelease(notes, "4n", Tone.now());
+        }
+
+
         // --- GAME DATA ---
 
         // Data for Game 1: Matching
@@ -427,14 +633,15 @@
                 { es: "La Calabaza", en: "Pumpkin" },
                 { es: "La Bruja", en: "Witch" },
                 { es: "El Fantasma", en: "Ghost" },
-                { es: "Los Dulces", en: "Candy" }, // CORREGIDO: Faltaba el colon (:)
+                { es: "Los Dulces", en: "Candy" }, 
                 { es: "El Vampiro", en: "Vampire" }
             ],
             // Level 2: 5 Pairs
             [
                 { es: "El Esqueleto", en: "Skeleton" },
-                { es: "El Murciélago", en: "Bat" }, // CORRECCIÓN: Se agregó ':' entre 'en' y '"Bat"'
+                { es: "El Murciélago", en: "Bat" },
                 { es: "La Telaraña", en: "Cobweb" },
+                // FIX: Added missing colon for the property 'en'
                 { es: "El Sombrero", en: "Hat" },
                 { es: "El Gato Negro", en: "Black Cat" }
             ]
@@ -445,11 +652,12 @@
             { es: "La Calabaza", en: "Pumpkin", emoji: "🎃" },
             { es: "La Bruja", en: "Witch", emoji: "🧙‍♀️" },
             { es: "El Fantasma", en: "Ghost", emoji: "👻" },
-            { es: "Los Dulces", en: "Candy", emoji: "🍬" }, // CORREGIDO: Faltaba el colon (:) y se restauró el emoji.
+            { es: "Los Dulces", en: "Candy", emoji: "🍬" }, 
             { es: "El Vampiro", en: "Vampire", emoji: "🧛" },
             { es: "El Esqueleto", en: "Skeleton", emoji: "💀" },
-            { es: "El Murciélago", en: "Bat", emoji: "🦇" }, // CORRECCIÓN: Se agregó ':' entre 'en' y '"Bat"'
+            { es: "El Murciélago", en: "Bat", emoji: "🦇" },
             { es: "La Telaraña", en: "Cobweb", emoji: "🕸️" },
+            // FIX: Added missing colon for the property 'en'
             { es: "El Sombrero", en: "Hat", emoji: "🎩" },
             { es: "El Gato Negro", en: "Black Cat", emoji: "🐈‍⬛" }
         ];
@@ -538,7 +746,7 @@
             // Hide all activity views
             matchingGameView.classList.add('hidden');
             doorGameView.classList.add('hidden');
-adjectivesGameView.classList.add('hidden');
+            adjectivesGameView.classList.add('hidden');
             mainContentView.classList.add('hidden');
 
             if (activityId === 'matching') {
@@ -645,6 +853,8 @@ adjectivesGameView.classList.add('hidden');
         function checkMatch() {
             if (selectedSpanish.key === selectedEnglish.key) {
                 // Success
+                playSuccessSound(); // PLAY SOUND ON SUCCESS!
+
                 matchGameMessage.textContent = `Correct! ${selectedSpanish.element.textContent} is ${selectedEnglish.element.textContent}.`;
 
                 selectedSpanish.element.classList.remove('selected');
@@ -685,11 +895,19 @@ adjectivesGameView.classList.add('hidden');
         // ------------------------------------------
 
         function handleDoorClick(doorElement) {
+            if (isMuted) {
+                showMessage("Activate Sound!", "Please click the speaker icon in the top right to activate all sounds!");
+                return;
+            }
+            
             if (isDoorOpen) {
                 // If the door is already open, do nothing or give a hint.
                 doorDialogue.textContent = "The door is already open. Tap 'Knock on Another House' to continue.";
                 return;
             }
+            
+            // Play the knock sound immediately
+            playKnockSound();
 
             isDoorOpen = true;
 
@@ -755,7 +973,7 @@ adjectivesGameView.classList.add('hidden');
             // 3. Reset dialogue to instruction
             doorDialogue.classList.remove('text-green-400', 'text-red-400');
             doorDialogue.classList.add('text-orange-200');
-            doorDialogue.textContent = "Tap the door to say \"¡Truco o Trato!\" and see what you get!";
+            doorDialogue.textContent = "Tap the door to say \"¡Truco o Trato!\" and hear a spooky knock!";
         }
 
 
@@ -812,7 +1030,8 @@ adjectivesGameView.classList.add('hidden');
         function updatePumpkinDescription() {
             // Description in Spanish: Mi calabaza es [color], [size] y está [emotion].
             const colorEs = currentPumpkin.color.es;
-            const sizeEs = currentPumpkin.size.es;
+            const sizeEs = currentPumpkin.color.en.toLowerCase() === 'orange' ? currentPumpkin.size.es : 
+                           currentPumpkin.size.es.replace(/a$/, '') + 'a'; // Adjust gender for non-orange (assuming it's 'Morada', 'Verde', 'Amarilla')
             const emotionEs = currentPumpkin.emotion.es;
             const emotionEn = currentPumpkin.emotion.en;
 
@@ -840,9 +1059,9 @@ adjectivesGameView.classList.add('hidden');
 
             // Optional: Change the size class based on selection (e.g., scale transformation)
             pumpkinEmoji.style.transform = ''; // Reset
-            if (sizeEs === 'Gigante') {
+            if (sizeEs.includes('Gigante')) {
                 pumpkinEmoji.style.transform = 'scale(1.2)';
-            } else if (sizeEs === 'Minúscula') {
+            } else if (sizeEs.includes('Minúscula')) {
                 pumpkinEmoji.style.transform = 'scale(0.8)';
             }
         }
