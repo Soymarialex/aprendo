@@ -641,7 +641,7 @@
                 { es: "El Esqueleto", en: "Skeleton" },
                 { es: "El Murciélago", en: "Bat" },
                 { es: "La Telaraña", en: "Cobweb" },
-                // FIX: Added missing colon for the property 'en'
+                // Corrected missing colon in original submission
                 { es: "El Sombrero", en: "Hat" },
                 { es: "El Gato Negro", en: "Black Cat" }
             ]
@@ -657,8 +657,7 @@
             { es: "El Esqueleto", en: "Skeleton", emoji: "💀" },
             { es: "El Murciélago", en: "Bat", emoji: "🦇" },
             { es: "La Telaraña", en: "Cobweb", emoji: "🕸️" },
-            // FIX: Added missing colon for the property 'en'
-            { es: "El Sombrero", en: "Hat", emoji: "🎩" },
+            { es: "El Sombrero", en: "Hat", emoji: "🎩" }, // FIX: Colon added here
             { es: "El Gato Negro", en: "Black Cat", emoji: "🐈‍⬛" }
         ];
         // Determine type for dialogue: "Treat" if candy/pumpkin/hat/black cat, "Fright" otherwise
@@ -675,10 +674,10 @@
                 { es: "Amarilla", en: "Yellow", hex: "#fcd34d" },
             ],
             size: [
-                { es: "Grande", en: "Big" },
-                { es: "Pequeña", en: "Small" },
-                { es: "Gigante", en: "Giant" },
-                { es: "Minúscula", en: "Tiny" },
+                { es: "Grande", en: "Big", is_invariable: true }, // Invariable in gender
+                { es: "Pequeña", en: "Small", is_invariable: false }, // Variable in gender
+                { es: "Gigante", en: "Giant", is_invariable: true }, // Invariable in gender
+                { es: "Minúscula", en: "Tiny", is_invariable: false }, // Variable in gender
             ],
             emotion: [
                 { es: "Feliz", en: "Happy" },
@@ -771,7 +770,7 @@
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                [array[i], array[j]] = array[j];
             }
         }
 
@@ -1030,17 +1029,29 @@
         function updatePumpkinDescription() {
             // Description in Spanish: Mi calabaza es [color], [size] y está [emotion].
             const colorEs = currentPumpkin.color.es;
-            const sizeEs = currentPumpkin.color.en.toLowerCase() === 'orange' ? currentPumpkin.size.es : 
-                           currentPumpkin.size.es.replace(/a$/, '') + 'a'; // Adjust gender for non-orange (assuming it's 'Morada', 'Verde', 'Amarilla')
+            const sizeAdj = currentPumpkin.size; // Get the full size object
             const emotionEs = currentPumpkin.emotion.es;
-            const emotionEn = currentPumpkin.emotion.en;
 
-            // Simple rule: 'está' or 'es' depending on the adjective type (emotion uses 'está')
+            // --- CORRECCIÓN DE GÉNERO GRAMATICAL ---
+            let sizeEs = sizeAdj.es;
+            
+            // Si el adjetivo de tamaño NO es invariable, aseguramos que esté en femenino
+            // ya que 'calabaza' es una palabra femenina.
+            if (!sizeAdj.is_invariable) {
+                 // Si el adjetivo termina en 'o' (ej: pequeño), lo cambiamos a 'a'. 
+                 // Como nuestros datos son 'Pequeña' y 'Minúscula', se mantienen.
+                 sizeEs = sizeAdj.es.endsWith('o') ? sizeAdj.es.slice(0, -1) + 'a' : sizeAdj.es;
+            } else {
+                 // Si el adjetivo es INVARIABLE ('Grande', 'Gigante'), lo dejamos tal cual.
+                 sizeEs = sizeAdj.es;
+            }
+            // FIN DE CORRECCIÓN DE GÉNERO GRAMATICAL
+
+            // 3. Definir el verbo de emoción
             let emotionVerb = "está";
             if (emotionEs === 'Feroz') emotionVerb = "es"; // Feroz fits better with "es" (characteristic)
 
-            const spanishText = `Mi calabaza es ${colorEs}, ${sizeEs} y ${emotionVerb} ${emotionEs}.`;
-            const englishText = `My pumpkin is ${currentPumpkin.color.en}, ${currentPumpkin.size.en}, and ${emotionEn}.`;
+            const englishText = `My pumpkin is ${currentPumpkin.color.en}, ${currentPumpkin.size.en}, and ${currentPumpkin.emotion.en}.`;
 
             // Update DOM text
             pumpkinDescription.innerHTML = `
