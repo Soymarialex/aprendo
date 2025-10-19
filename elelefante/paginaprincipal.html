@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Clase de Español</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Poppins font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Define custom font and background color */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFFFFF; /* White Background */
+        }
+        /* Custom Tailwind Colors */
+        .bg-flamingo-pink { background-color: #FF79AC; }
+        .text-eerie-black { color: #121118; }
+        .bg-eerie-black { background-color: #121118; }
+
+        /* Style for the main navigation buttons */
+        .nav-button {
+            transition: all 0.2s ease-in-out;
+            border: 4px solid #121118;
+            border-radius: 1rem;
+            box-shadow: 6px 6px 0px #121118;
+            padding: 1rem 2rem;
+            font-size: 1.75rem; /* text-3xl equivalent */
+        }
+        .nav-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 10px 10px 0px #121118;
+            background-color: #f7a8c7; /* Lighter pink on hover */
+        }
+        .nav-button:active {
+            transform: translateY(0);
+            box-shadow: 4px 4px 0px #121118;
+        }
+
+        /* Style for the footer button */
+        .action-button {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid #121118;
+            border-radius: 9999px; /* Rounded-full equivalent */
+            box-shadow: 3px 3px 0px #121118;
+            padding: 0.75rem 2rem;
+        }
+        .action-button:hover {
+            background-color: #FF79AC;
+            color: white;
+            box-shadow: 5px 5px 0px #121118;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'flamingo-pink': '#FF79AC',
+                        'eerie-black': '#121118',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen p-4 md:p-12 flex flex-col items-center justify-between">
+
+    <!-- Main Content Area -->
+    <main class="text-center w-full max-w-5xl flex flex-col items-center">
+        <!-- Title -->
+        <h1 class="text-7xl md:text-8xl font-extrabold text-eerie-black mb-16 mt-8">Mi Clase de Español</h1>
+        
+        <!-- Navigation Buttons Container -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+            
+            <!-- Button 1: Vocabulary (Flashcards) -->
+            <a href="vocabulary.html" class="nav-button bg-flamingo-pink text-eerie-black font-extrabold">
+                Vocabulary
+            </a>
+
+            <!-- Button 2: Matching Game -->
+            <a href="game.html" class="nav-button bg-flamingo-pink text-eerie-black font-extrabold">
+                Matching the words
+            </a>
+
+            <!-- Button 3: Song (External Link) -->
+            <a href="https://www.youtube.com/watch?v=Mv_r1ME5MBA&list=RDMv_r1ME5MBA&start_radio=1" target="_blank" rel="noopener noreferrer" class="nav-button bg-flamingo-pink text-eerie-black font-extrabold">
+                Song
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer and Action Button -->
+    <footer class="w-full text-center mt-20 p-4">
+        <!-- Action Button -->
+        <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ==" target="_blank" rel="noopener noreferrer" 
+           class="action-button bg-white text-eerie-black font-bold text-lg md:text-xl inline-block hover:bg-flamingo-pink hover:text-white mb-6">
+            Find your Spanish class here
+        </a>
+        
+        <!-- Copyright -->
+        <p class="text-sm font-medium text-eerie-black/80">
+            © 2025 Spanish Lessons with María C. All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching the Words</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Poppins font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Define custom font and background color */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFFFFF; /* White Background */
+        }
+        /* Custom Tailwind Colors */
+        .bg-flamingo-pink { background-color: #FF79AC; }
+        .text-eerie-black { color: #121118; }
+        .bg-eerie-black { background-color: #121118; }
+
+        /* Custom button styling for the game */
+        .game-button {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: 3px solid #121118; /* Eerie Black Border */
+            border-radius: 0.75rem; /* Rounded corners */
+            user-select: none;
+            box-shadow: 4px 4px 0px #121118; /* Eerie Black Shadow */
+        }
+        .game-button:hover:not(.matched):not(.selected) {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px #121118;
+        }
+        
+        /* State colors */
+        .default-color {
+            background-color: #FF79AC; /* Flamingo Pink */
+            color: #121118;
+        }
+        .selected {
+            background-color: #f7a8c7; /* Brighter Pink for selected */
+            border-color: #f7a8c7;
+            box-shadow: 2px 2px 0px #121118;
+        }
+        .correct-match {
+            background-color: #b7e4c7; /* Light Green */
+            color: #121118;
+            cursor: default;
+            pointer-events: none; /* Disable after matching */
+            animation: pulse-green 0.5s 1;
+        }
+        .incorrect-match {
+            background-color: #fca5a5; /* Light Red */
+            color: #121118;
+            animation: shake 0.5s 1;
+        }
+
+        /* Keyframes for visual feedback */
+        @keyframes pulse-green {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
+    <script>
+        // Tailwind CSS custom configuration to include the specified colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'flamingo-pink': '#FF79AC',
+                        'eerie-black': '#121118',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col items-center">
+
+    <!-- Header -->
+    <header class="text-center mb-10 w-full max-w-4xl">
+        <h1 class="text-6xl font-extrabold text-eerie-black mb-2">Matching the Words</h1>
+        <p class="text-xl font-medium text-gray-600">Match the Spanish words to their English translations!</p>
+    </header>
+
+    <!-- Game Logic -->
+    <script>
+        const originalVocabulary = [
+            { id: 1, spanish: "El circo", english: "The circus" },
+            { id: 2, spanish: "El elefante", english: "The elephant" },
+            { id: 3, spanish: "Las patas", english: "The legs (animals)" },
+            { id: 4, spanish: "La trompa", english: "The trunk" },
+            { id: 5, spanish: "Grande", english: "Big" },
+            { id: 6, spanish: "Pesado", english: "Heavy" },
+            { id: 7, spanish: "Manicito", english: "Little peanut" },
+            { id: 8, spanish: "Las orejas", english: "The ears" },
+        ];
+
+        // State variables for the game
+        let selectedSpanishId = null;
+        let selectedEnglishId = null;
+        let selectedSpanishButton = null;
+        let selectedEnglishButton = null;
+        let matchesFound = 0;
+        let isChecking = false;
+
+        /**
+         * Shuffles an array using the Fisher-Yates algorithm.
+         * @param {Array} array - The array to shuffle.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        /**
+         * Renders the shuffled Spanish and English columns.
+         */
+        function renderGame() {
+            const spanishWords = originalVocabulary.map(item => ({ word: item.spanish, id: item.id }));
+            const englishWords = originalVocabulary.map(item => ({ word: item.english, id: item.id }));
+
+            shuffleArray(spanishWords);
+            shuffleArray(englishWords);
+
+            const spanishColumn = document.getElementById('spanish-column');
+            const englishColumn = document.getElementById('english-column');
+
+            spanishColumn.innerHTML = '';
+            englishColumn.innerHTML = '';
+
+            spanishWords.forEach(item => {
+                const button = createButton(item, 'spanish', item.id);
+                spanishColumn.appendChild(button);
+            });
+
+            englishWords.forEach(item => {
+                const button = createButton(item, 'english', item.id);
+                englishColumn.appendChild(button);
+            });
+
+            document.getElementById('confetti').classList.add('hidden');
+        }
+
+        /**
+         * Creates a clickable word button.
+         * @param {Object} item - The word object {word, id}.
+         * @param {string} type - 'spanish' or 'english'.
+         * @param {number} id - The unique ID of the word pair.
+         */
+        function createButton(item, type, id) {
+            const button = document.createElement('button');
+            button.textContent = item.word;
+            // CHANGED: text-2xl to text-xl and p-4 to p-3 to make the buttons smaller
+            button.className = 'game-button default-color text-xl font-semibold p-3 my-2 w-full text-left';
+            button.setAttribute('data-id', id);
+            button.setAttribute('data-type', type);
+            button.onclick = () => handleWordClick(button, type, id);
+            return button;
+        }
+
+        /**
+         * Handles the click event on a word button.
+         * @param {HTMLButtonElement} button - The button element clicked.
+         * @param {string} type - 'spanish' or 'english'.
+         * @param {number} id - The unique ID of the word pair.
+         */
+        function handleWordClick(button, type, id) {
+            if (isChecking || button.classList.contains('correct-match')) return;
+
+            // Deselect previous button of the same type
+            if (type === 'spanish') {
+                if (selectedSpanishButton) selectedSpanishButton.classList.remove('selected');
+                selectedSpanishButton = button;
+                selectedSpanishId = id;
+            } else { // english
+                if (selectedEnglishButton) selectedEnglishButton.classList.remove('selected');
+                selectedEnglishButton = button;
+                selectedEnglishId = id;
+            }
+
+            // Select the current button
+            button.classList.add('selected');
+
+            // Check for match only if one from each column is selected
+            if (selectedSpanishId !== null && selectedEnglishId !== null) {
+                isChecking = true;
+                checkMatch();
+            }
+        }
+
+        /**
+         * Checks if the selected Spanish and English words match.
+         */
+        function checkMatch() {
+            if (selectedSpanishId === selectedEnglishId) {
+                // Correct Match
+                const buttons = [selectedSpanishButton, selectedEnglishButton];
+                buttons.forEach(btn => {
+                    btn.classList.remove('selected', 'default-color');
+                    btn.classList.add('correct-match');
+                });
+                matchesFound++;
+                resetSelection();
+
+                if (matchesFound === originalVocabulary.length) {
+                    showWinMessage();
+                }
+            } else {
+                // Incorrect Match - Apply red color temporarily
+                const buttons = [selectedSpanishButton, selectedEnglishButton];
+                buttons.forEach(btn => {
+                    btn.classList.remove('selected', 'default-color');
+                    btn.classList.add('incorrect-match');
+                });
+
+                // Wait 700ms, then reset
+                setTimeout(() => {
+                    buttons.forEach(btn => {
+                        btn.classList.remove('incorrect-match');
+                        btn.classList.add('default-color');
+                    });
+                    resetSelection();
+                }, 700);
+            }
+        }
+
+        /**
+         * Resets the selection state variables.
+         */
+        function resetSelection() {
+            selectedSpanishId = null;
+            selectedEnglishId = null;
+            selectedSpanishButton = null;
+            selectedEnglishButton = null;
+            isChecking = false;
+        }
+        
+        /**
+         * Shows the game completion message.
+         */
+        function showWinMessage() {
+            const confetti = document.getElementById('confetti');
+            confetti.classList.remove('hidden');
+            confetti.textContent = "🥳 CONGRATULATIONS! You matched all the words! 🥳";
+        }
+
+        /**
+         * Resets the entire game state.
+         */
+        function resetGame() {
+            matchesFound = 0;
+            resetSelection();
+            renderGame();
+        }
+
+        window.onload = renderGame;
+    </script>
+
+    <!-- Confetti / Win Message -->
+    <div id="confetti" class="hidden text-3xl font-extrabold text-eerie-black my-8 p-4 bg-yellow-300 rounded-lg shadow-xl animate-pulse">
+        <!-- Message will be added by JS -->
+    </div>
+
+    <!-- Game Columns (Responsive Layout) -->
+    <main class="w-full max-w-4xl grid grid-cols-2 gap-6 p-4">
+        
+        <!-- Spanish Column -->
+        <div class="p-3 bg-gray-100/50 rounded-xl shadow-inner border border-flamingo-pink">
+            <h2 class="text-3xl font-bold text-eerie-black mb-4 border-b-2 border-eerie-black pb-2 text-center">Spanish</h2>
+            <div id="spanish-column" class="flex flex-col space-y-2">
+                <!-- Buttons will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- English Column -->
+        <div class="p-3 bg-gray-100/50 rounded-xl shadow-inner border border-flamingo-pink">
+            <h2 class="text-3xl font-bold text-eerie-black mb-4 border-b-2 border-eerie-black pb-2 text-center">English</h2>
+            <div id="english-column" class="flex flex-col space-y-2">
+                <!-- Buttons will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Control Section -->
+    <div class="mt-12 text-center">
+        <button 
+            onclick="resetGame()" 
+            class="bg-eerie-black text-white hover:bg-flamingo-pink hover:text-eerie-black transition duration-300 font-extrabold py-3 px-8 rounded-full text-xl shadow-lg border-4 border-eerie-black active:scale-95"
+            aria-label="Start a new matching game with randomized words">
+            Start New Game
+        </button>
+    </div>
+
+</body>
+</html>

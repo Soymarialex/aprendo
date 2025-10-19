@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulario - The Circus</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Poppins font as a replacement for Platform Medium -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Define custom colors and font */
+        :root {
+            --flamingo-pink: #FF79AC;
+            --eerie-black: #121118;
+            --background-white: #FFFFFF;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-white);
+            color: var(--eerie-black);
+            min-height: 100vh;
+        }
+        .card {
+            background-color: #ffe3ef; /* A lighter shade of pink for the card background */
+            border: 2px solid var(--flamingo-pink);
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            user-select: none;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(18, 17, 24, 0.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center p-4 sm:p-8">
+
+    <script>
+        // Define the vocabulary list
+        const vocabulary = [
+            { spanish: "El circo", english: "The circus", id: "word-1" },
+            { spanish: "El elefante", english: "the elephant", id: "word-2" },
+            { spanish: "Las patas", english: "the legs (animals)", id: "word-3" },
+            { spanish: "La trompa", english: "the trunk", id: "word-4" },
+            { spanish: "Grande", english: "big", id: "word-5" },
+            { spanish: "Pesado", english: "heavy", id: "word-6" },
+            { spanish: "Manicito", english: "little peanut", id: "word-7" },
+            { spanish: "Las orejas", english: "the ears", id: "word-8" },
+        ];
+
+        // Function to toggle the translation display
+        function toggleTranslation(id) {
+            const translationElement = document.getElementById(`translation-${id}`);
+            const cardElement = document.getElementById(`card-${id}`);
+
+            if (translationElement.classList.contains('hidden')) {
+                translationElement.classList.remove('hidden');
+                cardElement.classList.add('bg-pink-300'); // Highlight when revealed
+            } else {
+                translationElement.classList.add('hidden');
+                cardElement.classList.remove('bg-pink-300');
+            }
+        }
+
+        // Function to show/hide all translations
+        function toggleAll() {
+            const button = document.getElementById('toggleAllButton');
+            const translations = document.querySelectorAll('[id^="translation-"]');
+            const cards = document.querySelectorAll('[id^="card-"]');
+
+            if (button.textContent === 'Show All Translations') {
+                translations.forEach(el => el.classList.remove('hidden'));
+                cards.forEach(el => el.classList.add('bg-pink-300'));
+                button.textContent = 'Hide All Translations';
+                button.classList.remove('bg-pink-500');
+                button.classList.add('bg-gray-500');
+            } else {
+                translations.forEach(el => el.classList.add('hidden'));
+                cards.forEach(el => el.classList.remove('bg-pink-300'));
+                button.textContent = 'Show All Translations';
+                button.classList.remove('bg-gray-500');
+                button.classList.add('bg-pink-500');
+            }
+        }
+
+        // Function to render the vocabulary cards
+        function renderVocabulary() {
+            const container = document.getElementById('vocabulary-container');
+            container.innerHTML = vocabulary.map(item => `
+                <div id="card-${item.id}"
+                     class="card p-6 rounded-xl shadow-lg transform hover:scale-[1.01] transition duration-200"
+                     onclick="toggleTranslation('${item.id}')">
+                    <div class="flex flex-col items-start">
+                        <!-- Spanish Word (Main Focus) -->
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-[--eerie-black] mb-2">
+                            ${item.spanish}
+                        </h2>
+                        <!-- English Translation (Hidden by default) -->
+                        <p id="translation-${item.id}" class="text-xl sm:text-2xl font-medium text-pink-700 mt-2 hidden">
+                            <span class="text-pink-500 mr-2">/</span> ${item.english}
+                        </p>
+                        <!-- Instructions -->
+                        <p class="text-xs text-gray-500 mt-1 italic">
+                            (Click to see translation)
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize rendering on load
+        window.onload = renderVocabulary;
+    </script>
+
+    <!-- HEADER SECTION -->
+    <header class="text-center mb-8 sm:mb-12 w-full max-w-4xl">
+        <h1 class="text-5xl sm:text-7xl font-black mb-3" style="color: var(--flamingo-pink);">
+            VOCABULARY
+        </h1>
+        <p class="text-xl sm:text-2xl font-semibold text-[--eerie-black]">
+            The Circus: Learn Spanish Words!
+        </p>
+    </header>
+
+    <!-- CONTROL BUTTON -->
+    <button id="toggleAllButton"
+            onclick="toggleAll()"
+            class="mb-8 py-3 px-6 rounded-full font-bold text-lg text-white shadow-xl transition duration-300
+                   bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-300"
+            style="background-color: var(--flamingo-pink);">
+        Show All Translations
+    </button>
+
+    <!-- VOCABULARY GRID CONTAINER -->
+    <div id="vocabulary-container"
+         class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full max-w-6xl">
+        <!-- Cards will be injected here by JavaScript -->
+    </div>
+
+    <!-- FOOTER INSTRUCTIONS -->
+    <footer class="mt-12 text-center text-sm text-gray-400 max-w-4xl">
+        <p>
+            Instructions: Click on any Spanish word to reveal its English translation. Use the "Show/Hide All" button to practice!
+        </p>
+    </footer>
+
+</body>
+</html>
