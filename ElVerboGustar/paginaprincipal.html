@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to your Spanish Class!</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Definición de colores y fuente para simular Platform Medium Font */
+        :root {
+            --flamingo-pink: #FF79AC;
+            --eerie-black: #121118;
+        }
+
+        /* Aplica la fuente Inter y un peso de 600 (Medium) para simular Platform Medium */
+        body {
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: white;
+            color: var(--eerie-black);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilo general de los botones de navegación (Rosa Flamenco con borde Negro) */
+        .primary-button {
+            background-color: var(--flamingo-pink);
+            color: white;
+            /* La negrita (font-bold) se aplicará con clases de Tailwind */
+            padding: 1.25rem 2rem; /* Aumento de padding para botones más grandes */
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            /* Simula el "borde negro abajo" para dar una sensación de botón elevado */
+            box-shadow: 0 6px 0 0 var(--eerie-black); /* Borde más grueso */
+            border: 1px solid var(--eerie-black);
+            text-decoration: none;
+        }
+        
+        .primary-button:hover {
+            /* Empuja el botón hacia abajo en el hover */
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 0 var(--eerie-black);
+            opacity: 0.95;
+        }
+
+        /* Estilo para el botón secundario (Negro Misterioso con borde Rosa Flamenco) */
+        .secondary-button {
+            background-color: var(--eerie-black);
+            color: white;
+            /* La negrita (font-bold) se aplicará con clases de Tailwind */
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            /* Simula el "borde rosa abajo" para dar una sensación de botón elevado */
+            box-shadow: 0 6px 0 0 var(--flamingo-pink); 
+            border: 1px solid var(--eerie-black); /* Borde negro visible en la parte superior */
+            text-decoration: none;
+        }
+        
+        .secondary-button:hover {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 0 var(--flamingo-pink);
+            opacity: 0.95;
+        }
+
+        /* Estilo para el título principal */
+        .main-title {
+            color: var(--eerie-black);
+            font-size: 3rem; /* Talla grande para escritorio */
+            font-weight: 800; /* Extra bold */
+            line-height: 1.1;
+        }
+
+        @media (max-width: 640px) {
+            .main-title {
+                font-size: 2.5rem; /* Talla más pequeña para móvil */
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <main class="flex-grow container mx-auto p-4 sm:p-8 flex flex-col justify-center items-center">
+        
+        <!-- Título Principal -->
+        <h1 class="main-title text-center mb-12 mt-12">
+            Welcome to your Spanish Class!
+        </h1>
+
+        <!-- Contenedor de Botones de Navegación -->
+        <div class="w-full max-w-lg space-y-6">
+            
+            <!-- Botón 1: Vocabulario -->
+            <a href="vocabulary.html" class="primary-button block text-xl font-bold">
+                Me gusta: vocabulario / vocabulary
+            </a>
+            
+            <!-- Botón 2: Actividades -->
+            <a href="activities.html" class="primary-button block text-xl font-bold">
+                Actividades / Activities
+            </a>
+            
+            <!-- Botón 3: Juego de Memoria -->
+            <a href="game.html" class="primary-button block text-xl font-bold">
+                Juego de emparejar / Matching game
+            </a>
+
+            <!-- Botón 4: Song (External Link) -->
+             <a href="https://youtu.be/OonqrUZCef4?si=DTPZ6YOgxjk_vo0l" class="primary-button block text-xl font-bold">
+                Canción / Song
+            </a>
+
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 border-t border-gray-200 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            
+            <!-- Texto de Copyright -->
+            <p class="text-sm text-gray-600 mb-6">
+                © 2025 Spanish Lessons with María C. All rights reserved.
+            </p>
+            
+            <!-- Botón de Redirección a Preply (SECUNDARIO) -->
+            <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ==" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="secondary-button inline-block text-lg font-bold px-6 py-3">
+                Find your Spanish class here.
+            </a>
+
+        </div>
+    </footer>
+
+</body>
+</html>

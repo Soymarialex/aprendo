@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me gusta</title>
+    
+    <!-- Enlace a Google Fonts para "Poppins" (sustituto moderno de Platform Medium) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Script de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--
+    CONTROL DE CACHÉ (ANTI-DISEÑO ROTO)
+    Como todo el CSS y JS está integrado en este archivo, no hay enlaces externos que necesiten un parámetro
+    de versión. Si tuvieras un archivo externo llamado "styles.css", se vería así:
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    -->
+
+    <style>
+        /* Definición de colores y fuente personalizados */
+        :root {
+            --color-principal: #fc4b08; /* Naranja/Énfasis */
+            --color-texto: #121118;   /* Eerie Black */
+            --color-divisor: #ffa460; /* Línea de división */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: white;
+            color: var(--color-texto);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* Modificado: Se redujo el padding superior de 2rem a 1.5rem para moverlo "más arriba" */
+            padding: 1.5rem 1rem;
+        }
+
+        .container-content {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Clase base para la cuadrícula de vocabulario */
+        .vocab-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            /* Layout: 1 columna en móvil por defecto */
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
+        @media (min-width: 640px) {
+            /* 2 columnas en pantallas pequeñas (sm:) y superiores */
+            .vocab-grid.sm-two-col {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 768px) {
+            /* 3 columnas en pantallas medianas (md:) y superiores, solo si se usa la clase three-col */
+            .vocab-grid.three-col {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        /* Estilo para las negritas (el texto que venía entre asteriscos) */
+        strong {
+            font-weight: 700;
+            color: var(--color-texto);
+        }
+
+        /* Estilo para el divisor de grupos */
+        .group-divider {
+            height: 1px;
+            background-color: var(--color-divisor);
+            margin: 2rem 0;
+            width: 100%;
+        }
+
+        .vocab-item {
+            font-size: 1.125rem; /* text-lg */
+            padding: 0.5rem;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container-content">
+        <!-- Título principal -->
+        <h1 class="text-5xl font-extrabold mb-8 text-center" style="color: var(--color-principal);">
+            Me gusta
+        </h1>
+
+        <!-- Subtítulo -->
+        <h2 class="text-2xl font-semibold mb-8 border-b pb-2" style="color: var(--color-texto); border-color: var(--color-texto);">
+            I. Vocabulario / Vocabulary
+        </h2>
+
+        <!-- GRUPO 1: Se usa sm-two-col para 2 columnas en sm+ -->
+        <div class="vocab-grid sm-two-col">
+            <div class="vocab-item"><strong>Me gusta</strong> - I like</div>
+            <div class="vocab-item"><strong>No me gusta</strong> - I don´t like</div>
+        </div>
+
+        <!-- Divisor de grupo -->
+        <div class="group-divider"></div>
+
+        <!-- GRUPO 2 (Verbos): Se usa three-col para 3 columnas en md+ -->
+        <div class="vocab-grid three-col md:grid-cols-3">
+            <div class="vocab-item"><strong>Jugar</strong> - to play</div>
+            <div class="vocab-item"><strong>Cantar</strong> - to sing</div>
+            <div class="vocab-item"><strong>Dibujar</strong> - to draw</div>
+            
+            <div class="vocab-item"><strong>Comer</strong> - to eat</div>
+            <div class="vocab-item"><strong>Beber</strong> - to drink</div>
+            <div class="vocab-item"><strong>Leer</strong> - to read</div>
+        </div>
+        
+        <!-- Divisor de grupo -->
+        <div class="group-divider"></div>
+
+        <!-- GRUPO 3 (Sustantivos de Juego/Personas): Se usa three-col para 3 columnas en md+ -->
+        <div class="vocab-grid three-col md:grid-cols-3">
+            <div class="vocab-item"><strong>Fútbol</strong> - soccer</div>
+            <div class="vocab-item"><strong>Videojuegos</strong> - videogames</div>
+            <div class="vocab-item"><strong>Juguetes</strong> - toys</div>
+            
+            <div class="vocab-item"><strong>Tenis</strong> - tennis</div>
+            <div class="vocab-item"><strong>Amigos</strong> - friends</div>
+        </div>
+
+        <!-- Divisor de grupo -->
+        <div class="group-divider"></div>
+
+        <!-- GRUPO 4 (Preposiciones): Se usa sm-two-col para 2 columnas en sm+ -->
+        <div class="vocab-grid sm-two-col">
+            <div class="vocab-item"><strong>Con</strong> - with</div>
+            <div class="vocab-item"><strong>Sin</strong> - without</div>
+        </div>
+
+        <!-- Divisor de grupo -->
+        <div class="group-divider"></div>
+
+        <!-- GRUPO 5 (Comida/Bebida) - ORDEN ESTRICTO 2x2
+             *** MODIFICACIÓN CLAVE: Se usa sm-two-col, PERO SE ELIMINA three-col para forzar 2 columnas ***
+        -->
+        <div class="vocab-grid sm-two-col">
+            <!-- PRIMERA LÍNEA -->
+            <div class="vocab-item"><strong>Galletas</strong> - cookies</div>
+            <div class="vocab-item"><strong>Frutas</strong> - fruits</div>
+            
+            <!-- SEGUNDA LÍNEA -->
+            <div class="vocab-item"><strong>Leche</strong> - milk</div>
+            <div class="vocab-item"><strong>Jugo</strong> - juice</div>
+        </div>
+
+        <!-- Divisor de grupo -->
+        <div class="group-divider"></div>
+
+        <!-- GRUPO 6 (Lectura): Se usa sm-two-col para 2 columnas en sm+ -->
+        <div class="vocab-grid sm-two-col">
+            <div class="vocab-item"><strong>Libros</strong> - books</div>
+            <div class="vocab-item"><strong>Cuentos</strong> - Stories</div>
+        </div>
+        
+        <!-- Nota: No se añade información extra o pie de página. -->
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Game</title>
+    
+    <!-- Enlace a Google Fonts para "Poppins" (sustituto robusto y moderno para Platform Medium Font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Script de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Definición de colores y fuente personalizados */
+        :root {
+            --color-principal: #fc4b08; /* Naranja/Énfasis */
+            --color-texto: #121118;   /* Eerie Black */
+            --color-btn-inicial: #ffa460;
+            --color-verde-claro: #d1f7d1;
+            --color-rojo-claro: #f7d1d1;
+            --color-texto-blanco: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            color: var(--color-texto);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container-content {
+            max-width: 700px;
+            width: 100%;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        /* Estilo base para los botones de vocabulario */
+        .word-btn {
+            background-color: var(--color-btn-inicial);
+            color: var(--color-texto-blanco);
+            font-weight: 600;
+            padding: 0.75rem 0.5rem; /* Ajuste para botones pequeños */
+            border-radius: 0.5rem;
+            border-bottom: 4px solid var(--color-principal); /* Borde inferior naranja */
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        /* Efecto al pasar el mouse */
+        .word-btn:hover:not(.correct, .selected) {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        /* Estilo para botón seleccionado */
+        .word-btn.selected {
+            border-bottom: 4px solid var(--color-texto); 
+            transform: translateY(1px);
+        }
+
+        /* Estilo para botón emparejado correctamente */
+        .word-btn.correct {
+            background-color: var(--color-verde-claro);
+            color: var(--color-texto);
+            border-bottom-color: #008000; /* Verde oscuro */
+            pointer-events: none; /* Deshabilitar clics */
+        }
+        
+        /* Estilo para el botón de navegación del nivel activo */
+        .level-nav-btn {
+            background-color: #f0f0f0;
+            color: var(--color-texto);
+            transition: all 0.2s ease;
+        }
+
+        .level-nav-btn.active {
+            background-color: var(--color-principal);
+            color: white;
+            box-shadow: 0 4px 6px rgba(252, 75, 8, 0.4);
+        }
+
+        /* Contenedor del juego (Grid de 2 columnas para contener los divs de idioma) */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem; /* Aumentado ligeramente para separar las columnas de botones */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container-content">
+        <!-- Título principal -->
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-1" style="color: var(--color-principal);">
+            Matching game
+        </h1>
+        <!-- Subtítulo -->
+        <p class="text-xl font-medium mb-6" style="color: var(--color-texto);">
+            test your memory
+        </p>
+
+        <!-- Navegación de Niveles -->
+        <div id="level-nav" class="flex justify-center space-x-2 sm:space-x-4 mb-6">
+            <button class="level-nav-btn py-2 px-4 rounded-full text-sm font-semibold transition duration-200" data-level="1" onclick="loadLevel(1)">Nivel 1</button>
+            <button class="level-nav-btn py-2 px-4 rounded-full text-sm font-semibold transition duration-200" data-level="2" onclick="loadLevel(2)">Nivel 2</button>
+            <button class="level-nav-btn py-2 px-4 rounded-full text-sm font-semibold transition duration-200" data-level="3" onclick="loadLevel(3)">Nivel 3</button>
+            <button class="level-nav-btn py-2 px-4 rounded-full text-sm font-semibold transition duration-200" data-level="4" onclick="loadLevel(4)">Nivel 4</button>
+        </div>
+
+        <!-- Mensaje de Estado -->
+        <div id="status-message" class="h-8 mb-4 text-center font-bold text-lg" style="color: var(--color-texto);"></div>
+
+        <!-- Contenedor del Juego -->
+        <div id="game-board" class="game-grid">
+            <!-- Los botones se insertarán aquí con JavaScript en dos columnas separadas. -->
+        </div>
+    </div>
+
+    <script>
+        // Array de datos para todos los niveles
+        const GAME_DATA = [
+            // Nivel 1 (5 pares)
+            [
+                { es: "Me gusta", en: "I like" },
+                { es: "No me gusta", en: "I don´t like" },
+                { es: "Jugar", en: "to play" },
+                { es: "Cantar", en: "to sing" },
+                { es: "Dibujar", en: "to draw" } 
+            ],
+            // Nivel 2 (5 pares)
+            [
+                { es: "Comer", en: "to eat" },
+                { es: "Beber", en: "to drink" },
+                { es: "Leer", en: "to read" },
+                { es: "Fútbol", en: "soccer" },
+                { es: "Videojuegos", en: "videogames" }
+            ],
+            // Nivel 3 (5 pares)
+            [
+                { es: "Juguetes", en: "toys" },
+                { es: "Tenis", en: "tennis" },
+                { es: "Amigos", en: "friends" },
+                { es: "Con", en: "with" },
+                { es: "Sin", en: "without" }
+            ],
+            // Nivel 4 (6 pares)
+            [
+                { es: "Galletas", en: "cookies" },
+                { es: "Frutas", en: "fruits" },
+                { es: "Leche", en: "milk" },
+                { es: "Jugo", en: "juice" },
+                { es: "Libros", en: "books" },
+                { es: "Cuentos", en: "Stories" }
+            ]
+        ];
+
+        // Variables de estado del juego
+        let currentLevel = 1;
+        let selectedButton = null;
+        let awaitingSecondSelection = false;
+        let matchesFound = 0;
+        let totalMatches = 0;
+
+        const board = document.getElementById('game-board');
+        const statusMessage = document.getElementById('status-message');
+        const INITIAL_BTN_COLOR = 'var(--color-btn-inicial)';
+        const LIGHT_RED = 'var(--color-rojo-claro)';
+        const LIGHT_GREEN = 'var(--color-verde-claro)';
+
+        /**
+         * Mezcla los elementos de un array.
+         * @param {Array} array El array a mezclar.
+         * @returns {Array} El array mezclado.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        /**
+         * Renderiza el tablero para un nivel específico, separando los idiomas en dos columnas.
+         * @param {number} level El número del nivel (1 a 4).
+         */
+        function loadLevel(level) {
+            // Asegurar que el nivel esté dentro del rango
+            if (level < 1 || level > 4) return;
+            
+            currentLevel = level;
+            selectedButton = null;
+            awaitingSecondSelection = false;
+            matchesFound = 0;
+            board.innerHTML = ''; // Limpiar tablero
+            statusMessage.textContent = ''; // Limpiar mensaje de estado al cargar
+            
+            const levelData = GAME_DATA[level - 1];
+            totalMatches = levelData.length;
+
+            // 1. Inicializar listas de palabras por idioma
+            let spanishWords = [];
+            let englishWords = [];
+            levelData.forEach((pair, index) => {
+                const matchId = index + 1; // ID único para el par
+                spanishWords.push({ text: pair.es, lang: 'es', id: matchId });
+                englishWords.push({ text: pair.en, lang: 'en', id: matchId });
+            });
+
+            // 2. Mezclar ambas listas de palabras de forma independiente
+            spanishWords = shuffleArray(spanishWords);
+            englishWords = shuffleArray(englishWords);
+
+            // 3. Crear los contenedores de columna
+            const spanishCol = document.createElement('div');
+            // Usar flex-col para apilar los botones verticalmente
+            spanishCol.className = 'flex flex-col space-y-2'; 
+            
+            const englishCol = document.createElement('div');
+            // Usar flex-col para apilar los botones verticalmente
+            englishCol.className = 'flex flex-col space-y-2'; 
+            
+            // 4. Función auxiliar para crear y configurar botones
+            const createButton = (wordData) => {
+                const button = document.createElement('button');
+                button.className = 'word-btn';
+                button.textContent = wordData.text;
+                button.dataset.matchId = wordData.id;
+                button.dataset.lang = wordData.lang;
+                button.onclick = () => handleButtonClick(button);
+                return button;
+            };
+
+            // 5. Rellenar las columnas con los botones
+            spanishWords.forEach(wordData => {
+                spanishCol.appendChild(createButton(wordData));
+            });
+            
+            englishWords.forEach(wordData => {
+                englishCol.appendChild(createButton(wordData));
+            });
+            
+            // 6. Añadir las columnas al tablero principal (el 'game-grid' las colocará en 2 columnas)
+            board.appendChild(spanishCol);
+            board.appendChild(englishCol);
+
+            // 7. Resaltar el botón del nivel activo
+            document.querySelectorAll('.level-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.level) === level) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 8. El mensaje de estado inicial queda vacío (según solicitud)
+        }
+
+        /**
+         * Maneja el clic en un botón de vocabulario.
+         * @param {HTMLElement} clickedButton El botón que fue presionado.
+         */
+        function handleButtonClick(clickedButton) {
+            // No hacer nada si el juego está esperando una verificación o el botón ya está emparejado
+            if (awaitingSecondSelection || clickedButton.classList.contains('correct')) {
+                return;
+            }
+
+            // --- Primer Clic ---
+            if (selectedButton === null) {
+                selectedButton = clickedButton;
+                selectedButton.classList.add('selected');
+                statusMessage.textContent = ''; // Mensaje vacío después del primer clic (según solicitud)
+                return;
+            }
+
+            // --- Segundo Clic ---
+            // Si el segundo clic es el mismo botón, deseleccionar
+            if (selectedButton === clickedButton) {
+                selectedButton.classList.remove('selected');
+                selectedButton = null;
+                statusMessage.textContent = ''; // Limpio si se deselecciona
+                return;
+            }
+
+            awaitingSecondSelection = true;
+            clickedButton.classList.add('selected');
+            
+            const firstMatchId = selectedButton.dataset.matchId;
+            const secondMatchId = clickedButton.dataset.matchId;
+
+            // Verificar que no se seleccione dos palabras del mismo idioma
+            if (selectedButton.dataset.lang === clickedButton.dataset.lang) {
+                 statusMessage.textContent = 'Error: ¡Debes seleccionar un idioma diferente!';
+                 handleIncorrectMatch(selectedButton, clickedButton);
+                 return;
+            }
+
+            // Verificar si hay coincidencia
+            if (firstMatchId === secondMatchId) {
+                // Coincidencia Correcta
+                statusMessage.textContent = '¡Correcto!';
+                
+                selectedButton.classList.remove('selected');
+                selectedButton.classList.add('correct');
+                
+                clickedButton.classList.remove('selected');
+                clickedButton.classList.add('correct');
+
+                matchesFound++;
+
+                if (matchesFound === totalMatches) {
+                    statusMessage.textContent = `¡excelente!`;
+                }
+
+                // Restablecer el estado
+                selectedButton = null;
+                awaitingSecondSelection = false;
+
+            } else {
+                // Coincidencia Incorrecta
+                statusMessage.textContent = 'Incorrecto';
+                handleIncorrectMatch(selectedButton, clickedButton);
+            }
+        }
+
+        /**
+         * Maneja la lógica para un emparejamiento incorrecto.
+         * @param {HTMLElement} btn1 Botón 1 seleccionado.
+         * @param {HTMLElement} btn2 Botón 2 seleccionado.
+         */
+        function handleIncorrectMatch(btn1, btn2) {
+            // 1. Mostrar color rojo
+            btn1.style.backgroundColor = LIGHT_RED;
+            btn2.style.backgroundColor = LIGHT_RED;
+
+            // 2. Esperar 800ms
+            setTimeout(() => {
+                // 3. Volver al color original y deseleccionar
+                btn1.style.backgroundColor = INITIAL_BTN_COLOR;
+                btn2.style.backgroundColor = INITIAL_BTN_COLOR;
+                
+                btn1.classList.remove('selected');
+                btn2.classList.remove('selected');
+
+                // 4. Restablecer el estado del juego
+                selectedButton = null;
+                awaitingSecondSelection = false;
+                statusMessage.textContent = ''; // Mensaje vacío (según solicitud)
+            }, 800);
+        }
+
+        // Iniciar el juego automáticamente en el Nivel 1 al cargar
+        window.onload = () => loadLevel(1);
+
+    </script>
+
+</body>
+</html>

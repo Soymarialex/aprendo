@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades / Activities</title>
+    
+    <!-- Enlace a Google Fonts para "Poppins" (sustituto moderno de Platform Medium) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Script de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--
+    CONTROL DE CACHÉ (ANTI-DISEÑO ROTO)
+    Como todo el CSS y JS está integrado en este archivo, no hay enlaces externos que necesiten un parámetro
+    de versión. Si existiera un archivo externo de estilos, la ruta relativa sería:
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    -->
+
+    <style>
+        /* Definición de colores y fuente personalizados */
+        :root {
+            --color-principal: #fc4b08; /* Naranja/Énfasis */
+            --color-texto: #121118;   /* Eerie Black */
+            --color-divisor: #ffa460; /* Línea de división */
+            --color-verde-claro: #d1f7d1;
+            --color-rojo-claro: #f7d1d1;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: white;
+            color: var(--color-texto);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 1.5rem 1rem;
+        }
+
+        .container-content {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        /* Estilo para las negritas, sin necesidad de asteriscos */
+        strong {
+            font-weight: 700;
+            color: var(--color-texto);
+        }
+
+        /* Estilo para el divisor de grupos */
+        .group-divider {
+            height: 1px;
+            background-color: var(--color-divisor);
+            margin: 2rem 0;
+            width: 100%;
+        }
+
+        /* Estilo para el input de completación */
+        .completion-input {
+            border: 1px solid #ccc;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            min-width: 150px;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-content">
+        <!-- Título principal -->
+        <h1 class="text-5xl font-extrabold mb-8 text-center" style="color: var(--color-principal);">
+            Actividades / Activities
+        </h1>
+
+        <!-- ########################################## -->
+        <!-- II. SELECCIÓN MÚLTIPLE -->
+        <!-- ########################################## -->
+        <h2 class="text-2xl font-semibold mb-6 pt-4 border-b pb-2" style="color: var(--color-texto); border-color: var(--color-texto);">
+            II. Observa las imágenes selecciona la oración correcta correspondiente a cada imagen. / Look at the pictures and select the correct sentence corresponding to each picture.
+        </h2>
+
+        <div id="activity-ii-container" class="space-y-8">
+            <!-- Pregunta 1: Fútbol -->
+            <div class="p-4 rounded-lg border border-gray-200">
+                <p class="text-lg font-bold mb-3">1.</p>
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/UNhQn0W.jpeg" alt="Niño jugando fútbol" 
+                     class="w-40 h-40 object-cover rounded-lg mb-4 shadow-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <div class="space-y-2">
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="1" data-answer="A">A) Me gusta cantar</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="1" data-answer="B">B) Me gusta jugar fútbol</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="1" data-answer="C">C) Me gusta leer</button>
+                </div>
+            </div>
+
+            <!-- Pregunta 2: Galletas -->
+            <div class="p-4 rounded-lg border border-gray-200">
+                <p class="text-lg font-bold mb-3">2.</p>
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/1pFTj7X.jpeg" alt="Persona comiendo galletas" 
+                     class="w-40 h-40 object-cover rounded-lg mb-4 shadow-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <div class="space-y-2">
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="2" data-answer="A">A) Me gusta comer galletas</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="2" data-answer="B">B) Me gusta beber jugo</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="2" data-answer="C">C) Me gusta leer</button>
+                </div>
+            </div>
+
+            <!-- Pregunta 3: Amigos -->
+            <div class="p-4 rounded-lg border border-gray-200">
+                <p class="text-lg font-bold mb-3">3.</p>
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/gXnjsfO.jpeg" alt="Amigos compartiendo" 
+                     class="w-40 h-40 object-cover rounded-lg mb-4 shadow-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <div class="space-y-2">
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="3" data-answer="A">A) Me gusta jugar tenis</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="3" data-answer="B">B) Me gusta jugar con mis amigos</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="3" data-answer="C">C) Me gusta cantar</button>
+                </div>
+            </div>
+
+            <!-- Pregunta 4: Jugo -->
+            <div class="p-4 rounded-lg border border-gray-200">
+                <p class="text-lg font-bold mb-3">4.</p>
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/ykZ3xv7.jpeg" alt="Vaso de jugo" 
+                     class="w-40 h-40 object-cover rounded-lg mb-4 shadow-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <div class="space-y-2">
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="4" data-answer="A">A) Me gusta comer frutas</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="4" data-answer="B">B) Me gusta jugar videojuegos</button>
+                    <button class="w-full text-left p-3 rounded-md transition duration-200 bg-gray-100 hover:bg-gray-200 selection-btn" data-question="4" data-answer="C">C) Me gusta beber jugo</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="group-divider"></div>
+
+        <!-- ########################################## -->
+        <!-- III. COMPLETACIÓN -->
+        <!-- ########################################## -->
+        <h2 class="text-2xl font-semibold mb-6 pt-4 border-b pb-2" style="color: var(--color-texto); border-color: var(--color-texto);">
+            III. Observa las imágenes y completa las oraciones. / Observe the pictures and fill in the sentences.
+        </h2>
+
+        <div id="activity-iii-container" class="space-y-8">
+            <!-- Pregunta 1: Leer -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/dQJUCw4.jpeg" alt="Persona leyendo un libro" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">1. Me gusta 
+                    <input type="text" id="comp-1" class="completion-input" placeholder="..." data-correct-answer="Leer" /> libros.
+                </p>
+            </div>
+
+            <!-- Pregunta 2: Cantar -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/V4fdcct.jpeg" alt="Persona cantando en un micrófono" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">2. Me gusta 
+                    <input type="text" id="comp-2" class="completion-input" placeholder="..." data-correct-answer="Cantar" />.
+                </p>
+            </div>
+
+            <!-- Pregunta 3: Dibujar -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/2Q6ublC.jpeg" alt="Persona dibujando" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">3. Me gusta 
+                    <input type="text" id="comp-3" class="completion-input" placeholder="..." data-correct-answer="Dibujar" />.
+                </p>
+            </div>
+            
+            <!-- Pregunta 4: Jugar videojuegos -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/KVu4UnI.jpeg" alt="Persona jugando videojuegos" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">4. Me gusta 
+                    <input type="text" id="comp-4" class="completion-input" placeholder="..." data-correct-answer="Jugar videojuegos" />.
+                </p>
+            </div>
+
+            <!-- Pregunta 5: Jugar tenis -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/iumMZAj.jpeg" alt="Persona jugando tenis" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">5. Me gusta 
+                    <input type="text" id="comp-5" class="completion-input" placeholder="..." data-correct-answer="Jugar tenis" />.
+                </p>
+            </div>
+
+            <!-- Pregunta 6: Gusta comer frutas -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/hFMT0Tf.jpeg" alt="Persona comiendo frutas" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">6. Me 
+                    <input type="text" id="comp-6" class="completion-input" placeholder="..." data-correct-answer="Gusta comer frutas" />.
+                </p>
+            </div>
+
+            <!-- Pregunta 7: Me gusta beber -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-lg border border-gray-200">
+                <!-- ENLACE CORREGIDO -->
+                <img src="https://i.imgur.com/ud6xFJD.jpeg" alt="Vaso de leche" 
+                     class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0"
+                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/cccccc/333333?text=Imagen+No+Cargada'">
+                <p class="text-lg">7. 
+                    <input type="text" id="comp-7" class="completion-input" placeholder="..." data-correct-answer="Me gusta beber" /> leche.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="group-divider"></div>
+        
+        <!-- ########################################## -->
+        <!-- IV. RESPUESTAS CORRECTAS -->
+        <!-- ########################################## -->
+
+        <button 
+            id="toggle-answers-btn" 
+            class="w-full py-3 px-6 rounded-lg font-bold text-white shadow-lg transition duration-300 transform hover:scale-[1.01] mb-6"
+            style="background-color: var(--color-principal);"
+        >
+            IV. Respuestas correctas / Correct Answers
+        </button>
+
+        <div id="correct-answers-section" class="hidden p-6 rounded-lg border-2" style="border-color: var(--color-principal);">
+            <h3 class="text-xl font-bold mb-4" style="color: var(--color-principal);">Respuestas Clave</h3>
+
+            <h4 class="text-lg font-semibold mb-2">II. Observa las imagenes selecciona la oración correcta...</h4>
+            <ul class="list-disc ml-6 space-y-1 mb-4">
+                <li>1. B</li>
+                <li>2. A</li>
+                <li>3. B</li>
+                <li>4. C</li>
+            </ul>
+
+            <h4 class="text-lg font-semibold mb-2">III. Observa las imágenes y completa las oraciones.</h4>
+            <ul class="list-disc ml-6 space-y-1">
+                <li>1. Leer</li>
+                <li>2. Cantar</li>
+                <li>3. Dibujar</li>
+                <li>4. Jugar videojuegos</li>
+                <li>5. Jugar tenis</li>
+                <li>6. Gusta comer frutas</li>
+                <li>7. Me gusta beber</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Objeto con las respuestas correctas para la validación de Selección Múltiple
+        const CORRECT_ANSWERS_II = {
+            '1': 'B',
+            '2': 'A',
+            '3': 'B',
+            '4': 'C'
+        };
+
+        // Objeto con las respuestas correctas para la validación de Completación
+        // Se normalizan a minúsculas y sin espacios extra para facilitar la comparación
+        const CORRECT_ANSWERS_III = {
+            'comp-1': 'leer',
+            'comp-2': 'cantar',
+            'comp-3': 'dibujar',
+            'comp-4': 'jugar videojuegos',
+            'comp-5': 'jugar tenis',
+            'comp-6': 'gusta comer frutas',
+            'comp-7': 'me gusta beber'
+        };
+
+        const LIGHT_GREEN = 'var(--color-verde-claro)';
+        const LIGHT_RED = 'var(--color-rojo-claro)';
+        const DEFAULT_COLOR = '#f3f4f6'; // Tailwind gray-100
+
+        // ##########################################
+        // Lógica para Actividad II (Selección Múltiple)
+        // ##########################################
+        document.querySelectorAll('.selection-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const questionId = this.dataset.question;
+                const selectedAnswer = this.dataset.answer;
+                const isCorrect = CORRECT_ANSWERS_II[questionId] === selectedAnswer;
+
+                // 1. Resetear el color de todos los botones de la misma pregunta
+                const buttonsInGroup = document.querySelectorAll(`.selection-btn[data-question="${questionId}"]`);
+                buttonsInGroup.forEach(btn => {
+                    btn.style.backgroundColor = DEFAULT_COLOR;
+                });
+
+                // 2. Aplicar el color de feedback solo al botón presionado
+                if (isCorrect) {
+                    this.style.backgroundColor = LIGHT_GREEN;
+                } else {
+                    this.style.backgroundColor = LIGHT_RED;
+                }
+            });
+        });
+
+        // ##########################################
+        // Lógica para Actividad III (Completación)
+        // ##########################################
+        const inputs = document.querySelectorAll('.completion-input');
+        const inputIds = Array.from(inputs).map(input => input.id);
+
+        inputs.forEach(input => {
+            input.addEventListener('keypress', function(event) {
+                // Verificar si se presionó la tecla Enter (keyCode 13)
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Previene el salto de línea o envío de formulario
+                    
+                    const inputId = this.id;
+                    const userAnswer = this.value.trim().toLowerCase();
+                    const correctAnswer = CORRECT_ANSWERS_III[inputId];
+
+                    // 1. Verificar la respuesta y aplicar color
+                    if (userAnswer === correctAnswer) {
+                        this.style.backgroundColor = LIGHT_GREEN;
+                        this.setAttribute('disabled', 'true'); // Opcional: Deshabilita si es correcta
+                    } else {
+                        this.style.backgroundColor = LIGHT_RED;
+                    }
+
+                    // 2. Saltar al siguiente input
+                    const currentIndex = inputIds.indexOf(inputId);
+                    const nextIndex = currentIndex + 1;
+
+                    if (nextIndex < inputIds.length) {
+                        // Mover el foco al siguiente input
+                        document.getElementById(inputIds[nextIndex]).focus();
+                    }
+                }
+            });
+        });
+
+        // ##########################################
+        // Lógica para el botón de Respuestas Correctas
+        // ##########################################
+        document.getElementById('toggle-answers-btn').addEventListener('click', function() {
+            const answersSection = document.getElementById('correct-answers-section');
+            answersSection.classList.toggle('hidden');
+        });
+
+    </script>
+
+</body>
+</html>
