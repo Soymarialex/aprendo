@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>la letra M-m - The letter M-m</title>
+    <!-- Anti-Caché v1.8 -->
+    <link rel="stylesheet" href="style.css?v=1.8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Importamos Andika para la tipografía de trazado (a circular y diseño limpio) */
+        @import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
+        @import url('https://fonts.cdnfonts.com/css/platform-medium');
+
+        :root {
+            --primary: #fc4b08;
+            --eerie-black: #121118;
+            --light-gray: #e2e8f0;
+            --bubble-blue: #bae6fd;
+            --bubble-border: #0ea5e9;
+        }
+
+        body {
+            font-family: 'Platform Medium', sans-serif;
+            background-color: white;
+            color: var(--eerie-black);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            touch-action: manipulation;
+        }
+
+        /* Card Flip Logic */
+        .card-container {
+            perspective: 1000px;
+            width: 250px;
+            height: 350px;
+            cursor: pointer;
+        }
+
+        .card-vocab-container {
+            perspective: 1000px;
+            width: 160px;
+            height: 220px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            border: 4px solid var(--primary);
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Bubbles Activity */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--bubble-blue);
+            border: 2px solid var(--bubble-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: inset -5px -5px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Canvas Tracing */
+        #tracing-canvas {
+            border: 2px dashed #cbd5e1;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lIHgxPSIwIiB5MT0iNTAlIiB4Mj0iMTAwJSIgeTI9IjUwJSIgc3Ryb2tlPSIjZTNlM2UzIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjUsNSIvPjwvc3ZnPg==');
+            touch-action: none;
+        }
+
+        /* Tipografía de guía para trazado con 'a' circular */
+        #trace-guide {
+            font-family: 'Andika', sans-serif;
+            pointer-events: none;
+            user-select: none;
+            color: #e2e8f0;
+            opacity: 0.6;
+        }
+
+        .nav-arrow {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            color: var(--primary);
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            z-index: 50;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
+            40% {transform: translateX(-10px);}
+            60% {transform: translateX(-5px);}
+        }
+
+        .hidden { display: none; }
+
+        .feedback-success {
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #drag-m {
+            touch-action: none;
+            user-select: none;
+            z-index: 10;
+        }
+        
+        .match-btn {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        /* End Screen Overlay */
+        .overlay-full {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Activity 1 -->
+    <div id="activity-1" class="activity flex flex-col items-center">
+        <h1 class="text-3xl mb-8 font-bold text-[#121118]">la letra M-m - The letter M-m</h1>
+        <div class="card-container" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <span class="text-9xl font-bold text-[#fc4b08]">m</span>
+                </div>
+                <div class="card-back">
+                    <span class="text-9xl">🐒</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity 2 -->
+    <div id="activity-2" class="activity hidden flex flex-col items-center">
+        <h2 class="text-2xl mb-8 text-[#121118]">Drag the letter "m" onto "el mono"</h2>
+        <div class="flex flex-col items-center gap-10 relative w-full max-w-lg h-96">
+            <div id="drop-mono" class="w-48 h-48 border-4 border-dashed border-gray-300 rounded-full flex items-center justify-center text-8xl bg-gray-50 transition-all duration-300 relative absolute top-0 left-1/2 -translate-x-1/2">
+                🐒
+                <div id="success-overlay" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/90 rounded-full border-4 border-green-500 feedback-success">
+                    <span class="text-6xl">✅</span>
+                    <span class="text-xl font-bold text-green-600">Correct!</span>
+                </div>
+            </div>
+            
+            <div id="drag-m" draggable="true" ondragstart="drag(event)" class="w-32 h-32 border-4 border-[#fc4b08] rounded-xl flex items-center justify-center text-6xl cursor-move bg-white shadow-lg font-bold text-[#fc4b08] absolute bottom-0 left-1/2 -translate-x-1/2">
+                m
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity 3 -->
+    <div id="activity-3" class="activity hidden flex flex-col items-center w-full max-w-2xl h-[400px] relative overflow-hidden border-2 border-orange-100 rounded-2xl bg-orange-50/30">
+        <h2 class="text-xl mb-4 z-10 p-4 bg-white/80 rounded-full shadow-sm mt-4 text-[#121118]">Tap on the letter m every time you see it</h2>
+        <div id="bubble-container" class="w-full h-full relative"></div>
+    </div>
+
+    <!-- Activity 4 -->
+    <div id="activity-4" class="activity hidden flex flex-col items-center">
+        <h2 class="text-2xl mb-8 text-[#121118]">Tap the cards to see the word</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="card-vocab-container" onclick="flipVocabCard(this, 'manzana')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span class="text-6xl">🍎</span>
+                    </div>
+                    <div class="card-back">
+                        <span class="text-xl font-bold text-[#fc4b08]">man-za-na</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-vocab-container" onclick="flipVocabCard(this, 'mango')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span class="text-6xl">🥭</span>
+                    </div>
+                    <div class="card-back">
+                        <span class="text-xl font-bold text-[#fc4b08]">man-go</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-vocab-container" onclick="flipVocabCard(this, 'mono')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span class="text-6xl">🐒</span>
+                    </div>
+                    <div class="card-back">
+                        <span class="text-xl font-bold text-[#fc4b08]">mo-no</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-vocab-container" onclick="flipVocabCard(this, 'mariposa')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span class="text-6xl">🦋</span>
+                    </div>
+                    <div class="card-back">
+                        <span class="text-xl font-bold text-[#fc4b08]">ma-ri-po-sa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity 5 -->
+    <div id="activity-5" class="activity hidden flex flex-col items-center w-full max-w-xl">
+        <h2 class="text-2xl mb-8 text-[#121118]">Match the emoji with its word</h2>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4 w-full">
+            <div class="flex flex-col gap-4">
+                <div id="e-manzana" onclick="selectMatch('emoji', 'manzana', this)" class="match-btn p-4 border-2 rounded-xl text-4xl cursor-pointer hover:bg-orange-50 bg-white shadow-sm">🍎</div>
+                <div id="e-mango" onclick="selectMatch('emoji', 'mango', this)" class="match-btn p-4 border-2 rounded-xl text-4xl cursor-pointer hover:bg-orange-50 bg-white shadow-sm">🥭</div>
+                <div id="e-mono" onclick="selectMatch('emoji', 'mono', this)" class="match-btn p-4 border-2 rounded-xl text-4xl cursor-pointer hover:bg-orange-50 bg-white shadow-sm">🐒</div>
+                <div id="e-mariposa" onclick="selectMatch('emoji', 'mariposa', this)" class="match-btn p-4 border-2 rounded-xl text-4xl cursor-pointer hover:bg-orange-50 bg-white shadow-sm">🦋</div>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div id="w-mango" onclick="selectMatch('word', 'mango', this)" class="match-btn p-4 border-2 rounded-xl text-xl font-bold cursor-pointer hover:bg-orange-50 bg-white shadow-sm">mango</div>
+                <div id="w-mariposa" onclick="selectMatch('word', 'mariposa', this)" class="match-btn p-4 border-2 rounded-xl text-xl font-bold cursor-pointer hover:bg-orange-50 bg-white shadow-sm">mariposa</div>
+                <div id="w-manzana" onclick="selectMatch('word', 'manzana', this)" class="match-btn p-4 border-2 rounded-xl text-xl font-bold cursor-pointer hover:bg-orange-50 bg-white shadow-sm">manzana</div>
+                <div id="w-mono" onclick="selectMatch('word', 'mono', this)" class="match-btn p-4 border-2 rounded-xl text-xl font-bold cursor-pointer hover:bg-orange-50 bg-white shadow-sm">mono</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity 6 -->
+    <div id="activity-6" class="activity hidden flex flex-col items-center w-full">
+        <h2 id="trace-title" class="text-2xl mb-4 text-[#fc4b08] font-bold">Trace the letter M</h2>
+        <div class="relative">
+            <canvas id="tracing-canvas" width="400" height="300" class="rounded-xl shadow-inner cursor-crosshair"></canvas>
+            <div id="trace-guide" class="absolute inset-0 flex items-center justify-center text-[120px] sm:text-[160px]">M</div>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="clearCanvas()" class="mt-4 px-6 py-2 border-2 border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50">Limpiar</button>
+            <button id="next-trace-btn" onclick="nextTrace()" class="mt-4 bg-[#fc4b08] text-white px-8 py-3 rounded-full font-bold hidden">Siguiente</button>
+        </div>
+    </div>
+
+    <!-- Final Choice Overlay -->
+    <div id="final-choice" class="overlay-full hidden">
+        <h2 class="text-4xl font-bold text-[#fc4b08] mb-4">Great job!</h2>
+        <p class="text-2xl text-[#121118] mb-8">Do you want to start again?</p>
+        <div class="flex gap-6">
+            <button onclick="restartApp()" class="px-10 py-4 bg-green-500 text-white text-2xl font-bold rounded-2xl shadow-lg hover:scale-105 transition-transform">Sí</button>
+            <button onclick="finishApp()" class="px-10 py-4 bg-red-500 text-white text-2xl font-bold rounded-2xl shadow-lg hover:scale-105 transition-transform">No</button>
+        </div>
+    </div>
+
+    <!-- Goodbye Screen -->
+    <div id="goodbye-screen" class="overlay-full hidden">
+        <span class="text-9xl mb-6">👋</span>
+        <h2 class="text-6xl font-bold text-[#fc4b08]">Adiós</h2>
+    </div>
+
+    <!-- Navigation Arrow -->
+    <div id="nav-next" class="nav-arrow" onclick="nextActivity()">➜</div>
+
+    <script>
+        let currentActivity = 1;
+        let selectedEmoji = null;
+        let selectedWord = null;
+        let traceIndex = 0;
+        const traceItems = ['M', 'm', 'manzana', 'mango', 'mono', 'mariposa'];
+        const synth = window.speechSynthesis;
+
+        function speak(text, lang = 'en-US', callback = null) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = 0.9;
+            if (callback) utterance.onend = callback;
+            synth.speak(utterance);
+        }
+
+        function nextActivity() {
+            document.getElementById(`activity-${currentActivity}`).classList.add('hidden');
+            currentActivity++;
+            if (currentActivity > 6) currentActivity = 1;
+            
+            const nextPanel = document.getElementById(`activity-${currentActivity}`);
+            nextPanel.classList.remove('hidden');
+
+            if (currentActivity === 1) {
+                document.getElementById('nav-next').classList.remove('hidden');
+            } else if (currentActivity === 2) {
+                speak('Drag the letter "m" onto "el mono"');
+                initTouchDrag();
+            } else if (currentActivity === 3) {
+                startBubbles();
+                speak("Tap on the letter m every time you see it");
+            } else if (currentActivity === 4) {
+                speak("Tap the cards to see the word");
+            } else if (currentActivity === 5) {
+                speak("Match the emoji with its word");
+            } else if (currentActivity === 6) {
+                initTracing();
+            }
+        }
+
+        function flipCard(el) {
+            const inner = el.querySelector('.card-inner');
+            const isFlipped = inner.style.transform === 'rotateY(180deg)';
+            inner.style.transform = isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+        }
+
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+
+        function initTouchDrag() {
+            const dragItem = document.getElementById('drag-m');
+            const dropTarget = document.getElementById('drop-mono');
+            const successOverlay = document.getElementById('success-overlay');
+            
+            let initialX, initialY, active = false;
+            dragItem.style.transform = 'translateX(-50%)';
+            dragItem.style.left = '50%';
+            dragItem.style.top = '';
+            dragItem.classList.remove('hidden');
+            successOverlay.classList.add('hidden');
+
+            dragItem.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                initialX = touch.clientX - dragItem.offsetLeft;
+                initialY = touch.clientY - dragItem.offsetTop;
+                active = true;
+                dragItem.style.zIndex = "100";
+            }, { passive: false });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!active) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                dragItem.style.left = (touch.clientX - initialX) + 'px';
+                dragItem.style.top = (touch.clientY - initialY) + 'px';
+                dragItem.style.transform = 'none';
+            }, { passive: false });
+
+            document.addEventListener('touchend', () => {
+                if (!active) return;
+                active = false;
+                const dragRect = dragItem.getBoundingClientRect();
+                const dropRect = dropTarget.getBoundingClientRect();
+                if (dragRect.left < dropRect.right && dragRect.right > dropRect.left &&
+                    dragRect.top < dropRect.bottom && dragRect.bottom > dropRect.top) {
+                    handleSuccess();
+                } else {
+                    dragItem.style.left = '50%';
+                    dragItem.style.top = '';
+                    dragItem.style.transform = 'translateX(-50%)';
+                }
+            });
+        }
+
+        function handleSuccess() {
+            document.getElementById("success-overlay").classList.remove('hidden');
+            document.getElementById('drag-m').classList.add('hidden');
+            speak("Great job!");
+        }
+
+        function startBubbles() {
+            const container = document.getElementById('bubble-container');
+            container.innerHTML = '';
+            const letters = ['a', 'b', 'm', 'c', 'm', 'd', 'm', 'e', 'm', 'f', 'm'];
+            letters.forEach((l) => {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble w-16 h-16 text-2xl font-bold text-sky-700';
+                bubble.innerText = l;
+                bubble.style.left = Math.random() * 80 + '%';
+                bubble.style.top = Math.random() * 80 + '%';
+                let dx = (Math.random() - 0.5) * 2;
+                let dy = (Math.random() - 0.5) * 2;
+                bubble.onclick = () => {
+                    if (l === 'm') {
+                        bubble.style.background = '#0ea5e9';
+                        bubble.style.color = 'white';
+                        speak("M", 'en-US');
+                    }
+                };
+                container.appendChild(bubble);
+                setInterval(() => {
+                    let left = parseFloat(bubble.style.left);
+                    let top = parseFloat(bubble.style.top);
+                    if (left < 0 || left > 90) dx *= -1;
+                    if (top < 0 || top > 90) dy *= -1;
+                    bubble.style.left = (left + dx) + '%';
+                    bubble.style.top = (top + dy) + '%';
+                }, 50);
+            });
+        }
+
+        function flipVocabCard(el, word) {
+            const inner = el.querySelector('.card-inner');
+            const isFlipped = inner.style.transform === 'rotateY(180deg)';
+            inner.style.transform = isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+            speak(word, 'es-ES');
+        }
+
+        function selectMatch(type, value, el) {
+            if (type === 'emoji') {
+                if (selectedEmoji) selectedEmoji.el.classList.remove('border-[#fc4b08]', 'bg-orange-100');
+                selectedEmoji = { value, el };
+                el.classList.add('border-[#fc4b08]', 'bg-orange-100');
+            } else {
+                if (selectedWord) selectedWord.el.classList.remove('border-[#fc4b08]', 'bg-orange-100');
+                selectedWord = { value, el };
+                el.classList.add('border-[#fc4b08]', 'bg-orange-100');
+            }
+            if (selectedEmoji && selectedWord) {
+                if (selectedEmoji.value === selectedWord.value) {
+                    selectedEmoji.el.style.visibility = 'hidden';
+                    selectedWord.el.style.visibility = 'hidden';
+                    speak(selectedEmoji.value, 'es-ES');
+                } else {
+                    selectedEmoji.el.classList.remove('border-[#fc4b08]', 'bg-orange-100');
+                    selectedWord.el.classList.remove('border-[#fc4b08]', 'bg-orange-100');
+                }
+                selectedEmoji = selectedWord = null;
+            }
+        }
+
+        let canvas, ctx, drawing = false;
+
+        function initTracing() {
+            canvas = document.getElementById('tracing-canvas');
+            ctx = canvas.getContext('2d');
+            ctx.lineWidth = 14;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#fc4b08';
+
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+            };
+
+            const startDraw = (e) => { 
+                drawing = true; 
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+                if(e.touches) e.preventDefault();
+            };
+
+            const moveDraw = (e) => {
+                if (!drawing) return;
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                if(e.touches) e.preventDefault();
+            };
+
+            const stopDraw = () => { 
+                if (!drawing) return;
+                drawing = false; 
+                document.getElementById('next-trace-btn').classList.remove('hidden');
+            };
+
+            canvas.onmousedown = startDraw;
+            canvas.onmousemove = moveDraw;
+            window.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', moveDraw, { passive: false });
+            canvas.addEventListener('touchend', stopDraw, { passive: false });
+
+            updateTraceContent();
+        }
+
+        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        function updateTraceContent() {
+            const item = traceItems[traceIndex];
+            const guide = document.getElementById('trace-guide');
+            const title = document.getElementById('trace-title');
+            guide.innerText = item;
+            
+            if (item.length > 5) {
+                guide.className = "absolute inset-0 flex items-center justify-center text-[50px] sm:text-[70px]";
+            } else if (item.length > 2) {
+                guide.className = "absolute inset-0 flex items-center justify-center text-[70px] sm:text-[100px]";
+            } else {
+                guide.className = "absolute inset-0 flex items-center justify-center text-[120px] sm:text-[160px]";
+            }
+
+            const instruction = `Trace the letter ${item}`;
+            title.innerText = instruction;
+            speak(instruction, 'en-US');
+            clearCanvas();
+        }
+
+        function nextTrace() {
+            const currentItem = traceItems[traceIndex];
+            if (currentItem === 'M' || currentItem === 'm') {
+                speak(currentItem, 'en-US');
+            } else {
+                speak(currentItem, 'es-ES');
+            }
+
+            traceIndex++;
+            if (traceIndex < traceItems.length) {
+                updateTraceContent();
+                document.getElementById('next-trace-btn').classList.add('hidden');
+            } else {
+                showFinalChoice();
+            }
+        }
+
+        function showFinalChoice() {
+            document.getElementById('nav-next').classList.add('hidden');
+            document.getElementById('final-choice').classList.remove('hidden');
+            speak("You have done a great job!", 'en-US', () => {
+                speak("Do you want to start again?", 'en-US');
+            });
+        }
+
+        function restartApp() {
+            traceIndex = 0;
+            currentActivity = 6; // Para que nextActivity() nos lleve a la 1
+            document.getElementById('final-choice').classList.add('hidden');
+            nextActivity();
+        }
+
+        function finishApp() {
+            document.getElementById('final-choice').classList.add('hidden');
+            document.getElementById('goodbye-screen').classList.remove('hidden');
+            speak("Adiós", "es-ES");
+        }
+    </script>
+</body>
+</html>
