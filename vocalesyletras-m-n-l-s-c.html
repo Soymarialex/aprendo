@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aprendizaje de Español</title>
-    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="stylesheet" href="style.css?v=1.3">
     <style>
+        /* Importamos una fuente que garantiza la 'a' escolar de un solo piso */
+        @import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
+
         :root {
             --flamingo-pink: #FF79AC;
             --eerie-black: #121118;
@@ -14,7 +17,8 @@
 
         body {
             margin: 0;
-            font-family: 'Platform Medium', sans-serif;
+            /* Forzamos Andika en todo el documento para la 'a' escolar */
+            font-family: 'Andika', sans-serif;
             background-color: var(--white);
             color: var(--eerie-black);
             display: flex;
@@ -22,19 +26,22 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
+            /* Característica de fuente para asegurar la 'a' de un piso si la fuente lo soporta */
+            font-variant-ligatures: none;
         }
 
         .container {
-            width: 90%;
+            width: 95%;
             max-width: 800px;
             text-align: center;
             position: relative;
+            padding: 20px 10px;
+            box-sizing: border-box;
         }
 
         .section {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
-            text-align: justify;
         }
 
         .section.active {
@@ -50,7 +57,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             margin: 20px 0;
         }
 
@@ -58,12 +65,14 @@
             background-color: var(--white);
             border: 2px solid var(--flamingo-pink);
             color: var(--eerie-black);
-            padding: 15px 25px;
-            font-size: 1.5rem;
+            padding: 12px 20px;
+            font-size: 1.4rem; /* Aumentado ligeramente para legibilidad */
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.3s ease;
             user-select: none;
+            touch-action: manipulation;
+            font-family: 'Andika', sans-serif;
         }
 
         .btn:active, .btn.selected {
@@ -73,72 +82,82 @@
 
         .nav-arrow {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            font-size: 3rem;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2.5rem;
             color: var(--flamingo-pink);
             cursor: pointer;
             transition: transform 0.2s;
             border: none;
             background: none;
+            z-index: 100;
         }
 
-        .nav-arrow:hover {
-            transform: translateX(10px);
-        }
-
-        /* Parte 4 Styles */
+        /* Parte 4 Styles - Optimización Móvil Extrema */
         .equation {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 15px 0;
-            gap: 10px;
-            font-size: 2.5rem; /* Emojis más grandes */
+            flex-wrap: wrap; 
+            margin: 20px 0;
+            gap: 5px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .equation span {
+            display: inline-block;
+            margin: 0 2px;
         }
 
         .word-btn {
             background-color: var(--white);
             border: 3px solid var(--eerie-black);
             font-weight: bold;
+            padding: 8px 12px;
+            font-size: 1.4rem;
         }
 
         .emoji-img {
-            width: 80px; /* Tamaño aumentado */
-            height: 80px;
+            width: 55px;
+            height: 55px;
             object-fit: contain;
+            vertical-align: middle;
         }
 
         /* Juego Matching */
         .match-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 10px;
         }
 
         .column {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
         }
 
         .match-item {
-            padding: 15px;
+            padding: 10px;
             border: 2px solid var(--flamingo-pink);
             cursor: pointer;
             text-align: center;
-            font-size: 2.5rem; /* Emojis y texto más grandes */
+            font-size: 2.2rem;
             border-radius: 10px;
             transition: all 0.2s;
-            min-height: 80px;
+            min-height: 75px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            background-color: var(--white);
+            font-family: 'Andika', sans-serif;
         }
 
         .match-item.word {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         .match-item.correct {
@@ -155,6 +174,16 @@
         .match-item.selected-active {
             background-color: var(--flamingo-pink);
             color: white;
+        }
+
+        /* Media Queries para móviles */
+        @media (max-width: 480px) {
+            .btn { font-size: 1.1rem; padding: 10px 14px; }
+            .equation { font-size: 1.2rem; gap: 3px; }
+            .word-btn { font-size: 1.2rem; padding: 6px 10px; }
+            .emoji-img { width: 45px; height: 45px; }
+            .match-item { font-size: 1.8rem; min-height: 65px; }
+            .match-item.word { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -186,50 +215,50 @@
     <!-- Parte 3 -->
     <div id="part3" class="section">
         <div class="grid">
-            <button class="btn" onclick="toggleColor(this)">MA ma</button>
-            <button class="btn" onclick="toggleColor(this)">ME me</button>
-            <button class="btn" onclick="toggleColor(this)">MI mi</button>
-            <button class="btn" onclick="toggleColor(this)">MO mo</button>
-            <button class="btn" onclick="toggleColor(this)">MU mu</button>
-            <button class="btn" onclick="toggleColor(this)">NA na</button>
-            <button class="btn" onclick="toggleColor(this)">NE ne</button>
-            <button class="btn" onclick="toggleColor(this)">NI ni</button>
-            <button class="btn" onclick="toggleColor(this)">NO no</button>
-            <button class="btn" onclick="toggleColor(this)">NU nu</button>
-            <button class="btn" onclick="toggleColor(this)">LA la</button>
-            <button class="btn" onclick="toggleColor(this)">LE le</button>
-            <button class="btn" onclick="toggleColor(this)">LI li</button>
-            <button class="btn" onclick="toggleColor(this)">LO lo</button>
-            <button class="btn" onclick="toggleColor(this)">LU lu</button>
-            <button class="btn" onclick="toggleColor(this)">SA sa</button>
-            <button class="btn" onclick="toggleColor(this)">SE se</button>
-            <button class="btn" onclick="toggleColor(this)">SI si</button>
-            <button class="btn" onclick="toggleColor(this)">SO so</button>
-            <button class="btn" onclick="toggleColor(this)">SU su</button>
-            <button class="btn" onclick="toggleColor(this)">CA ca</button>
-            <button class="btn" onclick="toggleColor(this)">CE ce</button>
-            <button class="btn" onclick="toggleColor(this)">CI ci</button>
-            <button class="btn" onclick="toggleColor(this)">CO co</button>
-            <button class="btn" onclick="toggleColor(this)">CU cu</button>
+            <button class="btn" onclick="toggleColor(this)">ma</button>
+            <button class="btn" onclick="toggleColor(this)">me</button>
+            <button class="btn" onclick="toggleColor(this)">mi</button>
+            <button class="btn" onclick="toggleColor(this)">mo</button>
+            <button class="btn" onclick="toggleColor(this)">mu</button>
+            <button class="btn" onclick="toggleColor(this)">na</button>
+            <button class="btn" onclick="toggleColor(this)">ne</button>
+            <button class="btn" onclick="toggleColor(this)">ni</button>
+            <button class="btn" onclick="toggleColor(this)">no</button>
+            <button class="btn" onclick="toggleColor(this)">nu</button>
+            <button class="btn" onclick="toggleColor(this)">la</button>
+            <button class="btn" onclick="toggleColor(this)">le</button>
+            <button class="btn" onclick="toggleColor(this)">li</button>
+            <button class="btn" onclick="toggleColor(this)">lo</button>
+            <button class="btn" onclick="toggleColor(this)">lu</button>
+            <button class="btn" onclick="toggleColor(this)">sa</button>
+            <button class="btn" onclick="toggleColor(this)">se</button>
+            <button class="btn" onclick="toggleColor(this)">si</button>
+            <button class="btn" onclick="toggleColor(this)">so</button>
+            <button class="btn" onclick="toggleColor(this)">su</button>
+            <button class="btn" onclick="toggleColor(this)">ca</button>
+            <button class="btn" onclick="toggleColor(this)">ce</button>
+            <button class="btn" onclick="toggleColor(this)">ci</button>
+            <button class="btn" onclick="toggleColor(this)">co</button>
+            <button class="btn" onclick="toggleColor(this)">cu</button>
         </div>
     </div>
 
     <!-- Parte 4 -->
     <div id="part4" class="section">
         <div class="equation">
-            <button class="btn" onclick="toggleColor(this)">M</button> + <button class="btn" onclick="toggleColor(this)">a</button> + <button class="btn" onclick="toggleColor(this)">n</button> + <button class="btn" onclick="toggleColor(this)">o</button> = <button class="btn word-btn" onclick="speak('mano')">mano</button> 🖐️
+            <button class="btn" onclick="toggleColor(this)">M</button><span>+</span><button class="btn" onclick="toggleColor(this)">a</button><span>+</span><button class="btn" onclick="toggleColor(this)">n</button><span>+</span><button class="btn" onclick="toggleColor(this)">o</button><span>=</span><button class="btn word-btn" onclick="speak('mano')">mano</button><span>🖐️</span>
         </div>
         <div class="equation">
-            <button class="btn" onclick="toggleColor(this)">M</button> + <button class="btn" onclick="toggleColor(this)">e</button> + <button class="btn" onclick="toggleColor(this)">s</button> + <button class="btn" onclick="toggleColor(this)">a</button> = <button class="btn word-btn" onclick="speak('mesa')">mesa</button> <img src="https://i.imgur.com/ipnAsRk.png" class="emoji-img" alt="mesa">
+            <button class="btn" onclick="toggleColor(this)">M</button><span>+</span><button class="btn" onclick="toggleColor(this)">e</button><span>+</span><button class="btn" onclick="toggleColor(this)">s</button><span>+</span><button class="btn" onclick="toggleColor(this)">a</button><span>=</span><button class="btn word-btn" onclick="speak('mesa')">mesa</button><img src="https://i.imgur.com/ipnAsRk.png" class="emoji-img" alt="mesa">
         </div>
         <div class="equation">
-            <button class="btn" onclick="toggleColor(this)">M</button> + <button class="btn" onclick="toggleColor(this)">o</button> + <button class="btn" onclick="toggleColor(this)">n</button> + <button class="btn" onclick="toggleColor(this)">o</button> = <button class="btn word-btn" onclick="speak('mono')">mono</button> 🐒
+            <button class="btn" onclick="toggleColor(this)">M</button><span>+</span><button class="btn" onclick="toggleColor(this)">o</button><span>+</span><button class="btn" onclick="toggleColor(this)">n</button><span>+</span><button class="btn" onclick="toggleColor(this)">o</button><span>=</span><button class="btn word-btn" onclick="speak('mono')">mono</button><span>🐒</span>
         </div>
         <div class="equation">
-            <button class="btn" onclick="toggleColor(this)">M</button> + <button class="btn" onclick="toggleColor(this)">i</button> + <button class="btn" onclick="toggleColor(this)">e</button> + <button class="btn" onclick="toggleColor(this)">l</button> = <button class="btn word-btn" onclick="speak('miel')">miel</button> 🍯
+            <button class="btn" onclick="toggleColor(this)">M</button><span>+</span><button class="btn" onclick="toggleColor(this)">i</button><span>+</span><button class="btn" onclick="toggleColor(this)">e</button><span>+</span><button class="btn" onclick="toggleColor(this)">l</button><span>=</span><button class="btn word-btn" onclick="speak('miel')">miel</button><span>🍯</span>
         </div>
         <div class="equation">
-            <button class="btn" onclick="toggleColor(this)">M</button> + <button class="btn" onclick="toggleColor(this)">ú</button> + <button class="btn" onclick="toggleColor(this)">s</button> + <button class="btn" onclick="toggleColor(this)">i</button> + <button class="btn" onclick="toggleColor(this)">c</button> + <button class="btn" onclick="toggleColor(this)">a</button> = <button class="btn word-btn" onclick="speak('música')">música</button> 🎵
+            <button class="btn" onclick="toggleColor(this)">M</button><span>+</span><button class="btn" onclick="toggleColor(this)">ú</button><span>+</span><button class="btn" onclick="toggleColor(this)">s</button><span>+</span><button class="btn" onclick="toggleColor(this)">i</button><span>+</span><button class="btn" onclick="toggleColor(this)">c</button><span>+</span><button class="btn" onclick="toggleColor(this)">a</button><span>=</span><button class="btn word-btn" onclick="speak('música')">música</button><span>🎵</span>
         </div>
     </div>
 
@@ -263,6 +292,7 @@
             document.getElementById(`part${currentPart}`).classList.remove('active');
             currentPart++;
             document.getElementById(`part${currentPart}`).classList.add('active');
+            window.scrollTo(0,0);
         }
         if (currentPart === totalParts) {
             document.getElementById('nextBtn').style.display = 'none';
@@ -289,7 +319,6 @@
         const emojis = gameData.map(d => ({ val: d.emoji, id: d.word, type: 'emoji', isImg: d.isImg }));
         const words = gameData.map(d => ({ val: d.word, id: d.word, type: 'word', isImg: false }));
 
-        // Mezclar individualmente
         emojis.sort(() => Math.random() - 0.5);
         words.sort(() => Math.random() - 0.5);
 
@@ -317,7 +346,6 @@
     function handleMatch(el, item) {
         if (el.classList.contains('correct') || selectedItems.some(s => s.el === el)) return;
 
-        // Limpiar selección previa del mismo tipo
         selectedItems = selectedItems.filter(s => {
             if(s.item.type === item.type) {
                 s.el.classList.remove('selected-active');
@@ -333,7 +361,6 @@
             const [first, second] = selectedItems;
             
             if (first.item.id === second.item.id) {
-                // Correcto
                 first.el.classList.remove('selected-active');
                 second.el.classList.remove('selected-active');
                 first.el.classList.add('correct');
@@ -341,7 +368,6 @@
                 speak(first.item.id);
                 selectedItems = [];
             } else {
-                // Incorrecto
                 first.el.classList.add('incorrect');
                 second.el.classList.add('incorrect');
                 setTimeout(() => {
