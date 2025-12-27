@@ -60,6 +60,7 @@
             height: 100%;
             backface-visibility: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             border-radius: 1rem;
@@ -94,7 +95,6 @@
             touch-action: none;
         }
 
-        /* Tipografía de guía para trazado con 'a' circular */
         #trace-guide {
             font-family: 'Andika', sans-serif;
             pointer-events: none;
@@ -145,7 +145,6 @@
             transition: all 0.2s ease;
         }
 
-        /* End Screen Overlay */
         .overlay-full {
             position: fixed;
             inset: 0;
@@ -172,6 +171,7 @@
                 </div>
                 <div class="card-back">
                     <span class="text-9xl">🐒</span>
+                    <span class="text-2xl font-bold text-[#fc4b08] mt-4">mono</span>
                 </div>
             </div>
         </div>
@@ -344,6 +344,11 @@
             const inner = el.querySelector('.card-inner');
             const isFlipped = inner.style.transform === 'rotateY(180deg)';
             inner.style.transform = isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+            
+            // Sonido al girar hacia la parte del mono
+            if (!isFlipped) {
+                speak("mono", 'es-ES');
+            }
         }
 
         function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
@@ -399,9 +404,13 @@
             speak("Great job!");
         }
 
+        let bubbleIntervals = [];
         function startBubbles() {
             const container = document.getElementById('bubble-container');
             container.innerHTML = '';
+            bubbleIntervals.forEach(clearInterval);
+            bubbleIntervals = [];
+
             const letters = ['a', 'b', 'm', 'c', 'm', 'd', 'm', 'e', 'm', 'f', 'm'];
             letters.forEach((l) => {
                 const bubble = document.createElement('div');
@@ -409,24 +418,34 @@
                 bubble.innerText = l;
                 bubble.style.left = Math.random() * 80 + '%';
                 bubble.style.top = Math.random() * 80 + '%';
-                let dx = (Math.random() - 0.5) * 2;
-                let dy = (Math.random() - 0.5) * 2;
+                
+                // Movimiento más lento (dx y dy menores)
+                let dx = (Math.random() - 0.5) * 0.4; 
+                let dy = (Math.random() - 0.5) * 0.4;
+
                 bubble.onclick = () => {
                     if (l === 'm') {
                         bubble.style.background = '#0ea5e9';
                         bubble.style.color = 'white';
-                        speak("M", 'en-US');
+                        // Suena la letra "m" al tocarla
+                        speak("m", 'es-ES'); 
+                        setTimeout(() => {
+                           bubble.style.transform = "scale(0)";
+                           setTimeout(() => bubble.remove(), 200);
+                        }, 100);
                     }
                 };
                 container.appendChild(bubble);
-                setInterval(() => {
+
+                const interval = setInterval(() => {
                     let left = parseFloat(bubble.style.left);
                     let top = parseFloat(bubble.style.top);
                     if (left < 0 || left > 90) dx *= -1;
                     if (top < 0 || top > 90) dy *= -1;
                     bubble.style.left = (left + dx) + '%';
                     bubble.style.top = (top + dy) + '%';
-                }, 50);
+                }, 40); // Intervalo para suavidad
+                bubbleIntervals.push(interval);
             });
         }
 
@@ -560,7 +579,7 @@
 
         function restartApp() {
             traceIndex = 0;
-            currentActivity = 6; // Para que nextActivity() nos lleve a la 1
+            currentActivity = 6; 
             document.getElementById('final-choice').classList.add('hidden');
             nextActivity();
         }
