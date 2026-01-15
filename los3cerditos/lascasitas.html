@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulario de las Casas</title>
+    <style>
+        /* Importamos la fuente con la 'a' escolar */
+        @import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
+
+        :root {
+            --brick-red: #E27396;
+            --wood-brown: #B38B67;
+            --straw-yellow: #F4D35E;
+            --soft-blue: #9AD1D4;
+            --eerie-black: #121118;
+            --white: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Andika', sans-serif;
+            background-color: #f7f9fc;
+            color: var(--eerie-black);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 500px; /* Contenedor un poco más estrecho */
+            background: var(--white);
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .section {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .image-frame {
+            width: 70%; /* Imagen reducida al 70% del contenedor */
+            margin: 0 auto 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #eee;
+            background: #fafafa;
+        }
+
+        .image-frame img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        .btn-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background-color: var(--white);
+            border: 3px solid var(--soft-blue);
+            color: var(--eerie-black);
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Andika', sans-serif;
+            box-shadow: 0 4px 0 var(--soft-blue);
+            outline: none;
+        }
+
+        /* Efecto al presionar (Sin sonido) */
+        .action-btn:active, .action-btn.clicked {
+            background-color: var(--soft-blue);
+            color: white;
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 var(--soft-blue);
+        }
+
+        /* Colores específicos para traducciones */
+        .translation {
+            border-color: #A2D2FF;
+            font-style: italic;
+            background-color: #f0f8ff;
+        }
+
+        .syllables {
+            letter-spacing: 3px;
+            font-weight: bold;
+            border-color: #FFC2D1;
+        }
+
+        .nav-bar {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 15px;
+        }
+
+        .nav-btn {
+            background-color: #4CC9F0;
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0 #3da8ca;
+        }
+
+        .nav-btn:disabled {
+            background-color: #e0e0e0;
+            box-shadow: 0 4px 0 #bbb;
+            cursor: not-allowed;
+        }
+
+        .page-num {
+            font-size: 1rem;
+            color: #888;
+            font-weight: bold;
+        }
+
+        /* Estilo para la cuadrícula de la última imagen */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .grid-layout .full {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 500px) {
+            .image-frame { width: 85%; } /* Un poco más grande en móviles pequeños */
+            .action-btn { font-size: 1.1rem; padding: 10px; }
+            .grid-layout { grid-template-columns: 1fr; }
+            .grid-layout .full { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Parte 1: Ladrillos -->
+    <div id="part1" class="section active">
+        <div class="image-frame">
+            <img src="https://i.imgur.com/KV8RCaJ.png" alt="[Imagen de la casa de ladrillos]">
+        </div>
+        <div class="btn-list">
+            <button class="action-btn" onclick="highlight(this)">Hay una casa de ladrillos</button>
+            <button class="action-btn syllables" onclick="highlight(this)">La - dri - llos</button>
+            <button class="action-btn translation" onclick="highlight(this)">Brick in spanish means: ladrillo</button>
+        </div>
+    </div>
+
+    <!-- Parte 2: Madera -->
+    <div id="part2" class="section">
+        <div class="image-frame">
+            <img src="https://i.imgur.com/I9wdQ6k.png" alt="[Imagen de la casa de madera]">
+        </div>
+        <div class="btn-list">
+            <button class="action-btn" onclick="highlight(this)">Hay una casa de madera</button>
+            <button class="action-btn syllables" onclick="highlight(this)">Ma - de - ra</button>
+            <button class="action-btn translation" onclick="highlight(this)">Wood in spanish means: madera</button>
+        </div>
+    </div>
+
+    <!-- Parte 3: Paja -->
+    <div id="part3" class="section">
+        <div class="image-frame">
+            <img src="https://i.imgur.com/bNynyT9.png" alt="[Imagen de la casa de paja]">
+        </div>
+        <div class="btn-list">
+            <button class="action-btn" onclick="highlight(this)">Hay una casa de paja</button>
+            <button class="action-btn syllables" onclick="highlight(this)">Pa - ja</button>
+            <button class="action-btn translation" onclick="highlight(this)">Straw in spanish means: paja</button>
+        </div>
+    </div>
+
+    <!-- Parte 4: Resumen -->
+    <div id="part4" class="section">
+        <div class="image-frame">
+            <img src="https://i.imgur.com/KeXEj7y.png" alt="[Imagen de los cerditos y sus casas]">
+        </div>
+        <div class="btn-list grid-layout">
+            <button class="action-btn" onclick="highlight(this)">Hay 3 cerditos</button>
+            <button class="action-btn" onclick="highlight(this)">Hay 3 casitas</button>
+            <button class="action-btn full" onclick="highlight(this)">Una casa de ladrillos</button>
+            <button class="action-btn full" onclick="highlight(this)">Una casa de madera</button>
+            <button class="action-btn full" onclick="highlight(this)">Una casa de paja</button>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>⇠</button>
+        <span class="page-num" id="indicator">1 / 4</span>
+        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">⇢</button>
+    </div>
+</div>
+
+<script>
+    let current = 1;
+    const total = 4;
+
+    function highlight(btn) {
+        btn.classList.add('clicked');
+        setTimeout(() => {
+            btn.classList.remove('clicked');
+        }, 300);
+    }
+
+    function navigate(step) {
+        document.getElementById(`part${current}`).classList.remove('active');
+        current += step;
+        document.getElementById(`part${current}`).classList.add('active');
+        document.getElementById('prevBtn').disabled = (current === 1);
+        document.getElementById('nextBtn').disabled = (current === total);
+        document.getElementById('indicator').innerText = `${current} / ${total}`;
+        window.scrollTo(0,0);
+    }
+</script>
+
+</body>
+</html>

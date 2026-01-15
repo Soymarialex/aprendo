@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprendizaje de Español</title>
+    <!-- Control de Caché y Rutas Relativas -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/platform-medium');
+
+        :root {
+            --flamingo-pink: #FF79AC;
+            --eerie-black: #121118;
+            --white: #FFFFFF;
+            --error-red: #FEE2E2;
+        }
+
+        body {
+            font-family: 'Platform Medium', sans-serif;
+            background-color: var(--white);
+            color: var(--eerie-black);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: justify;
+        }
+
+        .part {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .part.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-interactive {
+            background-color: var(--white);
+            border: 2px solid var(--eerie-black);
+            color: var(--eerie-black);
+            padding: 8px 16px;
+            margin: 4px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-interactive:active, .btn-interactive.pressed {
+            background-color: var(--flamingo-pink);
+            color: white;
+            border-color: var(--flamingo-pink);
+        }
+
+        .navigation-arrow {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background-color: var(--eerie-black);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            z-index: 100;
+        }
+
+        .navigation-arrow:hover {
+            transform: scale(1.1);
+        }
+
+        .word-row {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 1.5rem;
+        }
+
+        .separator {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        /* Juego de emparejar */
+        .match-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .match-item {
+            padding: 15px;
+            border: 2px solid var(--eerie-black);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .match-item.selected {
+            background-color: var(--flamingo-pink);
+            color: white;
+        }
+
+        .match-item.error {
+            background-color: var(--error-red);
+            border-color: #ef4444;
+        }
+
+        .match-item.success {
+            background-color: #d1fae5;
+            border-color: #10b981;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Parte 1 -->
+        <div id="part1" class="part active">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="btn-interactive" onclick="toggleBtn(this)">A = a</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">E = e</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">I = i</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">O = o</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">U = u</button>
+            </div>
+        </div>
+
+        <!-- Parte 2 -->
+        <div id="part2" class="part">
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="btn-interactive" onclick="toggleBtn(this)">Ca</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">Que</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">Qui</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">Co</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">Cu</button>
+            </div>
+            <div class="word-container">
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Ca</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">sa</button>
+                    <span class="separator">=</span>
+                    <span>casa</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Bos</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">que</button>
+                    <span class="separator">=</span>
+                    <span>bosque</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Pe</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">que</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">ño</button>
+                    <span class="separator">=</span>
+                    <span>pequeño</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Tran</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">qui</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">lo</button>
+                    <span class="separator">=</span>
+                    <span>tranquilo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parte 3 -->
+        <div id="part3" class="part">
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="btn-interactive" onclick="toggleBtn(this)">Ce</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">Ci</button>
+            </div>
+            <div class="word-row justify-center">
+                <button class="btn-interactive" onclick="toggleBtn(this)">Cer</button>
+                <span class="separator">+</span>
+                <button class="btn-interactive" onclick="toggleBtn(this)">di</button>
+                <span class="separator">+</span>
+                <button class="btn-interactive" onclick="toggleBtn(this)">to</button>
+                <span class="separator">=</span>
+                <span>cerdito 🐷</span>
+            </div>
+        </div>
+
+        <!-- Parte 4 -->
+        <div id="part4" class="part">
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="btn-interactive" onclick="toggleBtn(this)">ar</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">er</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">ir</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">or</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">ur</button>
+            </div>
+            <div class="word-container">
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Ár</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">bol</button>
+                    <span class="separator">=</span>
+                    <span>árbol 🌳</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Ár</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">bo</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">les</button>
+                    <span class="separator">=</span>
+                    <span>árboles 🌳🌳🌳</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Her</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">ma</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">nos</button>
+                    <span class="separator">=</span>
+                    <span>hermanos</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Vi</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">vir</button>
+                    <span class="separator">=</span>
+                    <span>vivir</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Tra</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">ba</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">ja</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">dor</button>
+                    <span class="separator">=</span>
+                    <span>trabajador</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parte 5 -->
+        <div id="part5" class="part">
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="btn-interactive" onclick="toggleBtn(this)">Ja</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">je</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">ji</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">jo</button>
+                <button class="btn-interactive" onclick="toggleBtn(this)">ju</button>
+            </div>
+            <div class="word-container">
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Pa</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">ja</button>
+                    <span class="separator">=</span>
+                    <span>paja</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Tra</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">ba</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">jar</button>
+                    <span class="separator">=</span>
+                    <span>trabajar</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Ju</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">gar</button>
+                    <span class="separator">=</span>
+                    <span>jugar</span>
+                </div>
+                <div class="word-row">
+                    <button class="btn-interactive" onclick="toggleBtn(this)">Ju</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">gue</button>
+                    <span class="separator">+</span>
+                    <button class="btn-interactive" onclick="toggleBtn(this)">tón</button>
+                    <span class="separator">=</span>
+                    <span>juguetón</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parte 6 (Juego) -->
+        <div id="part6" class="part">
+            <div class="match-grid">
+                <div class="flex flex-col gap-2" id="words-col">
+                    <div class="match-item" data-value="casa">casa</div>
+                    <div class="match-item" data-value="árbol">árbol</div>
+                    <div class="match-item" data-value="cerdito">cerdito</div>
+                    <div class="match-item" data-value="sol">sol</div>
+                    <div class="match-item" data-value="luna">luna</div>
+                    <div class="match-item" data-value="tres">tres</div>
+                </div>
+                <div class="flex flex-col gap-2" id="emojis-col">
+                    <div class="match-item" data-value="casa">🏠</div>
+                    <div class="match-item" data-value="árbol">🌳</div>
+                    <div class="match-item" data-value="cerdito">🐷</div>
+                    <div class="match-item" data-value="sol">☀️</div>
+                    <div class="match-item" data-value="luna">🌙</div>
+                    <div class="match-item" data-value="tres">3️⃣</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation-arrow" id="nextBtn" onclick="nextPart()">→</div>
+
+    <script>
+        let currentPart = 1;
+        const totalParts = 6;
+
+        function toggleBtn(btn) {
+            btn.classList.toggle('pressed');
+        }
+
+        function nextPart() {
+            if (currentPart < totalParts) {
+                document.getElementById(`part${currentPart}`).classList.remove('active');
+                currentPart++;
+                document.getElementById(`part${currentPart}`).classList.add('active');
+                
+                if (currentPart === totalParts) {
+                    document.getElementById('nextBtn').style.display = 'none';
+                    initGame();
+                }
+            }
+        }
+
+        function initGame() {
+            const wordsCol = document.getElementById('words-col');
+            const emojisCol = document.getElementById('emojis-col');
+            
+            shuffleChildren(wordsCol);
+            shuffleChildren(emojisCol);
+
+            let selectedWord = null;
+            let selectedEmoji = null;
+
+            document.querySelectorAll('#part6 .match-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const isEmoji = this.parentElement.id === 'emojis-col';
+                    
+                    if (isEmoji) {
+                        if (selectedEmoji) selectedEmoji.classList.remove('selected');
+                        selectedEmoji = this;
+                    } else {
+                        if (selectedWord) selectedWord.classList.remove('selected');
+                        selectedWord = this;
+                    }
+                    this.classList.add('selected');
+
+                    if (selectedWord && selectedEmoji) {
+                        if (selectedWord.dataset.value === selectedEmoji.dataset.value) {
+                            selectedWord.classList.add('success');
+                            selectedEmoji.classList.add('success');
+                            selectedWord.classList.remove('selected');
+                            selectedEmoji.classList.remove('selected');
+                            selectedWord = null;
+                            selectedEmoji = null;
+                        } else {
+                            const w = selectedWord;
+                            const e = selectedEmoji;
+                            w.classList.add('error');
+                            e.classList.add('error');
+                            
+                            setTimeout(() => {
+                                w.classList.remove('error', 'selected');
+                                e.classList.remove('error', 'selected');
+                            }, 500);
+                            
+                            selectedWord = null;
+                            selectedEmoji = null;
+                        }
+                    }
+                });
+            });
+        }
+
+        function shuffleChildren(parent) {
+            for (let i = parent.children.length; i >= 0; i--) {
+                parent.appendChild(parent.children[Math.random() * i | 0]);
+            }
+        }
+    </script>
+</body>
+</html>

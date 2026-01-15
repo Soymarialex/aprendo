@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Tres Cerditos - Lectura</title>
+    <style>
+        /* Importamos la fuente con la 'a' escolar */
+        @import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
+
+        :root {
+            --story-blue: #A2D2FF;
+            --story-pink: #FFAFCC;
+            --story-green: #CDB4DB;
+            --eerie-black: #121118;
+            --white: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Andika', sans-serif;
+            background-color: #f0f4f8;
+            color: var(--eerie-black);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 600px;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .image-container {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 4px solid var(--story-pink);
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        .sentences-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .sentence-btn {
+            background-color: var(--white);
+            border: 2px solid var(--story-blue);
+            color: var(--eerie-black);
+            padding: 12px 18px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Andika', sans-serif;
+            width: 100%; /* En móviles ocupan todo el ancho */
+            box-shadow: 0 4px 0 var(--story-blue);
+            margin-bottom: 4px;
+        }
+
+        .sentence-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 var(--story-blue);
+        }
+
+        .sentence-btn.read {
+            background-color: var(--story-blue);
+            color: white;
+        }
+
+        .nav-controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background-color: var(--story-pink);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #d67a9a;
+        }
+
+        .nav-btn:disabled {
+            background-color: #ccc;
+            box-shadow: 0 4px 0 #999;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Ajustes para escritorio */
+        @media (min-width: 600px) {
+            .sentence-btn {
+                width: calc(50% - 12px); /* Dos por fila en pantallas grandes */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Parte 1 -->
+    <div id="part1" class="section active">
+        <div class="image-container">
+            <img src="https://i.imgur.com/CfCvSgM.png" alt="[Imagen de los 3 cerditos]">
+        </div>
+        <div class="sentences-grid">
+            <button class="sentence-btn" onclick="readSentence(this)">Hay 3 cerditos</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Los 3 cerditos son hermanos</button>
+            <button class="sentence-btn" onclick="readSentence(this)">El cerdito pequeño</button>
+            <button class="sentence-btn" onclick="readSentence(this)">El cerdito mediano</button>
+            <button class="sentence-btn" onclick="readSentence(this)">El cerdito mayor</button>
+        </div>
+    </div>
+
+    <!-- Parte 2 -->
+    <div id="part2" class="section">
+        <div class="image-container">
+            <img src="https://i.imgur.com/TzOPceF.png" alt="[Imagen de las 3 casas]">
+        </div>
+        <div class="sentences-grid">
+            <button class="sentence-btn" onclick="readSentence(this)">Hay 3 casas</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Una casita pequeña</button>
+            <button class="sentence-btn" onclick="readSentence(this)">una casita mediana</button>
+            <button class="sentence-btn" onclick="readSentence(this)">una casita grande</button>
+            <button class="sentence-btn" onclick="readSentence(this)">La casita es de paja</button>
+            <button class="sentence-btn" onclick="readSentence(this)">la casita es de madera</button>
+            <button class="sentence-btn" onclick="readSentence(this)">la casita es de ladrillos</button>
+        </div>
+    </div>
+
+    <!-- Parte 3 -->
+    <div id="part3" class="section">
+        <div class="image-container">
+            <img src="https://i.imgur.com/a4oac6F.png" alt="[Imagen del cerdito en casa de paja]">
+        </div>
+        <div class="sentences-grid">
+            <button class="sentence-btn" onclick="readSentence(this)">hay un cerdito</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay una casita de paja</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay un sol</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay nubes</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Es de día</button>
+        </div>
+    </div>
+
+    <!-- Parte 4 -->
+    <div id="part4" class="section">
+        <div class="image-container">
+            <img src="https://i.imgur.com/CWsqNsF.png" alt="[Imagen del cerdito en casa de madera]">
+        </div>
+        <div class="sentences-grid">
+            <button class="sentence-btn" onclick="readSentence(this)">Hay un cerdito</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay una casa de madera</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay un sol</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay nubes</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay 5 árboles</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Es de día</button>
+        </div>
+    </div>
+
+    <!-- Parte 5 -->
+    <div id="part5" class="section">
+        <div class="image-container">
+            <img src="https://i.imgur.com/ZgGAgEf.png" alt="[Imagen de la casa de ladrillos y el lobo]">
+        </div>
+        <div class="sentences-grid">
+            <button class="sentence-btn" onclick="readSentence(this)">Hay una casa de ladrillos</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay una luna</button>
+            <button class="sentence-btn" onclick="readSentence(this)">No hay sol</button>
+            <button class="sentence-btn" onclick="readSentence(this)">No hay nubes</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay muchos árboles</button>
+            <button class="sentence-btn" onclick="readSentence(this)">No es de día</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Es de noche</button>
+            <button class="sentence-btn" onclick="readSentence(this)">Hay un lobo</button>
+            <button class="sentence-btn" onclick="readSentence(this)">El lobo está soplando</button>
+        </div>
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSection(-1)" disabled>⇠</button>
+        <span class="page-indicator" id="pageInd">1 / 5</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSection(1)">⇢</button>
+    </div>
+</div>
+
+<script>
+    let currentPart = 1;
+    const totalParts = 5;
+
+    function readSentence(btn) {
+        // Efecto visual de lectura
+        btn.classList.add('read');
+        
+        // Síntesis de voz
+        const text = btn.innerText;
+        const ut = new SpeechSynthesisUtterance(text);
+        ut.lang = 'es-ES';
+        ut.rate = 0.9; // Un poco más lento para niños
+        
+        ut.onend = () => {
+            btn.classList.remove('read');
+        };
+        
+        window.speechSynthesis.speak(ut);
+    }
+
+    function changeSection(dir) {
+        // Ocultar actual
+        document.getElementById(`part${currentPart}`).classList.remove('active');
+        
+        // Calcular nueva
+        currentPart += dir;
+        
+        // Mostrar nueva
+        document.getElementById(`part${currentPart}`).classList.add('active');
+        
+        // Actualizar controles
+        document.getElementById('prevBtn').disabled = currentPart === 1;
+        document.getElementById('nextBtn').disabled = currentPart === totalParts;
+        document.getElementById('pageInd').innerText = `${currentPart} / ${totalParts}`;
+        
+        // Scroll al inicio del contenedor
+        window.scrollTo(0, 0);
+    }
+</script>
+
+</body>
+</html>

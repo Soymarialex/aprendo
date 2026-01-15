@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Class - Home</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Andika&family=Lexend:wght@500&display=swap');
+
+        :root {
+            --soft-blue: #9AD1D4;
+            --soft-pink: #FFC2D1;
+            --soft-purple: #CDB4DB;
+            --soft-yellow: #F4D35E;
+            --eerie-black: #121118;
+            --white: #FFFFFF;
+            --text-gray: #4A4A4A;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            font-family: 'Lexend', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--eerie-black);
+        }
+
+        .main-container {
+            width: 95%;
+            max-width: 600px; /* Reducido un poco para mayor compacidad */
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        h1 {
+            color: black;
+            font-size: 2.2rem; /* Tamaño de título más moderado */
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        /* Cuadrícula optimizada */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background-color: var(--white);
+            border: 2px solid var(--soft-blue); /* Borde un poco más fino */
+            color: var(--eerie-black);
+            padding: 12px 10px; /* Padding reducido para botones menos altos */
+            font-size: 1rem; /* Texto un poco más pequeño */
+            border-radius: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 var(--soft-blue); /* Sombra reducida */
+            min-height: 55px; /* Altura mínima reducida */
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--soft-blue);
+        }
+
+        .menu-item:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 var(--soft-blue);
+        }
+
+        /* El quinto botón ocupa las dos columnas */
+        .full-width {
+            grid-column: span 2;
+            font-size: 1.1rem;
+            min-height: 60px;
+        }
+
+        /* Colores específicos */
+        .btn-reading { border-color: var(--soft-pink); box-shadow: 0 4px 0 var(--soft-pink); }
+        .btn-reading:hover { box-shadow: 0 6px 0 var(--soft-pink); }
+        .btn-reading:active { box-shadow: 0 1px 0 var(--soft-pink); }
+
+        .btn-picture { border-color: var(--soft-purple); box-shadow: 0 4px 0 var(--soft-purple); }
+        .btn-picture:hover { box-shadow: 0 6px 0 var(--soft-purple); }
+        .btn-picture:active { box-shadow: 0 1px 0 var(--soft-purple); }
+
+        .btn-casitas { border-color: var(--soft-yellow); box-shadow: 0 4px 0 var(--soft-yellow); }
+        .btn-casitas:hover { box-shadow: 0 6px 0 var(--soft-yellow); }
+        .btn-casitas:active { box-shadow: 0 1px 0 var(--soft-yellow); }
+
+        .btn-video { border-color: #A2D2FF; box-shadow: 0 4px 0 #A2D2FF; }
+        .btn-video:hover { box-shadow: 0 6px 0 #A2D2FF; }
+        .btn-video:active { box-shadow: 0 1px 0 #A2D2FF; }
+
+        footer {
+            margin-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 25px;
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .tutor-link {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #2D3142;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .tutor-link:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 1.8rem; }
+            .menu-grid { grid-template-columns: 1fr; } 
+            .full-width { grid-column: span 1; }
+            .menu-item { font-size: 1rem; min-height: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <h1>Welcome to your Spanish Class!</h1>
+
+        <nav class="menu-grid">
+            <!-- Fila 1 -->
+            <a href="leer.html" class="menu-item btn-reading">Let’s practice our reading</a>
+            <a href="quehay.html" class="menu-item btn-picture">What’s in the picture?</a>
+            
+            <!-- Fila 2 -->
+            <a href="lascasitas.html" class="menu-item btn-casitas">Las casitas</a>
+            <a href="game.html" class="menu-item">Matching game / test your memory</a>
+            
+            <!-- Fila 3 - Largo -->
+            <a href="https://www.youtube.com/watch?v=ViRUaVU9Fzc&list=RDViRUaVU9Fzc&start_radio=1" target="_blank" class="menu-item btn-video full-width">Los tres cerditos</a>
+        </nav>
+
+        <footer>
+            <span class="copyright">© 2026 Spanish Lessons with María C. All rights reserved.</span>
+            <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ==" target="_blank" class="tutor-link">
+                Find your Spanish class here.
+            </a>
+        </footer>
+    </div>
+
+</body>
+</html>

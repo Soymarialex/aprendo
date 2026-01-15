@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
+
+        :root {
+            --soft-blue: #9AD1D4;
+            --soft-pink: #FFC2D1;
+            --correct-green: #C1E1C1;
+            --incorrect-red: #FFC4C4;
+            --eerie-black: #121118;
+            --white: #FFFFFF;
+            --gray: #f7f9fc;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Andika', sans-serif;
+            background-color: var(--gray);
+            color: var(--eerie-black);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        h1 { margin: 0; font-size: 2rem; color: var(--eerie-black); }
+        h2 { margin: 5px 0 25px 0; font-size: 1.2rem; font-weight: normal; color: #666; }
+
+        .level-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .level-btn {
+            background-color: var(--white);
+            border: 2px solid var(--soft-blue);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Andika', sans-serif;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .level-btn.active {
+            background-color: var(--soft-blue);
+            color: white;
+            box-shadow: 0 4px 0 #7fb9bc;
+            transform: translateY(-2px);
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .word-btn {
+            background-color: var(--white);
+            border: 3px solid var(--soft-blue);
+            padding: 15px 10px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Andika', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 var(--soft-blue);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .word-btn.selected {
+            background-color: var(--soft-pink);
+            border-color: #ff9fb6;
+            box-shadow: 0 4px 0 #ff9fb6;
+            transform: translateY(2px);
+        }
+
+        .word-btn.correct {
+            background-color: var(--correct-green) !important;
+            border-color: #a8d0a8 !important;
+            box-shadow: 0 4px 0 #a8d0a8 !important;
+            pointer-events: none;
+        }
+
+        .word-btn.incorrect {
+            background-color: var(--incorrect-red) !important;
+            border-color: #e5a9a9 !important;
+            box-shadow: 0 4px 0 #e5a9a9 !important;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.6rem; }
+            .word-btn { font-size: 1rem; padding: 10px 5px; }
+            .game-area { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Matching Game</h1>
+    <h2>Test your memory</h2>
+
+    <div class="level-selector">
+        <button class="level-btn active" id="btn-lvl-1" onclick="loadLevel(1)">Nivel 1</button>
+        <button class="level-btn" id="btn-lvl-2" onclick="loadLevel(2)">Nivel 2</button>
+        <button class="level-btn" id="btn-lvl-3" onclick="loadLevel(3)">Nivel 3</button>
+    </div>
+
+    <div class="game-area">
+        <div class="column" id="left-col"></div>
+        <div class="column" id="right-col"></div>
+    </div>
+</div>
+
+<script>
+    const levels = {
+        1: [
+            { es: "Casa", en: "House" },
+            { es: "Madera", en: "Wood" },
+            { es: "Ladrillo", en: "Brick" },
+            { es: "Paja", en: "Straw" },
+            { es: "Chimenea", en: "Chimney" }
+        ],
+        2: [
+            { es: "Cerdito", en: "Little pig" },
+            { es: "Lobo", en: "Wolf" },
+            { es: "Luna", en: "Moon" },
+            { es: "Sol", en: "Sun" },
+            { es: "Árbol", en: "tree" }
+        ],
+        3: [
+            { es: "Bosque", en: "forest" },
+            { es: "Hermano menor", en: "younger brother" },
+            { es: "Hermano mayor", en: "older brother" },
+            { es: "Trabajador", en: "hardworking" },
+            { es: "Perezoso", en: "lazy" }
+        ]
+    };
+
+    let selectedLeft = null;
+    let selectedRight = null;
+    let currentLevel = 1;
+
+    function loadLevel(num) {
+        currentLevel = num;
+        selectedLeft = null;
+        selectedRight = null;
+
+        // Update buttons
+        document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-lvl-${num}`).classList.add('active');
+
+        const leftCol = document.getElementById('left-col');
+        const rightCol = document.getElementById('right-col');
+        leftCol.innerHTML = '';
+        rightCol.innerHTML = '';
+
+        const data = levels[num];
+        
+        // Shuffle pairs for left and right
+        const leftWords = data.map(pair => ({ text: pair.es, id: pair.es }));
+        const rightWords = data.map(pair => ({ text: pair.en, id: pair.es }));
+
+        leftWords.sort(() => Math.random() - 0.5);
+        rightWords.sort(() => Math.random() - 0.5);
+
+        leftWords.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = 'word-btn';
+            btn.innerText = word.text;
+            btn.onclick = () => selectWord(btn, word.id, 'left');
+            leftCol.appendChild(btn);
+        });
+
+        rightWords.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = 'word-btn';
+            btn.innerText = word.text;
+            btn.onclick = () => selectWord(btn, word.id, 'right');
+            rightCol.appendChild(btn);
+        });
+    }
+
+    function selectWord(btn, id, side) {
+        if (side === 'left') {
+            if (selectedLeft) selectedLeft.btn.classList.remove('selected');
+            selectedLeft = { btn, id };
+            btn.classList.add('selected');
+        } else {
+            if (selectedRight) selectedRight.btn.classList.remove('selected');
+            selectedRight = { btn, id };
+            btn.classList.add('selected');
+        }
+
+        if (selectedLeft && selectedRight) {
+            checkMatch();
+        }
+    }
+
+    function checkMatch() {
+        const left = selectedLeft;
+        const right = selectedRight;
+
+        if (left.id === right.id) {
+            // Correct
+            left.btn.classList.remove('selected');
+            right.btn.classList.remove('selected');
+            left.btn.classList.add('correct');
+            right.btn.classList.add('correct');
+            selectedLeft = null;
+            selectedRight = null;
+        } else {
+            // Incorrect
+            left.btn.classList.add('incorrect');
+            right.btn.classList.add('incorrect');
+            
+            const tempLeft = left;
+            const tempRight = right;
+            
+            selectedLeft = null;
+            selectedRight = null;
+
+            setTimeout(() => {
+                tempLeft.btn.classList.remove('incorrect', 'selected');
+                tempRight.btn.classList.remove('incorrect', 'selected');
+            }, 1000);
+        }
+    }
+
+    // Initialize first level
+    window.onload = () => loadLevel(1);
+</script>
+
+</body>
+</html>
