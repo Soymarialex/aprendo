@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo de Aprendizaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Chalkboard+SE:wght@400;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Bubblegum Sans', cursive;
+            background-color: #f0f9ff;
+        }
+        .btn-main {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .correct-glow {
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffea00, 0 0 20px #ffea00; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #ffea00, 0 0 30px #ffea00, 0 0 40px #ffea00; }
+        }
+        .hidden-page {
+            display: none;
+        }
+        /* Los inputs ahora permiten minúsculas por defecto */
+        input[type="text"] {
+            text-transform: lowercase;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4">
+
+    <!-- HEADER -->
+    <header class="text-center mb-8 mt-4">
+        <h1 class="text-5xl text-blue-600 drop-shadow-md">¡Bienvenidos Amiguitos! 🌟</h1>
+        <p class="text-xl text-pink-500">¡Vamos a aprender y jugar!</p>
+    </header>
+
+    <!-- PÁGINA PRINCIPAL -->
+    <div id="home-page" class="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-6">
+        <button onclick="showPage('alimentos-page')" class="btn-main bg-orange-400 text-white text-3xl p-8 rounded-3xl border-b-8 border-orange-600 flex flex-col items-center">
+            <span>🍎</span>
+            <span>Los Alimentos</span>
+        </button>
+        <button onclick="showPage('juego-page')" class="btn-main bg-purple-400 text-white text-3xl p-8 rounded-3xl border-b-8 border-purple-600 flex flex-col items-center">
+            <span>🎮</span>
+            <span>Juego</span>
+        </button>
+        <a href="https://www.youtube.com/watch?v=vhpm77VIjhQ&list=RDvhpm77VIjhQ&start_radio=1" target="_blank" class="btn-main bg-green-400 text-white text-3xl p-8 rounded-3xl border-b-8 border-green-600 flex flex-col items-center text-center">
+            <span>🎵</span>
+            <span>Canción 1</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=CEnHTPlke90&list=RDCEnHTPlke90&start_radio=1" target="_blank" class="btn-main bg-red-400 text-white text-3xl p-8 rounded-3xl border-b-8 border-red-600 flex flex-col items-center text-center">
+            <span>🎶</span>
+            <span>Canción 2</span>
+        </a>
+    </div>
+
+    <!-- PÁGINA LOS ALIMENTOS -->
+    <div id="alimentos-page" class="hidden-page w-full max-w-2xl bg-white p-8 rounded-3xl shadow-xl border-4 border-orange-300">
+        <button onclick="showPage('home-page')" class="mb-4 text-orange-500 font-bold hover:underline">← Volver</button>
+        <h2 class="text-4xl text-orange-600 mb-6 text-center">Vocabulario de Alimentos</h2>
+        <div class="grid grid-cols-1 gap-4 text-2xl">
+            <div class="flex justify-between border-b pb-2"><span>🍖 Jamón</span><span class="text-blue-500 italic">Ham</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🧀 Queso</span><span class="text-blue-500 italic">Cheese</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🥛 Leche</span><span class="text-blue-500 italic">Milk</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🥚 Huevo</span><span class="text-blue-500 italic">Egg</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🍦 Yogur</span><span class="text-blue-500 italic">Yogurt</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🥩 Carne</span><span class="text-blue-500 italic">Meat</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🍞 Pan</span><span class="text-blue-500 italic">Bread</span></div>
+            <div class="flex justify-between border-b pb-2"><span>🥦 Vegetales</span><span class="text-blue-500 italic">Vegetables</span></div>
+        </div>
+    </div>
+
+    <!-- PÁGINA JUEGO -->
+    <div id="juego-page" class="hidden-page w-full max-w-2xl bg-white p-8 rounded-3xl shadow-xl border-4 border-purple-300">
+        <button onclick="showPage('home-page')" class="mb-4 text-purple-500 font-bold hover:underline">← Volver</button>
+        <h2 class="text-4xl text-purple-600 mb-2 text-center">¿Faltan las vocales?</h2>
+        <p class="text-center mb-6 text-gray-600">¡Escribe las vocales en minúscula!</p>
+        
+        <div id="game-container" class="space-y-6">
+            <!-- Palabras del juego -->
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-0">J<input maxlength="1" onkeyup="handleKey(event, 0, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">m<input maxlength="1" onkeyup="handleKey(event, 0, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">n</div>
+                <span class="text-gray-500 text-xl font-sans">(Ham)</span>
+                <span id="msg-0" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-1">Q<input maxlength="1" onkeyup="handleKey(event, 1, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text"><input maxlength="1" onkeyup="handleKey(event, 1, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">s<input maxlength="1" onkeyup="handleKey(event, 1, 2)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text"></div>
+                <span class="text-gray-500 text-xl font-sans">(Cheese)</span>
+                <span id="msg-1" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-2">L<input maxlength="1" onkeyup="handleKey(event, 2, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">ch<input maxlength="1" onkeyup="handleKey(event, 2, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text"></div>
+                <span class="text-gray-500 text-xl font-sans">(Milk)</span>
+                <span id="msg-2" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-3">H<input maxlength="1" onkeyup="handleKey(event, 3, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text"><input maxlength="1" onkeyup="handleKey(event, 3, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">v<input maxlength="1" onkeyup="handleKey(event, 3, 2)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text"></div>
+                <span class="text-gray-500 text-xl font-sans">(Egg)</span>
+                <span id="msg-3" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-4">Y<input maxlength="1" onkeyup="handleKey(event, 4, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">g<input maxlength="1" onkeyup="handleKey(event, 4, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">r</div>
+                <span class="text-gray-500 text-xl font-sans">(Yogurt)</span>
+                <span id="msg-4" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-5">C<input maxlength="1" onkeyup="handleKey(event, 5, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">rn<input maxlength="1" onkeyup="handleKey(event, 5, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text"></div>
+                <span class="text-gray-500 text-xl font-sans">(Meat)</span>
+                <span id="msg-5" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-6">P<input maxlength="1" onkeyup="handleKey(event, 6, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">n</div>
+                <span class="text-gray-500 text-xl font-sans">(Bread)</span>
+                <span id="msg-6" class="text-xl"></span>
+            </div>
+
+            <div class="flex items-center space-x-4 flex-wrap">
+                <div class="text-3xl font-bold flex items-center" id="word-7">v<input maxlength="1" onkeyup="handleKey(event, 7, 0)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">g<input maxlength="1" onkeyup="handleKey(event, 7, 1)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">t<input maxlength="1" onkeyup="handleKey(event, 7, 2)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">l<input maxlength="1" onkeyup="handleKey(event, 7, 3)" class="w-10 text-center border-b-4 border-purple-300 outline-none mx-1" type="text">s</div>
+                <span class="text-gray-500 text-xl font-sans">(Vegetables)</span>
+                <span id="msg-7" class="text-xl"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER BOTÓN FINAL -->
+    <footer class="mt-auto py-10 w-full text-center">
+        <a href="https://preply.com/en/tutor/5105409?utm_source=friend&utm_medium=ref&utm_campaign=stu_plg_plg_all_0_mul_xx_multiplesub_share-tutor-tutoring_1&utm_content=OTQ2NTAwNQ==" target="_blank" class="inline-block bg-blue-600 text-white px-8 py-4 rounded-full text-2xl font-bold shadow-lg hover:bg-blue-700 transform hover:scale-105 transition duration-300">
+            Find your Spanish class here 👩‍🏫
+        </a>
+    </footer>
+
+    <script>
+        const wordsConfig = [
+            { id: 0, result: "jamon", display: "Jamón" },
+            { id: 1, result: "queso", display: "Queso" },
+            { id: 2, result: "leche", display: "Leche" },
+            { id: 3, result: "huevo", display: "Huevo" },
+            { id: 4, result: "yogur", display: "Yogur" },
+            { id: 5, result: "carne", display: "Carne" },
+            { id: 6, result: "pan", display: "Pan" },
+            { id: 7, result: "vegetales", display: "Vegetales" }
+        ];
+
+        const congrats = ["¡Correcto!", "¡Muy bien!", "¡Excelente!", "¡Genial!", "¡Eres un crack!", "¡Súper!"];
+
+        function showPage(pageId) {
+            document.getElementById('home-page').classList.add('hidden-page');
+            document.getElementById('alimentos-page').classList.add('hidden-page');
+            document.getElementById('juego-page').classList.add('hidden-page');
+            document.getElementById(pageId).classList.remove('hidden-page');
+            window.scrollTo(0,0);
+        }
+
+        function handleKey(event, wordIdx, inputIdx) {
+            const container = document.getElementById(`word-${wordIdx}`);
+            const inputs = container.getElementsByTagName('input');
+            const currentInput = inputs[inputIdx];
+
+            if (event.key === "Backspace" && currentInput.value === "" && inputIdx > 0) {
+                inputs[inputIdx - 1].focus();
+            } 
+            else if (currentInput.value.length === 1 && inputIdx < inputs.length - 1) {
+                inputs[inputIdx + 1].focus();
+            }
+
+            check(wordIdx);
+        }
+
+        function check(index) {
+            const container = document.getElementById(`word-${index}`);
+            const inputs = container.getElementsByTagName('input');
+            const msgSpan = document.getElementById(`msg-${index}`);
+            
+            let userAttempt = "";
+            let inputCounter = 0;
+            const originalWord = wordsConfig[index].display.toLowerCase();
+            const resultWord = wordsConfig[index].result.toLowerCase();
+
+            // Reconstruir palabra ingresada en minúsculas
+            for(let i=0; i < originalWord.length; i++) {
+                const char = originalWord[i];
+                // Detectar si el carácter original es una vocal (incluyendo tildes)
+                if(/[aeiouáéíóú]/.test(char)) {
+                    userAttempt += inputs[inputCounter].value.toLowerCase();
+                    inputCounter++;
+                } else {
+                    userAttempt += char;
+                }
+            }
+
+            let allFilled = true;
+            for(let input of inputs) { if(input.value === "") allFilled = false; }
+
+            if(!allFilled) {
+                msgSpan.innerText = "";
+                container.classList.remove('correct-glow', 'text-green-500');
+                return;
+            }
+
+            // Normalización para ignorar tildes en la comparación
+            const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            
+            if(normalize(userAttempt) === normalize(resultWord)) {
+                container.classList.add('correct-glow', 'text-green-500');
+                const randomCongrat = congrats[Math.floor(Math.random() * congrats.length)];
+                msgSpan.innerText = "✨ " + randomCongrat;
+                msgSpan.className = "text-xl text-green-600 font-bold animate-bounce";
+                document.activeElement.blur();
+            } else {
+                container.classList.remove('correct-glow', 'text-green-500');
+                msgSpan.innerText = "😢";
+                msgSpan.className = "text-3xl"; 
+            }
+        }
+    </script>
+</body>
+</html>
