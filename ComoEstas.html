@@ -180,21 +180,6 @@
             border-bottom-width: 2px;
         }
 
-        .btn-audio {
-            background-color: #E2E8F0;
-            border-bottom: 4px solid #CBD5E1;
-            color: var(--eerie-black);
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-
-        .btn-audio:active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-        }
-
         /* 1. Carousel Section */
         .carousel-wrapper {
             display: flex;
@@ -243,6 +228,7 @@
             margin-top: 5px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
 
@@ -625,7 +611,6 @@
                     </div>
                     <div class="day-es-title">
                         <span id="day-name-en" class="day-en-sub"></span>
-                        <button class="btn-audio" onclick="speakSpanishCurrentDay()" title="Escuchar pronunciación">🔊</button>
                     </div>
                 </div>
 
@@ -639,7 +624,7 @@
         <!-- Sección 2: Canción -->
         <section class="card">
             <div class="card-header">
-                <h2>🎵 2. Canción</h2>
+                <h2>🎵 2. Canción Interactiva</h2>
             </div>
             <div class="song-container">
                 <div class="video-wrapper">
@@ -664,7 +649,7 @@
         <!-- Sección 4: Preguntas -->
         <section class="card">
             <div class="card-header">
-                <h2>💬 4. Preguntas </h2>
+                <h2>💬 4. Preguntas Diarias</h2>
             </div>
 
             <div class="q-banner">
@@ -698,7 +683,7 @@
         <!-- Sección 5: Emparejar Vocabulario -->
         <section class="card">
             <div class="card-header">
-                <h2>🔗 5. Empareja el Vocabulario</h2>
+                <h2>🔗 5. Empareja Columnas</h2>
             </div>
 
             <div class="matching-header-nav">
@@ -758,23 +743,6 @@
             document.getElementById('progress-bar').style.width = percentage + '%';
         }
 
-        // --- REPRODUCTOR DE AUDIO (Web Speech API) ---
-        function speakSpanish(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                // Limpiamos los emojis antes de reproducir el audio para que la voz no los lea
-                const cleanText = text.replace(/[\u{1F300}-\u{1F9FF}]|[\u2600-\u26FF]|\?/gu, '').trim();
-                const utterance = new SpeechSynthesisUtterance(cleanText);
-                utterance.lang = 'es-ES';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        function speakSpanishCurrentDay() {
-            speakSpanish(vocabData[currentCarouselIndex].es);
-        }
-
         // --- 1. SECCIÓN CARRUSEL ---
         let currentCarouselIndex = 0;
 
@@ -798,7 +766,6 @@
             if (currentCarouselIndex < 0) currentCarouselIndex = 0;
             if (currentCarouselIndex >= vocabData.length) currentCarouselIndex = vocabData.length - 1;
             renderCarousel();
-            speakSpanishCurrentDay();
         }
 
         // --- 3. SECCIÓN ARRASTRAR Y SOLTAR ---
@@ -868,7 +835,6 @@
                     } else {
                         selectedTouchItem = dragElem;
                         dragElem.classList.add('selected-touch');
-                        speakSpanish(item.es);
                     }
                 });
 
@@ -889,7 +855,6 @@
                 itemElem.classList.remove('selected-touch');
                 itemElem.draggable = false;
                 selectedTouchItem = null;
-                speakSpanish(esWord);
 
                 progressState.dragCount++;
                 updateProgressBar();
@@ -911,7 +876,6 @@
                 btn.className = 'btn-q-opt';
                 btn.textContent = item.es;
                 btn.onclick = () => {
-                    speakSpanish(item.es);
                     Array.from(q1Container.children).forEach(b => b.className = 'btn-q-opt');
                     btn.className = 'btn-q-opt correct';
                     progressState.questionsAnswered.add(0);
@@ -929,7 +893,6 @@
                 btn.className = 'btn-q-opt';
                 btn.textContent = estuveText;
                 btn.onclick = () => {
-                    speakSpanish(estuveText);
                     Array.from(q2Container.children).forEach(b => b.className = 'btn-q-opt');
                     btn.className = 'btn-q-opt correct';
                     progressState.questionsAnswered.add(1);
@@ -948,7 +911,6 @@
                 btn.className = 'btn-q-opt';
                 btn.textContent = quieroText;
                 btn.onclick = () => {
-                    speakSpanish(quieroText);
                     Array.from(q3Container.children).forEach(b => b.className = 'btn-q-opt');
                     btn.className = 'btn-q-opt correct';
                     progressState.questionsAnswered.add(2);
@@ -1033,7 +995,6 @@
             if (btn.classList.contains('matched')) return;
 
             if (type === 'es') {
-                speakSpanish(btn.dataset.value);
                 if (selectedEsBtn) selectedEsBtn.classList.remove('selected');
                 selectedEsBtn = btn;
                 selectedEsBtn.classList.add('selected');
@@ -1078,7 +1039,6 @@
         function completeLesson() {
             document.getElementById('progress-bar').style.width = '100%';
             launchConfetti();
-            speakSpanish("¡Excelente trabajo! Lección completada.");
         }
 
         function launchConfetti() {
