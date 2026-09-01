@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los colores y los números - Spanish for Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa-flamenco: #FF79AC;
+            --rosa-oscuro: #D65889;
+            --verde-menta: #2EC4B6;
+            --verde-oscuro: #21998E;
+            --amarillo-sol: #FF9F1C;
+            --amarillo-oscuro: #D8800C;
+            --eerie-black: #121118;
+            --blanco-nube: #F8F9FA;
+            --blanco: #FFFFFF;
+            --rojo-suave: #FF6B6B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--blanco-nube);
+            color: var(--eerie-black);
+            padding: 20px 12px 60px 12px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        header {
+            background: var(--blanco);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-home {
+            background-color: var(--rosa-flamenco);
+            border: none;
+            border-bottom: 5px solid var(--rosa-oscuro);
+            color: var(--blanco);
+            padding: 10px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-home:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--eerie-black);
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 14px;
+            background-color: #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--verde-menta);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .card {
+            background: var(--blanco);
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-3d {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background-color: var(--rosa-flamenco);
+            border-bottom: 5px solid var(--rosa-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-primary:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .btn-accent {
+            background-color: var(--amarillo-sol);
+            border-bottom: 5px solid var(--amarillo-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-accent:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .carousel-card {
+            background: #FFF;
+            border: 3px solid #F1F5F9;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .carousel-img-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            padding: 5px;
+        }
+
+        .carousel-img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .day-en-sub {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #64748B;
+            margin-bottom: 12px;
+        }
+
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+
+        .btn-carousel-nav {
+            font-size: 1.5rem;
+            padding: 10px 24px;
+            border-radius: 16px;
+        }
+
+        .song-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Sección 3: Arrastrar imágenes y palabras (Casillas vacías) */
+        .drag-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .drag-card-item {
+            background-color: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .drag-img-thumb {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid #E2E8F0;
+        }
+
+        .drop-slot {
+            background-color: #FFFFFF;
+            border: 2px dashed #CBD5E1;
+            border-radius: 10px;
+            width: 100%;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .drop-slot.highlight {
+            border-color: var(--amarillo-sol);
+            background-color: #FFFBEB;
+        }
+
+        .drag-source-box {
+            background-color: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 70px;
+        }
+
+        .drag-item {
+            background-color: var(--rosa-flamenco);
+            border-bottom: 4px solid var(--rosa-oscuro);
+            color: var(--blanco);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.15s ease, background-color 0.2s ease;
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        .drag-item.correct {
+            background-color: var(--verde-menta) !important;
+            border-bottom: 4px solid var(--verde-oscuro) !important;
+            cursor: default;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin: 0;
+        }
+
+        .drag-item.selected-touch {
+            outline: 3px solid var(--amarillo-sol);
+            transform: translateY(-2px);
+        }
+
+        .q-banner {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .q-banner img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .q-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .q-card {
+            background-color: #F8FAFC;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .q-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            color: var(--eerie-black);
+        }
+
+        .q-sub {
+            font-size: 0.88rem;
+            color: #64748B;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .q-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-q-opt {
+            background: var(--blanco);
+            border: 2px solid #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-q-opt:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .btn-q-opt.correct {
+            background-color: var(--verde-menta);
+            border-color: var(--verde-oscuro);
+            border-bottom: 4px solid var(--verde-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-q-opt.wrong {
+            background-color: var(--rojo-suave);
+            border-color: #E03131;
+            border-bottom: 4px solid #C92A2A;
+            color: var(--blanco);
+        }
+
+        .matching-header-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .btn-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background-color: #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            color: var(--eerie-black);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-circle.active {
+            background-color: var(--amarillo-sol);
+            border-bottom: 4px solid var(--amarillo-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-circle:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .matching-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .match-col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .col-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            color: #64748B;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .btn-match-item {
+            background-color: var(--blanco);
+            border: 2px solid #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            padding: 12px 10px;
+            border-radius: 14px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--eerie-black);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-match-item.selected {
+            border-color: var(--amarillo-sol);
+            background-color: #FFFBEB;
+            border-bottom: 4px solid var(--amarillo-oscuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-match-item.matched {
+            background-color: var(--verde-menta) !important;
+            border-color: var(--verde-oscuro) !important;
+            border-bottom: 4px solid var(--verde-oscuro) !important;
+            color: var(--blanco) !important;
+            cursor: default;
+            transform: none !important;
+        }
+
+        .btn-match-item.shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-complete {
+            width: 100%;
+            max-width: 380px;
+            font-size: 1.25rem;
+            padding: 14px;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @media (max-width: 500px) {
+            .matching-columns {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .btn-match-item {
+                font-size: 0.85rem;
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <a href="../index.html" class="btn-home" title="Menú Principal">🏠</a>
+                <div class="header-title">
+                    <h1>Los colores y los números</h1>
+                    <div class="subtitle">Colors and numbers • Lección 5</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </header>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>📚 1. Vocabulario (Vocabulary)</h2>
+            </div>
+
+            <div class="carousel-wrapper">
+                <div class="carousel-card">
+                    <div class="carousel-img-container">
+                        <img id="carousel-img" src="" alt="Vocabulario Colores y Números">
+                    </div>
+                    <div class="day-es-title">
+                        <span id="day-name-en" class="day-en-sub"></span>
+                    </div>
+                </div>
+
+                <div class="carousel-nav">
+                    <button id="btn-carousel-prev" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(-1)" style="display: none;">⬅️</button>
+                    <button id="btn-carousel-next" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(1)">➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>🎵 2. Canción Interactiva</h2>
+            </div>
+            <div class="song-container">
+                <div class="video-wrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/LQYUmk74jck?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>🧩 3. Arrastra al lugar correcto</h2>
+            </div>
+            <div style="font-size: 0.95rem; color: #475569; margin-bottom: 16px; font-weight: 600;">Drag the correct Spanish color name under each image!</div>
+
+            <div class="drag-grid" id="drag-grid-container"></div>
+
+            <div style="font-family: 'Fredoka', sans-serif; font-size: 0.95rem; color: #64748B; margin-bottom: 8px;">👇 Banco de palabras (Word bank):</div>
+            <div class="drag-source-box" id="drag-source"></div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>💬 4. Preguntas Diarias y Números</h2>
+            </div>
+
+            <div class="q-banner">
+                <img src="https://imgur.com/Q7NUN3d.jpg" alt="Preguntas de Colores y Números">
+            </div>
+
+            <div class="q-list" id="questions-list"></div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>🔗 5. Empareja Columnas</h2>
+            </div>
+
+            <div class="matching-header-nav">
+                <span style="font-family: 'Fredoka', sans-serif; font-weight: 600;">Grupo:</span>
+                <button class="btn-circle active" id="btn-group-1" onclick="switchMatchingGroup(1)">1</button>
+                <button class="btn-circle" id="btn-group-2" onclick="switchMatchingGroup(2)">2</button>
+            </div>
+
+            <div class="matching-columns">
+                <div class="match-col">
+                    <div class="col-title">Español</div>
+                    <div id="match-col-es" class="match-col"></div>
+                </div>
+                <div class="match-col">
+                    <div class="col-title">English</div>
+                    <div id="match-col-en" class="match-col"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <button class="btn-3d btn-primary btn-complete" onclick="completeLesson()">🎉 ¡Completar Lección!</button>
+        </footer>
+    </div>
+
+    <script>
+        const vocabData = [
+            { en: "(One. Two. Three.)", img: "https://imgur.com/GDkgXO9.jpg" },
+            { en: "(Four. Five. Six.)", img: "https://imgur.com/9mLrgD4.jpg" },
+            { en: "(Seven. Eight.)", img: "https://imgur.com/YwtNIKJ.jpg" },
+            { en: "(Nine. Ten.)", img: "https://imgur.com/lM74T6S.jpg" },
+            { en: "(White)", img: "https://imgur.com/46sIil2.jpg" },
+            { en: "(Blue)", img: "https://imgur.com/q2K2JNW.jpg" },
+            { en: "(Green)", img: "https://imgur.com/gmKBU8D.jpg" },
+            { en: "(Brown)", img: "https://imgur.com/VDXWMuq.jpg" },
+            { en: "(Yellow is the sun)", img: "https://imgur.com/3oblCtG.jpg" },
+            { en: "(Orange)", img: "https://imgur.com/EfRuXLz.jpg" },
+            { en: "(Pink)", img: "https://imgur.com/QivZxCh.jpg" },
+            { en: "(Red)", img: "https://imgur.com/txO7plK.jpg" },
+            { en: "(Purple)", img: "https://imgur.com/r1Da4k1.jpg" },
+            { en: "(Black)", img: "https://imgur.com/Q1bYqNT.jpg" },
+            { en: "(Gray)", img: "https://imgur.com/r5eua4d.jpg" }
+        ];
+
+        let progressState = {
+            carouselViewed: new Set([0]),
+            dragCompleted: 0,
+            questionsAnswered: new Set(),
+            matchingCompletedGroup1: false,
+            matchingCompletedGroup2: false
+        };
+
+        function updateProgressBar() {
+            let totalItems = 15 + 11 + 8 + 2;
+            let currentScore = progressState.carouselViewed.size 
+                             + progressState.dragCompleted 
+                             + progressState.questionsAnswered.size 
+                             + (progressState.matchingCompletedGroup1 ? 1 : 0)
+                             + (progressState.matchingCompletedGroup2 ? 1 : 0);
+            
+            let percentage = Math.min(100, Math.round((currentScore / totalItems) * 100));
+            document.getElementById('progress-bar').style.width = percentage + '%';
+        }
+
+        let currentCarouselIndex = 0;
+
+        function renderCarousel() {
+            const item = vocabData[currentCarouselIndex];
+            document.getElementById('carousel-img').src = item.img;
+            document.getElementById('day-name-en').textContent = item.en;
+
+            document.getElementById('btn-carousel-prev').style.display = currentCarouselIndex > 0 ? 'inline-flex' : 'none';
+            document.getElementById('btn-carousel-next').style.display = currentCarouselIndex < vocabData.length - 1 ? 'inline-flex' : 'none';
+
+            progressState.carouselViewed.add(currentCarouselIndex);
+            updateProgressBar();
+        }
+
+        function navigateCarousel(direction) {
+            currentCarouselIndex += direction;
+            if (currentCarouselIndex < 0) currentCarouselIndex = 0;
+            if (currentCarouselIndex >= vocabData.length) currentCarouselIndex = vocabData.length - 1;
+            renderCarousel();
+        }
+
+        const dragItemsData = [
+            { id: 0, word: "gris", img: "https://imgur.com/CRZYKiX.jpg" },
+            { id: 1, word: "negro", img: "https://imgur.com/5yAsroV.jpg" },
+            { id: 2, word: "morado", img: "https://imgur.com/jnB1geS.jpg" },
+            { id: 3, word: "rojo", img: "https://imgur.com/7TKaWnR.jpg" },
+            { id: 4, word: "rosa", img: "https://imgur.com/iXJMBg4.jpg" },
+            { id: 5, word: "naranja", img: "https://imgur.com/Tnuqae7.jpg" },
+            { id: 6, word: "amarillo", img: "https://imgur.com/naBKDRR.jpg" },
+            { id: 7, word: "marrón", img: "https://imgur.com/75spKvE.jpg" },
+            { id: 8, word: "verde", img: "https://imgur.com/0LM6Wv4.jpg" },
+            { id: 9, word: "blanco", img: "https://imgur.com/cPTw5km.jpg" },
+            { id: 10, word: "azul", img: "https://imgur.com/NPvPrFT.jpg" }
+        ];
+
+        let touchSelectedWord = null;
+
+        function initDragDrop() {
+            const gridContainer = document.getElementById('drag-grid-container');
+            const sourceBox = document.getElementById('drag-source');
+            gridContainer.innerHTML = '';
+            sourceBox.innerHTML = '';
+
+            dragItemsData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'drag-card-item';
+
+                const img = document.createElement('img');
+                img.src = item.img;
+                img.className = 'drag-img-thumb';
+                card.appendChild(img);
+
+                const slot = document.createElement('div');
+                slot.className = 'drop-slot';
+                slot.dataset.word = item.word;
+
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    slot.classList.add('highlight');
+                });
+                slot.addEventListener('dragleave', () => slot.classList.remove('highlight'));
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('highlight');
+                    const wordId = e.dataTransfer.getData('text/plain');
+                    const draggedElem = document.getElementById(wordId);
+                    if (draggedElem) {
+                        handleWordDrop(draggedElem, slot);
+                    }
+                });
+
+                slot.addEventListener('click', () => {
+                    if (touchSelectedWord) {
+                        handleWordDrop(touchSelectedWord, slot);
+                    }
+                });
+
+                card.appendChild(slot);
+                gridContainer.appendChild(card);
+            });
+
+            const shuffledWords = [...dragItemsData].sort(() => Math.random() - 0.5);
+            shuffledWords.forEach((item, idx) => {
+                const wordElem = document.createElement('div');
+                wordElem.className = 'drag-item';
+                wordElem.draggable = true;
+                wordElem.textContent = item.word;
+                wordElem.dataset.word = item.word;
+                wordElem.id = `word-${item.id}-${idx}`;
+
+                wordElem.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', wordElem.id);
+                });
+
+                wordElem.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (wordElem.classList.contains('correct')) return;
+
+                    if (touchSelectedWord) touchSelectedWord.classList.remove('selected-touch');
+                    if (touchSelectedWord === wordElem) {
+                        touchSelectedWord = null;
+                    } else {
+                        touchSelectedWord = wordElem;
+                        wordElem.classList.add('selected-touch');
+                    }
+                });
+
+                sourceBox.appendChild(wordElem);
+            });
+        }
+
+        function handleWordDrop(itemElem, slot) {
+            const word = itemElem.dataset.word;
+            const expected = slot.dataset.word;
+
+            if (itemElem.classList.contains('correct')) return;
+
+            if (word.toLowerCase() === expected.toLowerCase()) {
+                slot.innerHTML = '';
+                slot.appendChild(itemElem);
+                itemElem.classList.add('correct');
+                itemElem.classList.remove('selected-touch');
+                itemElem.draggable = false;
+                touchSelectedWord = null;
+
+                progressState.dragCompleted++;
+                updateProgressBar();
+            } else {
+                if (touchSelectedWord) {
+                    touchSelectedWord.classList.remove('selected-touch');
+                    touchSelectedWord = null;
+                }
+                itemElem.classList.add('shake');
+                setTimeout(() => itemElem.classList.remove('shake'), 400);
+            }
+        }
+
+        const questionsData = [
+            {
+                q: "¿Cómo estás?",
+                sub: "(How are you?)",
+                options: ["estoy bien", "estoy emocionado", "estoy feliz", "estoy cansado", "estoy triste", "estoy genial"],
+                type: "auto-green"
+            },
+            {
+                q: "¿Cómo te llamas?",
+                sub: "(What is your name?)",
+                type: "click-green"
+            },
+            {
+                q: "¿Cuántos años tienes?",
+                sub: "(How old are you?)",
+                type: "click-green"
+            },
+            {
+                q: "¿De dónde eres?",
+                sub: "(Where are you from?)",
+                type: "click-green"
+            },
+            {
+                q: "¿Qué tiempo hace?",
+                sub: "(What's the weather like?)",
+                options: ["hace sol", "hace calor", "está nublado", "hay nubes", "está lloviendo", "hace viento", "hace frío", "está despejado y azul"],
+                type: "auto-green"
+            },
+            {
+                q: "¿Qué número es?",
+                sub: "(What number is it?)",
+                img: "https://imgur.com/16SHItB.jpg",
+                options: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+                correct: "seis",
+                type: "retryable"
+            },
+            {
+                q: "¿Qué número es?",
+                sub: "(What number is it?)",
+                img: "https://imgur.com/id0n1vq.jpg",
+                options: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+                correct: "cuatro",
+                type: "retryable"
+            },
+            {
+                q: "¿Qué número es?",
+                sub: "(What number is it?)",
+                img: "https://imgur.com/Wr2owYM.jpg",
+                options: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+                correct: "siete",
+                type: "retryable"
+            }
+        ];
+
+        function initQuestions() {
+            const listContainer = document.getElementById('questions-list');
+            listContainer.innerHTML = '';
+
+            questionsData.forEach((qItem, qIdx) => {
+                const card = document.createElement('div');
+                card.className = 'q-card';
+
+                const title = document.createElement('div');
+                title.className = 'q-title';
+                title.textContent = qItem.q;
+                card.appendChild(title);
+
+                const sub = document.createElement('div');
+                sub.className = 'q-sub';
+                sub.textContent = qItem.sub;
+                card.appendChild(sub);
+
+                if (qItem.img) {
+                    const imgThumb = document.createElement('img');
+                    imgThumb.src = qItem.img;
+                    imgThumb.style.width = '100px';
+                    imgThumb.style.height = '100px';
+                    imgThumb.style.objectFit = 'cover';
+                    imgThumb.style.borderRadius = '12px';
+                    imgThumb.style.marginBottom = '12px';
+                    card.appendChild(imgThumb);
+                }
+
+                if (qItem.options) {
+                    const optContainer = document.createElement('div');
+                    optContainer.className = 'q-options';
+
+                    qItem.options.forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-q-opt';
+                        btn.textContent = opt;
+
+                        if (qItem.type === "auto-green") {
+                            btn.onclick = () => {
+                                Array.from(optContainer.children).forEach(b => b.className = 'btn-q-opt');
+                                btn.className = 'btn-q-opt correct';
+                                progressState.questionsAnswered.add(qIdx);
+                                updateProgressBar();
+                            };
+                        } else if (qItem.type === "retryable") {
+                            btn.onclick = () => {
+                                if (opt === qItem.correct) {
+                                    btn.className = 'btn-q-opt correct';
+                                    progressState.questionsAnswered.add(qIdx);
+                                    updateProgressBar();
+                                } else {
+                                    btn.className = 'btn-q-opt wrong';
+                                    setTimeout(() => {
+                                        btn.className = 'btn-q-opt';
+                                    }, 600);
+                                }
+                            };
+                        }
+
+                        optContainer.appendChild(btn);
+                    });
+                    card.appendChild(optContainer);
+                } else {
+                    card.onclick = () => {
+                        card.style.borderColor = 'var(--verde-menta)';
+                        card.style.backgroundColor = '#F0FDF4';
+                        progressState.questionsAnswered.add(qIdx);
+                        updateProgressBar();
+                    };
+                }
+
+                listContainer.appendChild(card);
+            });
+        }
+
+        const group1Match = [
+            { es: "Amarillo", en: "Yellow" },
+            { es: "Uno", en: "One" },
+            { es: "Rojo", en: "Red" },
+            { es: "Tres", en: "Three" },
+            { es: "Azul", en: "Blue" },
+            { es: "Morado", en: "Purple" }
+        ];
+
+        const group2Match = [
+            { es: "Blanco", en: "White" },
+            { es: "Cinco", en: "Five" },
+            { es: "Negro", en: "Black" },
+            { es: "Ocho", en: "Eight" },
+            { es: "Nueve", en: "Nine" },
+            { es: "Gris", en: "Gray" }
+        ];
+
+        let currentMatchGroup = 1;
+        let selectedEsBtn = null;
+        let selectedEnBtn = null;
+        let matchedCount = 0;
+
+        function switchMatchingGroup(groupNum) {
+            currentMatchGroup = groupNum;
+            document.getElementById('btn-group-1').className = `btn-circle ${groupNum === 1 ? 'active' : ''}`;
+            document.getElementById('btn-group-2').className = `btn-circle ${groupNum === 2 ? 'active' : ''}`;
+            renderMatchingColumns();
+        }
+
+        function renderMatchingColumns() {
+            const data = currentMatchGroup === 1 ? group1Match : group2Match;
+            selectedEsBtn = null;
+            selectedEnBtn = null;
+            matchedCount = 0;
+
+            const esCol = document.getElementById('match-col-es');
+            const enCol = document.getElementById('match-col-en');
+            esCol.innerHTML = '';
+            enCol.innerHTML = '';
+
+            const esList = [...data].sort(() => Math.random() - 0.5);
+            const enList = [...data].sort(() => Math.random() - 0.5);
+
+            esList.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-match-item';
+                btn.textContent = item.es;
+                btn.dataset.value = item.es;
+                btn.dataset.pair = item.en;
+                btn.onclick = () => handleMatchClick(btn, 'es');
+                esCol.appendChild(btn);
+            });
+
+            enList.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-match-item';
+                btn.textContent = item.en;
+                btn.dataset.value = item.en;
+                btn.dataset.pair = item.es;
+                btn.onclick = () => handleMatchClick(btn, 'en');
+                enCol.appendChild(btn);
+            });
+        }
+
+        function handleMatchClick(btn, type) {
+            if (btn.classList.contains('matched')) return;
+
+            if (type === 'es') {
+                if (selectedEsBtn) selectedEsBtn.classList.remove('selected');
+                selectedEsBtn = btn;
+                selectedEsBtn.classList.add('selected');
+            } else {
+                if (selectedEnBtn) selectedEnBtn.classList.remove('selected');
+                selectedEnBtn = btn;
+                selectedEnBtn.classList.add('selected');
+            }
+
+            if (selectedEsBtn && selectedEnBtn) {
+                if (selectedEsBtn.dataset.pair === selectedEnBtn.dataset.value) {
+                    selectedEsBtn.className = 'btn-match-item matched';
+                    selectedEnBtn.className = 'btn-match-item matched';
+                    selectedEsBtn = null;
+                    selectedEnBtn = null;
+                    matchedCount++;
+
+                    if (matchedCount === (currentMatchGroup === 1 ? group1Match.length : group2Match.length)) {
+                        if (currentMatchGroup === 1) progressState.matchingCompletedGroup1 = true;
+                        if (currentMatchGroup === 2) progressState.matchingCompletedGroup2 = true;
+                        updateProgressBar();
+                    }
+                } else {
+                    const tempEs = selectedEsBtn;
+                    const tempEn = selectedEnBtn;
+                    selectedEsBtn = null;
+                    selectedEnBtn = null;
+
+                    tempEs.classList.add('shake');
+                    tempEn.classList.add('shake');
+                    setTimeout(() => {
+                        tempEs.classList.remove('selected', 'shake');
+                        tempEn.classList.remove('selected', 'shake');
+                    }, 400);
+                }
+            }
+        }
+
+        function completeLesson() {
+            document.getElementById('progress-bar').style.width = '100%';
+            launchConfetti();
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const colors = ['#FF79AC', '#2EC4B6', '#FF9F1C', '#3B82F6', '#A855F7'];
+
+            for (let i = 0; i < 120; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 10 + 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    rotation: Math.random() * 360
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += 2;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (pieces.some(p => p.y < canvas.height)) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCarousel();
+            initDragDrop();
+            initQuestions();
+            renderMatchingColumns();
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>
