@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Cómo te llamas? - Spanish for Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa-flamenco: #FF79AC;
+            --rosa-oscuro: #D65889;
+            --verde-menta: #2EC4B6;
+            --verde-oscuro: #21998E;
+            --amarillo-sol: #FF9F1C;
+            --amarillo-oscuro: #D8800C;
+            --eerie-black: #121118;
+            --blanco-nube: #F8F9FA;
+            --blanco: #FFFFFF;
+            --rojo-suave: #FF6B6B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--blanco-nube);
+            color: var(--eerie-black);
+            padding: 20px 12px 60px 12px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Header & Progress */
+        header {
+            background: var(--blanco);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-home {
+            background-color: var(--rosa-flamenco);
+            border: none;
+            border-bottom: 5px solid var(--rosa-oscuro);
+            color: var(--blanco);
+            padding: 10px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-home:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--eerie-black);
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 14px;
+            background-color: #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--verde-menta);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* Cards Base Style */
+        .card {
+            background: var(--blanco);
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Common Button 3D Style */
+        .btn-3d {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background-color: var(--rosa-flamenco);
+            border-bottom: 5px solid var(--rosa-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-primary:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .btn-accent {
+            background-color: var(--amarillo-sol);
+            border-bottom: 5px solid var(--amarillo-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-accent:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        /* 1. Carousel Section */
+        .carousel-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .carousel-card {
+            background: #FFF;
+            border: 3px solid #F1F5F9;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .carousel-img-container {
+            width: 100%;
+            height: 310px;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            padding: 5px;
+        }
+
+        .carousel-img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .day-es-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            color: var(--eerie-black);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .day-en-sub {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #64748B;
+            margin-bottom: 12px;
+        }
+
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+
+        .btn-carousel-nav {
+            font-size: 1.5rem;
+            padding: 10px 24px;
+            border-radius: 16px;
+        }
+
+        /* 2. Song Section */
+        .song-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* 3. Drag and Drop Section (Estilo idéntico a la imagen 1) */
+        .drag-instructions {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .drag-target-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .drag-target-slot {
+            background-color: #FFFFFF;
+            border: 2px dashed #CBD5E1;
+            border-radius: 16px;
+            padding: 14px 10px;
+            min-height: 95px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .drag-target-slot.highlight {
+            border-color: var(--amarillo-sol);
+            background-color: #FFFBEB;
+        }
+
+        .slot-label {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            color: #64748B;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .drag-source-box {
+            background-color: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 70px;
+        }
+
+        .drag-item {
+            background-color: var(--rosa-flamenco);
+            border-bottom: 4px solid var(--rosa-oscuro);
+            color: var(--blanco);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.15s ease, background-color 0.2s ease;
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        .drag-item.correct {
+            background-color: var(--verde-menta) !important;
+            border-bottom: 4px solid var(--verde-oscuro) !important;
+            cursor: default;
+        }
+
+        .drag-item.selected-touch {
+            outline: 3px solid var(--amarillo-sol);
+            transform: translateY(-2px);
+        }
+
+        /* 4. Questions Section */
+        .q-banner {
+            width: 100%;
+            max-width: 560px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .q-banner img {
+            width: 100%;
+            display: block;
+        }
+
+        .q-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .q-card {
+            background-color: #F8FAFC;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .q-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            color: var(--eerie-black);
+        }
+
+        .q-sub {
+            font-size: 0.88rem;
+            color: #64748B;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .q-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-q-opt {
+            background: var(--blanco);
+            border: 2px solid #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-q-opt:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .btn-q-opt.correct {
+            background-color: var(--verde-menta);
+            border-color: var(--verde-oscuro);
+            border-bottom: 4px solid var(--verde-oscuro);
+            color: var(--blanco);
+        }
+
+        /* 5. Matching Vocabulary Section */
+        .matching-header-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .btn-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background-color: #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            color: var(--eerie-black);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-circle.active {
+            background-color: var(--amarillo-sol);
+            border-bottom: 4px solid var(--amarillo-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-circle:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .matching-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .match-col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .col-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            color: #64748B;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .btn-match-item {
+            background-color: var(--blanco);
+            border: 2px solid #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            padding: 12px 10px;
+            border-radius: 14px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--eerie-black);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-match-item.selected {
+            border-color: var(--amarillo-sol);
+            background-color: #FFFBEB;
+            border-bottom: 4px solid var(--amarillo-oscuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-match-item.matched {
+            background-color: var(--verde-menta) !important;
+            border-color: var(--verde-oscuro) !important;
+            border-bottom: 4px solid var(--verde-oscuro) !important;
+            color: var(--blanco) !important;
+            cursor: default;
+            transform: none !important;
+        }
+
+        .btn-match-item.shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        /* Footer */
+        footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-complete {
+            width: 100%;
+            max-width: 380px;
+            font-size: 1.25rem;
+            padding: 14px;
+        }
+
+        /* Confetti canvas overlay */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 500px) {
+            .matching-columns {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .btn-match-item {
+                font-size: 0.85rem;
+                padding: 8px 4px;
+            }
+            .drag-target-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <!-- Encabezado / Header -->
+        <header>
+            <div class="header-top">
+                <a href="../index.html" class="btn-home" title="Menú Principal">🏠</a>
+                <div class="header-title">
+                    <h1>¿Cómo te llamas?</h1>
+                    <div class="subtitle">What is your name? • Lección 3</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </header>
+
+        <!-- Sección 1: Presentación con Imágenes (Carousel) -->
+        <section class="card">
+            <div class="card-header">
+                <h2>📚 1. Vocabulario (Vocabulary)</h2>
+            </div>
+
+            <div class="carousel-wrapper">
+                <div class="carousel-card">
+                    <div class="carousel-img-container">
+                        <img id="carousel-img" src="" alt="Vocabulario">
+                    </div>
+                    <div class="day-es-title">
+                        <span id="day-name-en" class="day-en-sub"></span>
+                    </div>
+                </div>
+
+                <div class="carousel-nav">
+                    <button id="btn-carousel-prev" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(-1)" style="display: none;">⬅️</button>
+                    <button id="btn-carousel-next" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(1)">➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Canción -->
+        <section class="card">
+            <div class="card-header">
+                <h2>🎵 2. Canción Interactiva</h2>
+            </div>
+            <div class="song-container">
+                <div class="video-wrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/4iw0qkl4eEc?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Arrastrar y Soltar (Diseño en cuadrícula idéntico a referencia) -->
+        <section class="card">
+            <div class="card-header">
+                <h2>🧩 3. Arrastra al lugar correcto</h2>
+            </div>
+            <p class="drag-instructions">Drag the Spanish translation to the correct English expression!</p>
+
+            <div class="drag-target-list" id="drag-targets"></div>
+
+            <div style="font-family: 'Fredoka', sans-serif; font-size: 0.95rem; color: #64748B; margin-bottom: 8px;">👇 Arrastra desde aquí (Drag from here):</div>
+            <div class="drag-source-box" id="drag-source"></div>
+        </section>
+
+        <!-- Sección 4: Preguntas -->
+        <section class="card">
+            <div class="card-header">
+                <h2>💬 4. Preguntas Diarias</h2>
+            </div>
+
+            <div class="q-banner" style="max-width: 100%;">
+                <img src="https://imgur.com/Wsc1xmQ.jpg" alt="Calendario de Preguntas" style="width: 100%; height: auto; max-height: 480px; object-fit: cover; border-radius: 16px;">
+            </div>
+
+            <div class="q-list">
+                <!-- Q1: ¿Cómo estás? (Con botones de opciones) -->
+                <div class="q-card">
+                    <div class="q-title">¿Cómo estás?</div>
+                    <div class="q-sub">(How are you?)</div>
+                    <div class="q-options" id="q1-container"></div>
+                </div>
+
+                <!-- Q2: ¿Cómo te llamas? (Sin botones) -->
+                <div class="q-card">
+                    <div class="q-title">¿Cómo te llamas?</div>
+                    <div class="q-sub">(What is your name?)</div>
+                </div>
+
+                <!-- Q3: ¿Cuántos años tienes? (Sin botones) -->
+                <div class="q-card">
+                    <div class="q-title">¿Cuántos años tienes?</div>
+                    <div class="q-sub">(How old are you?)</div>
+                </div>
+
+                <!-- Q4: ¿De dónde eres? (Sin botones) -->
+                <div class="q-card">
+                    <div class="q-title">¿De dónde eres?</div>
+                    <div class="q-sub">(Where are you from?)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Emparejar Vocabulario -->
+        <section class="card">
+            <div class="card-header">
+                <h2>🔗 5. Empareja Columnas</h2>
+            </div>
+
+            <div class="matching-header-nav">
+                <span style="font-family: 'Fredoka', sans-serif; font-weight: 600;">Grupo:</span>
+                <button class="btn-circle active" id="btn-group-1" onclick="switchMatchingGroup(1)">1</button>
+                <button class="btn-circle" id="btn-group-2" onclick="switchMatchingGroup(2)">2</button>
+            </div>
+
+            <div class="matching-columns">
+                <div class="match-col">
+                    <div class="col-title">Español</div>
+                    <div id="match-col-es" class="match-col"></div>
+                </div>
+                <div class="match-col">
+                    <div class="col-title">English</div>
+                    <div id="match-col-en" class="match-col"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <button class="btn-3d btn-primary btn-complete" onclick="completeLesson()">🎉 ¡Completar Lección!</button>
+        </footer>
+    </div>
+
+    <script>
+        // --- DATOS PRINCIPALES ---
+        const vocabData = [
+            { es: "¿Cómo te llamas?", en: "What is your name?", img: "https://imgur.com/fHwVIZp.jpg" },
+            { es: "Me llamo Sofía", en: "My name is Sofía", img: "https://imgur.com/jHOJxwJ.jpg" },
+            { es: "Mucho gusto", en: "Nice to meet you", img: "https://imgur.com/RiE4hHh.jpg" },
+            { es: "¿Cuántos años tienes?", en: "How old are you?", img: "https://imgur.com/cFWRFgG.jpg" },
+            { es: "Tengo 5 años", en: "I am 5 years old", img: "https://imgur.com/mhloUBC.jpg" },
+            { es: "¿De dónde eres?", en: "Where are you from?", img: "https://imgur.com/Sh6if5A.jpg" },
+            { es: "Soy de España", en: "I am from Spain", img: "https://imgur.com/R3WenP3.jpg" }
+        ];
+
+        // Tracking progress
+        let progressState = {
+            carouselViewed: new Set([0]),
+            dragCount: 0,
+            questionsAnswered: new Set(),
+            matchingCompletedGroup1: false,
+            matchingCompletedGroup2: false
+        };
+
+        function updateProgressBar() {
+            let totalItems = 7 + 7 + 1 + 2; 
+            let currentScore = progressState.carouselViewed.size 
+                             + progressState.dragCount 
+                             + progressState.questionsAnswered.size 
+                             + (progressState.matchingCompletedGroup1 ? 1 : 0)
+                             + (progressState.matchingCompletedGroup2 ? 1 : 0);
+            
+            let percentage = Math.min(100, Math.round((currentScore / totalItems) * 100));
+            document.getElementById('progress-bar').style.width = percentage + '%';
+        }
+
+        // --- 1. SECCIÓN CARRUSEL ---
+        let currentCarouselIndex = 0;
+
+        function renderCarousel() {
+            const item = vocabData[currentCarouselIndex];
+            document.getElementById('carousel-img').src = item.img;
+            document.getElementById('day-name-en').textContent = `(${item.en})`;
+
+            const btnPrev = document.getElementById('btn-carousel-prev');
+            btnPrev.style.display = currentCarouselIndex > 0 ? 'inline-flex' : 'none';
+
+            const btnNext = document.getElementById('btn-carousel-next');
+            btnNext.style.display = currentCarouselIndex < vocabData.length - 1 ? 'inline-flex' : 'none';
+
+            progressState.carouselViewed.add(currentCarouselIndex);
+            updateProgressBar();
+        }
+
+        function navigateCarousel(direction) {
+            currentCarouselIndex += direction;
+            if (currentCarouselIndex < 0) currentCarouselIndex = 0;
+            if (currentCarouselIndex >= vocabData.length) currentCarouselIndex = vocabData.length - 1;
+            renderCarousel();
+        }
+
+        // --- 3. SECCIÓN ARRASTRAR Y SOLTAR ---
+        let selectedTouchItem = null;
+
+        function initDragDrop() {
+            const targetsContainer = document.getElementById('drag-targets');
+            const sourceContainer = document.getElementById('drag-source');
+
+            targetsContainer.innerHTML = '';
+            sourceContainer.innerHTML = '';
+
+            vocabData.forEach(item => {
+                const slot = document.createElement('div');
+                slot.className = 'drag-target-slot';
+                slot.dataset.es = item.es;
+                slot.innerHTML = `<div class="slot-label">(${item.en})</div>`;
+
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    slot.classList.add('highlight');
+                });
+
+                slot.addEventListener('dragleave', () => {
+                    slot.classList.remove('highlight');
+                });
+
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('highlight');
+                    const draggedEs = e.dataTransfer.getData('text/plain');
+                    checkDragDropMatch(draggedEs, slot);
+                });
+
+                slot.addEventListener('click', () => {
+                    if (selectedTouchItem) {
+                        checkDragDropMatch(selectedTouchItem.dataset.es, slot);
+                    }
+                });
+
+                targetsContainer.appendChild(slot);
+            });
+
+            const shuffled = [...vocabData].sort(() => Math.random() - 0.5);
+            shuffled.forEach(item => {
+                const dragElem = document.createElement('div');
+                dragElem.className = 'drag-item';
+                dragElem.draggable = true;
+                dragElem.textContent = item.es;
+                dragElem.dataset.es = item.es;
+                dragElem.id = `drag-item-${item.es.replace(/[^a-zA-Z0-9]/g, '')}`;
+
+                dragElem.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.es);
+                });
+
+                dragElem.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (dragElem.classList.contains('correct')) return;
+
+                    if (selectedTouchItem) {
+                        selectedTouchItem.classList.remove('selected-touch');
+                    }
+
+                    if (selectedTouchItem === dragElem) {
+                        selectedTouchItem = null;
+                    } else {
+                        selectedTouchItem = dragElem;
+                        dragElem.classList.add('selected-touch');
+                    }
+                });
+
+                sourceContainer.appendChild(dragElem);
+            });
+        }
+
+        function checkDragDropMatch(esWord, targetSlot) {
+            if (!esWord || !targetSlot) return;
+            const expectedEs = targetSlot.dataset.es;
+            const itemElem = document.getElementById(`drag-item-${esWord.replace(/[^a-zA-Z0-9]/g, '')}`);
+
+            if (!itemElem || itemElem.classList.contains('correct')) return;
+
+            if (esWord === expectedEs) {
+                targetSlot.appendChild(itemElem);
+                itemElem.classList.add('correct');
+                itemElem.classList.remove('selected-touch');
+                itemElem.draggable = false;
+                selectedTouchItem = null;
+
+                progressState.dragCount++;
+                updateProgressBar();
+            } else {
+                itemElem.classList.remove('selected-touch');
+                selectedTouchItem = null;
+                itemElem.classList.add('shake');
+                setTimeout(() => itemElem.classList.remove('shake'), 500);
+            }
+        }
+
+        // --- 4. SECCIÓN PREGUNTAS ---
+        function initQuestions() {
+            const q1Container = document.getElementById('q1-container');
+            q1Container.innerHTML = '';
+            const options = ["estoy bien", "estoy emocionado", "estoy feliz", "estoy cansado", "estoy triste", "estoy genial"];
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-q-opt';
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    Array.from(q1Container.children).forEach(b => b.className = 'btn-q-opt');
+                    btn.className = 'btn-q-opt correct';
+                    progressState.questionsAnswered.add(0);
+                    updateProgressBar();
+                };
+                q1Container.appendChild(btn);
+            });
+        }
+
+        // --- 5. SECCIÓN EMPAREJAR VOCABULARIO ---
+        const group1Data = [
+            { es: "¿Cómo te llamas?", en: "What is your name?" },
+            { es: "Me llamo...", en: "My name is..." },
+            { es: "¿Cuántos años tienes?", en: "How old are you?" },
+            { es: "Estoy feliz", en: "I'm happy" },
+            { es: "¿De dónde eres?", en: "Where are you from?" },
+            { es: "Estoy enojado", en: "I'm angry" }
+        ];
+
+        const group2Data = [
+            { es: "Soy de Colombia", en: "I am from Colombia" },
+            { es: "Tengo seis años", en: "I am six years old" },
+            { es: "¿Cómo estás?", en: "How are you?" },
+            { es: "Estoy emocionado", en: "I am excited" },
+            { es: "Estoy sorprendido", en: "I am surprised" },
+            { es: "Estoy genial", en: "I am great" }
+        ];
+
+        let currentMatchGroup = 1;
+        let selectedEsBtn = null;
+        let selectedEnBtn = null;
+        let matchedPairsCount = 0;
+
+        function switchMatchingGroup(groupNum) {
+            currentMatchGroup = groupNum;
+            document.getElementById('btn-group-1').className = `btn-circle ${groupNum === 1 ? 'active' : ''}`;
+            document.getElementById('btn-group-2').className = `btn-circle ${groupNum === 2 ? 'active' : ''}`;
+            renderMatchingColumns();
+        }
+
+        function renderMatchingColumns() {
+            const data = currentMatchGroup === 1 ? group1Data : group2Data;
+            selectedEsBtn = null;
+            selectedEnBtn = null;
+            matchedPairsCount = 0;
+
+            const esCol = document.getElementById('match-col-es');
+            const enCol = document.getElementById('match-col-en');
+
+            esCol.innerHTML = '';
+            enCol.innerHTML = '';
+
+            const esList = [...data].sort(() => Math.random() - 0.5);
+            const enList = [...data].sort(() => Math.random() - 0.5);
+
+            esList.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-match-item';
+                btn.textContent = item.es;
+                btn.dataset.value = item.es;
+                btn.dataset.pair = item.en;
+
+                btn.onclick = () => handleMatchClick(btn, 'es');
+                esCol.appendChild(btn);
+            });
+
+            enList.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-match-item';
+                btn.textContent = item.en;
+                btn.dataset.value = item.en;
+                btn.dataset.pair = item.es;
+
+                btn.onclick = () => handleMatchClick(btn, 'en');
+                enCol.appendChild(btn);
+            });
+        }
+
+        function handleMatchClick(btn, type) {
+            if (btn.classList.contains('matched')) return;
+
+            if (type === 'es') {
+                if (selectedEsBtn) selectedEsBtn.classList.remove('selected');
+                selectedEsBtn = btn;
+                selectedEsBtn.classList.add('selected');
+            } else {
+                if (selectedEnBtn) selectedEnBtn.classList.remove('selected');
+                selectedEnBtn = btn;
+                selectedEnBtn.classList.add('selected');
+            }
+
+            if (selectedEsBtn && selectedEnBtn) {
+                if (selectedEsBtn.dataset.pair === selectedEnBtn.dataset.value) {
+                    selectedEsBtn.className = 'btn-match-item matched';
+                    selectedEnBtn.className = 'btn-match-item matched';
+                    selectedEsBtn = null;
+                    selectedEnBtn = null;
+                    matchedPairsCount++;
+
+                    const totalCurrentGroup = currentMatchGroup === 1 ? group1Data.length : group2Data.length;
+                    if (matchedPairsCount === totalCurrentGroup) {
+                        if (currentMatchGroup === 1) progressState.matchingCompletedGroup1 = true;
+                        if (currentMatchGroup === 2) progressState.matchingCompletedGroup2 = true;
+                        updateProgressBar();
+                    }
+                } else {
+                    const tempEs = selectedEsBtn;
+                    const tempEn = selectedEnBtn;
+                    selectedEsBtn = null;
+                    selectedEnBtn = null;
+
+                    tempEs.classList.add('shake');
+                    tempEn.classList.add('shake');
+
+                    setTimeout(() => {
+                        tempEs.classList.remove('selected', 'shake');
+                        tempEn.classList.remove('selected', 'shake');
+                    }, 450);
+                }
+            }
+        }
+
+        // --- CONFETTI & COMPLETION ---
+        function completeLesson() {
+            document.getElementById('progress-bar').style.width = '100%';
+            launchConfetti();
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const colors = ['#FF79AC', '#2EC4B6', '#FF9F1C', '#3B82F6', '#A855F7'];
+
+            for (let i = 0; i < 120; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 10 + 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    rotation: Math.random() * 360
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += 2;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (pieces.some(p => p.y < canvas.height)) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCarousel();
+            initDragDrop();
+            initQuestions();
+            renderMatchingColumns();
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>
