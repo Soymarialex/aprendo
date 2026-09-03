@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soy / me gusta - Spanish for Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa-flamenco: #FF79AC;
+            --rosa-oscuro: #D65889;
+            --verde-menta: #2EC4B6;
+            --verde-oscuro: #21998E;
+            --amarillo-sol: #FF9F1C;
+            --amarillo-oscuro: #D8800C;
+            --eerie-black: #121118;
+            --blanco-nube: #F8F9FA;
+            --blanco: #FFFFFF;
+            --rojo-suave: #FF6B6B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--blanco-nube);
+            color: var(--eerie-black);
+            padding: 20px 12px 60px 12px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        header {
+            background: var(--blanco);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-home {
+            background-color: var(--rosa-flamenco);
+            border: none;
+            border-bottom: 5px solid var(--rosa-oscuro);
+            color: var(--blanco);
+            padding: 10px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-home:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--eerie-black);
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 14px;
+            background-color: #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--verde-menta);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .card {
+            background: var(--blanco);
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-3d {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background-color: var(--rosa-flamenco);
+            border-bottom: 5px solid var(--rosa-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-primary:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .btn-accent {
+            background-color: var(--amarillo-sol);
+            border-bottom: 5px solid var(--amarillo-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-accent:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .carousel-card {
+            background: #FFF;
+            border: 3px solid #F1F5F9;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .carousel-img-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            padding: 5px;
+        }
+
+        .carousel-img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .day-en-sub {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #64748B;
+            margin-bottom: 12px;
+        }
+
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+
+        .btn-carousel-nav {
+            font-size: 1.5rem;
+            padding: 10px 24px;
+            border-radius: 16px;
+        }
+
+        .song-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Sección 3: Arrastrar en formato de cuadrícula */
+        .drag-instructions {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .drag-target-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .drag-target-slot {
+            background-color: #F1F5F9;
+            border: 2px dashed #CBD5E1;
+            border-radius: 16px;
+            padding: 10px 8px;
+            min-height: 95px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.2s ease;
+        }
+
+        .drag-target-slot.highlight {
+            border-color: var(--amarillo-sol);
+            background-color: #FFFBEB;
+        }
+
+        .slot-label {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.85rem;
+            color: #64748B;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .drag-source-box {
+            background-color: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 70px;
+        }
+
+        .drag-item {
+            background-color: var(--rosa-flamenco);
+            border-bottom: 4px solid var(--rosa-oscuro);
+            color: var(--blanco);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.15s ease, background-color 0.2s ease;
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        .drag-item.correct {
+            background-color: var(--verde-menta) !important;
+            border-bottom: 4px solid var(--verde-oscuro) !important;
+            cursor: default;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .drag-item.selected-touch {
+            outline: 3px solid var(--amarillo-sol);
+            transform: translateY(-2px);
+        }
+
+        .q-banner-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .q-banner {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .q-banner img {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .q-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .q-card {
+            background-color: #F8FAFC;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .q-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            color: var(--eerie-black);
+        }
+
+        .q-sub {
+            font-size: 0.88rem;
+            color: #64748B;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .q-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-q-opt {
+            background: var(--blanco);
+            border: 2px solid #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-q-opt:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .btn-q-opt.correct {
+            background-color: var(--verde-menta);
+            border-color: var(--verde-oscuro);
+            border-bottom: 4px solid var(--verde-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-q-opt.wrong {
+            background-color: var(--rojo-suave);
+            border-color: #E03131;
+            border-bottom: 4px solid #C92A2A;
+            color: var(--blanco);
+        }
+
+        .matching-header-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .btn-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background-color: #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            color: var(--eerie-black);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-circle.active {
+            background-color: var(--amarillo-sol);
+            border-bottom: 4px solid var(--amarillo-oscuro);
+            color: var(--blanco);
+        }
+
+        .btn-circle:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .matching-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .match-col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .col-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            color: #64748B;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .btn-match-item {
+            background-color: var(--blanco);
+            border: 2px solid #E2E8F0;
+            border-bottom: 4px solid #CBD5E1;
+            padding: 12px 10px;
+            border-radius: 14px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--eerie-black);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-match-item.selected {
+            border-color: var(--amarillo-sol);
+            background-color: #FFFBEB;
+            border-bottom: 4px solid var(--amarillo-oscuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-match-item.matched {
+            background-color: var(--verde-menta) !important;
+            border-color: var(--verde-oscuro) !important;
+            border-bottom: 4px solid var(--verde-oscuro) !important;
+            color: var(--blanco) !important;
+            cursor: default;
+            transform: none !important;
+        }
+
+        .btn-match-item.shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-complete {
+            width: 100%;
+            max-width: 380px;
+            font-size: 1.25rem;
+            padding: 14px;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @media (max-width: 500px) {
+            .matching-columns {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .btn-match-item {
+                font-size: 0.85rem;
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <a href="../index.html" class="btn-home" title="Menú Principal">🏠</a>
+                <div class="header-title">
+                    <h1>Soy / me gusta</h1>
+                    <div class="subtitle">I am / I like • Lección 6</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </header>
+
+        <!-- Sección 1: Vocabulario (Flashcards) -->
+        <section class="card">
+            <div class="card-header">
+                <h2>📚 1. Vocabulario (Vocabulary)</h2>
+            </div>
+
+            <div class="carousel-wrapper">
+                <div class="carousel-card">
+                    <div class="carousel-img-container">
+                        <img id="carousel-img" src="" alt="Vocabulario Soy y Me gusta">
+                    </div>
+                    <div class="day-es-title">
+                        <span id="day-name-en" class="day-en-sub"></span>
+                    </div>
+                </div>
+
+                <div class="carousel-nav">
+                    <button id="btn-carousel-prev" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(-1)" style="display: none;">⬅️</button>
+                    <button id="btn-carousel-next" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(1)">➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Canción -->
+        <section class="card">
+            <div class="card-header">
+                <h2>🎵 2. Canción Interactiva</h2>
+            </div>
+            <div class="song-container">
+                <div class="video-wrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/gc51yc3xjW4?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Arrastrar traducción en formato cuadrícula -->
+        <section class="card">
+            <div class="card-header">
+                <h2>🧩 3. Arrastra la traducción correcta</h2>
+            </div>
+            <p class="drag-instructions">Arrastra la frase en español hacia su traducción equivalente en inglés:</p>
+
+            <div class="drag-target-list" id="drag-targets"></div>
+
+            <div style="font-family: 'Fredoka', sans-serif; font-size: 0.95rem; color: #64748B; margin-bottom: 8px;">👇 Frases en español (Spanish phrases):</div>
+            <div class="drag-source-box" id="drag-source"></div>
+        </section>
+
+        <!-- Sección 4: Preguntas diarias -->
+        <section class="card">
+            <div class="card-header">
+                <h2>💬 4. Preguntas Diarias y Práctica</h2>
+            </div>
+
+            <div class="q-banner-container">
+                <div class="q-banner"><img src="https://imgur.com/JQMPRCy.jpg" alt="Timbo 1"></div>
+                <div class="q-banner"><img src="https://imgur.com/BplVH7R.jpg" alt="Timbo 2"></div>
+            </div>
+
+            <div class="q-list" id="questions-list"></div>
+        </section>
+
+        <!-- Sección 5: Emparejar Columnas -->
+        <section class="card">
+            <div class="card-header">
+                <h2>🔗 5. Empareja Columnas</h2>
+            </div>
+
+            <div class="matching-header-nav">
+                <span style="font-family: 'Fredoka', sans-serif; font-weight: 600;">Grupo:</span>
+                <button class="btn-circle active" id="btn-group-1" onclick="switchMatchingGroup(1)">1</button>
+                <button class="btn-circle" id="btn-group-2" onclick="switchMatchingGroup(2)">2</button>
+            </div>
+
+            <div class="matching-columns">
+                <div class="match-col">
+                    <div class="col-title">Español</div>
+                    <div id="match-col-es" class="match-col"></div>
+                </div>
+                <div class="match-col">
+                    <div class="col-title">English</div>
+                    <div id="match-col-en" class="match-col"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <button class="btn-3d btn-primary btn-complete" onclick="completeLesson()">🎉 ¡Completar Lección!</button>
+        </footer>
+    </div>
+
+    <script>
+        const vocabData = [
+            { en: "(I am Timbo)", img: "https://imgur.com/3zll8UQ.jpg" },
+            { en: "(I am purple)", img: "https://imgur.com/NdQMbHA.jpg" },
+            { en: "(I am short)", img: "https://imgur.com/CkP58gH.jpg" },
+            { en: "(I am round)", img: "https://imgur.com/oPRbwsB.jpg" },
+            { en: "(I am not square)", img: "https://imgur.com/KKAeIKe.jpg" },
+            { en: "(I like to dance)", img: "https://imgur.com/CytcOWM.jpg" },
+            { en: "(I like to jump)", img: "https://imgur.com/0VuqCdN.jpg" },
+            { en: "(I like to laugh)", img: "https://imgur.com/ndRKEUi.jpg" },
+            { en: "(I like to play)", img: "https://imgur.com/KTxH4Sk.jpg" }
+        ];
+
+        let progressState = {
+            carouselViewed: new Set([0]),
+            dragCompleted: 0,
+            questionsAnswered: new Set(),
+            matchingCompletedGroup1: false,
+            matchingCompletedGroup2: false
+        };
+
+        function updateProgressBar() {
+            let totalItems = 9 + 9 + 15 + 2;
+            let currentScore = progressState.carouselViewed.size 
+                             + progressState.dragCompleted 
+                             + progressState.questionsAnswered.size 
+                             + (progressState.matchingCompletedGroup1 ? 1 : 0)
+                             + (progressState.matchingCompletedGroup2 ? 1 : 0);
+            
+            let percentage = Math.min(100, Math.round((currentScore / totalItems) * 100));
+            document.getElementById('progress-bar').style.width = percentage + '%';
+        }
+
+        let currentCarouselIndex = 0;
+
+        function renderCarousel() {
+            const item = vocabData[currentCarouselIndex];
+            document.getElementById('carousel-img').src = item.img;
+            document.getElementById('day-name-en').textContent = item.en;
+
+            document.getElementById('btn-carousel-prev').style.display = currentCarouselIndex > 0 ? 'inline-flex' : 'none';
+            document.getElementById('btn-carousel-next').style.display = currentCarouselIndex < vocabData.length - 1 ? 'inline-flex' : 'none';
+
+            progressState.carouselViewed.add(currentCarouselIndex);
+            updateProgressBar();
+        }
+
+        function navigateCarousel(direction) {
+            currentCarouselIndex += direction;
+            if (currentCarouselIndex < 0) currentCarouselIndex = 0;
+            if (currentCarouselIndex >= vocabData.length) currentCarouselIndex = vocabData.length - 1;
+            renderCarousel();
+        }
+
+        const dragPairsData = [
+            { id: 0, es: "Soy Timbo", en: "I am Timbo" },
+            { id: 1, es: "Soy morado", en: "I am purple" },
+            { id: 2, es: "Soy bajo", en: "I am short" },
+            { id: 3, es: "Soy redondo", en: "I am round" },
+            { id: 4, es: "No soy cuadrado", en: "I am not square" },
+            { id: 5, es: "Me gusta bailar", en: "I like to dance" },
+            { id: 6, es: "Me gusta saltar", en: "I like to jump" },
+            { id: 7, es: "Me gusta reír", en: "I like to laugh" },
+            { id: 8, es: "Me gusta jugar", en: "I like to play" }
+        ];
+
+        let touchSelectedWord = null;
+
+        function initDragDrop() {
+            const targetsContainer = document.getElementById('drag-targets');
+            const sourceContainer = document.getElementById('drag-source');
+            targetsContainer.innerHTML = '';
+            sourceContainer.innerHTML = '';
+
+            dragPairsData.forEach(item => {
+                const slot = document.createElement('div');
+                slot.className = 'drag-target-slot';
+                slot.dataset.es = item.es;
+                slot.innerHTML = `<div class="slot-label">${item.en}</div>`;
+
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    slot.classList.add('highlight');
+                });
+                slot.addEventListener('dragleave', () => slot.classList.remove('highlight'));
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('highlight');
+                    const draggedEs = e.dataTransfer.getData('text/plain');
+                    checkDragDropMatch(draggedEs, slot);
+                });
+
+                slot.addEventListener('click', () => {
+                    if (touchSelectedWord) {
+                        checkDragDropMatch(touchSelectedWord.dataset.es, slot);
+                    }
+                });
+
+                targetsContainer.appendChild(slot);
+            });
+
+            const shuffledWords = [...dragPairsData].sort(() => Math.random() - 0.5);
+            shuffledWords.forEach((item, idx) => {
+                const wordElem = document.createElement('div');
+                wordElem.className = 'drag-item';
+                wordElem.draggable = true;
+                wordElem.textContent = item.es;
+                wordElem.dataset.es = item.es;
+                wordElem.id = `word-${item.id}-${idx}`;
+
+                wordElem.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.es);
+                });
+
+                wordElem.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (wordElem.classList.contains('correct')) return;
+
+                    if (touchSelectedWord) touchSelectedWord.classList.remove('selected-touch');
+                    if (touchSelectedWord === wordElem) {
+                        touchSelectedWord = null;
+                    } else {
+                        touchSelectedWord = wordElem;
+                        wordElem.classList.add('selected-touch');
+                    }
+                });
+
+                sourceContainer.appendChild(wordElem);
+            });
+        }
+
+        function checkDragDropMatch(esWord, targetSlot) {
+            if (!esWord || !targetSlot) return;
+            const expectedEs = targetSlot.dataset.es;
+            
+            const items = document.querySelectorAll('.drag-item');
+            let itemElem = null;
+            items.forEach(el => {
+                if (el.dataset.es === esWord && !el.classList.contains('correct')) {
+                    itemElem = el;
+                }
+            });
+
+            if (!itemElem) return;
+
+            if (esWord === expectedEs) {
+                targetSlot.appendChild(itemElem);
+                itemElem.classList.add('correct');
+                itemElem.classList.remove('selected-touch');
+                itemElem.draggable = false;
+                touchSelectedWord = null;
+
+                progressState.dragCompleted++;
+                updateProgressBar();
+            } else {
+                if (touchSelectedWord) {
+                    touchSelectedWord.classList.remove('selected-touch');
+                    touchSelectedWord = null;
+                }
+                itemElem.classList.add('shake');
+                setTimeout(() => itemElem.classList.remove('shake'), 400);
+            }
+        }
+
+        const questionsData = [
+            {
+                q: "¿Cómo estás?",
+                sub: "(How are you?)",
+                options: ["estoy bien", "estoy emocionado", "estoy feliz", "estoy cansado", "estoy triste", "estoy genial"],
+                type: "auto-green"
+            },
+            {
+                q: "¿Cómo te llamas?",
+                sub: "(What is your name?)",
+                type: "click-green"
+            },
+            {
+                q: "¿Cuántos años tienes?",
+                sub: "(How old are you?)",
+                type: "click-green"
+            },
+            {
+                q: "¿De dónde eres?",
+                sub: "(Where are you from?)",
+                type: "click-green"
+            },
+            {
+                q: "¿Qué tiempo hace?",
+                sub: "(What's the weather like?)",
+                options: ["hace sol", "hace calor", "está nublado", "hay nubes", "está lloviendo", "hace viento", "hace frío", "está despejado y azul"],
+                type: "auto-green"
+            },
+            {
+                q: "¿Qué número es?",
+                sub: "(What number is it?)",
+                img: "https://imgur.com/16SHItB.jpg",
+                options: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+                correct: "seis",
+                type: "retryable"
+            },
+            {
+                q: "¿Qué número es?",
+                sub: "(What number is it?)",
+                img: "https://imgur.com/id0n1vq.jpg",
+                options: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+                correct: "cuatro",
+                type: "retryable"
+            },
+            {
+                q: "¿Qué número es?",
+                sub: "(What number is it?)",
+                img: "https://imgur.com/Wr2owYM.jpg",
+                options: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+                correct: "siete",
+                type: "retryable"
+            },
+            {
+                q: "¿Qué color es este?",
+                sub: "(What color is this?)",
+                img: "https://imgur.com/VTbgJ00.jpg",
+                options: ["amarillo", "azul", "verde", "rojo", "morado", "naranja", "marrón"],
+                correct: "marrón",
+                type: "retryable"
+            },
+            {
+                q: "¿Qué color es este?",
+                sub: "(What color is this?)",
+                img: "https://imgur.com/4S5yn2F.jpg",
+                options: ["amarillo", "azul", "verde", "rojo", "morado", "naranja", "marrón"],
+                correct: "morado",
+                type: "retryable"
+            },
+            {
+                q: "¿Cómo se dice “I am short” en español?",
+                sub: "(How do you say “I am short” in Spanish?)",
+                options: ["soy alto", "soy bajo", "soy morado"],
+                correct: "soy bajo",
+                type: "retryable"
+            },
+            {
+                q: "¿Cómo se dice “round” en español?",
+                sub: "(How do you say “round” in Spanish?)",
+                options: ["cuadrado", "triángulo", "redondo", "óvalo"],
+                correct: "redondo",
+                type: "retryable"
+            },
+            {
+                q: "¿Cómo se dice “I like” en español?",
+                sub: "(How do you say “I like” in Spanish?)",
+                options: ["soy", "tengo", "no soy", "me llamo", "me gusta"],
+                correct: "me gusta",
+                type: "retryable"
+            },
+            {
+                q: "¿Cómo se dice “to play” en español?",
+                sub: "(How do you say “to play” in Spanish?)",
+                options: ["saltar", "cantar", "bailar", "jugar", "me gusta"],
+                correct: "jugar",
+                type: "retryable"
+            },
+            {
+                q: "¿Cómo se dice “to jump” en español?",
+                sub: "(How do you say “to jump” in Spanish?)",
+                options: ["saltar", "cantar", "bailar", "jugar", "me gusta"],
+                correct: "saltar",
+                type: "retryable"
+            }
+        ];
+
+        function initQuestions() {
+            const listContainer = document.getElementById('questions-list');
+            listContainer.innerHTML = '';
+
+            questionsData.forEach((qItem, qIdx) => {
+                const card = document.createElement('div');
+                card.className = 'q-card';
+
+                const title = document.createElement('div');
+                title.className = 'q-title';
+                title.textContent = qItem.q;
+                card.appendChild(title);
+
+                const sub = document.createElement('div');
+                sub.className = 'q-sub';
+                sub.textContent = qItem.sub;
+                card.appendChild(sub);
+
+                if (qItem.img) {
+                    const imgThumb = document.createElement('img');
+                    imgThumb.src = qItem.img;
+                    imgThumb.style.width = '100px';
+                    imgThumb.style.height = '100px';
+                    imgThumb.style.objectFit = 'cover';
+                    imgThumb.style.borderRadius = '12px';
+                    imgThumb.style.marginBottom = '12px';
+                    card.appendChild(imgThumb);
+                }
+
+                if (qItem.options) {
+                    const optContainer = document.createElement('div');
+                    optContainer.className = 'q-options';
+
+                    qItem.options.forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-q-opt';
+                        btn.textContent = opt;
+
+                        if (qItem.type === "auto-green") {
+                            btn.onclick = () => {
+                                Array.from(optContainer.children).forEach(b => b.className = 'btn-q-opt');
+                                btn.className = 'btn-q-opt correct';
+                                progressState.questionsAnswered.add(qIdx);
+                                updateProgressBar();
+                            };
+                        } else if (qItem.type === "retryable") {
+                            btn.onclick = () => {
+                                if (opt === qItem.correct) {
+                                    btn.className = 'btn-q-opt correct';
+                                    progressState.questionsAnswered.add(qIdx);
+                                    updateProgressBar();
+                                } else {
+                                    btn.className = 'btn-q-opt wrong';
+                                    setTimeout(() => {
+                                        btn.className = 'btn-q-opt';
+                                    }, 600);
+                                }
+                            };
+                        }
+
+                        optContainer.appendChild(btn);
+                    });
+                    card.appendChild(optContainer);
+                } else {
+                    card.onclick = () => {
+                        card.style.borderColor = 'var(--verde-menta)';
+                        card.style.backgroundColor = '#F0FDF4';
+                        progressState.questionsAnswered.add(qIdx);
+                        updateProgressBar();
+                    };
+                }
+
+                listContainer.appendChild(card);
+            });
+        }
+
+        const group1Match = [
+            { es: "¿Cómo te llamas?", en: "What is your name?" },
+            { es: "¿Cómo estás?", en: "How are you?" },
+            { es: "Soy alto", en: "I am tall" },
+            { es: "No soy cuadrado", en: "I am not square" },
+            { es: "Soy redondo", en: "I am round" },
+            { es: "Soy bajo", en: "I am short" }
+        ];
+
+        const group2Match = [
+            { es: "Me llamo Sofía", en: "My name is Sofia" },
+            { es: "Me gusta bailar", en: "I like to dance" },
+            { es: "Me gusta saltar", en: "I like to jump" },
+            { es: "Me gusta reír", en: "I like to laugh" },
+            { es: "Me gusta jugar", en: "I like to play" },
+            { es: "Mucho gusto", en: "Nice to meet you" }
+        ];
+
+        let currentMatchGroup = 1;
+        let selectedEsBtn = null;
+        let selectedEnBtn = null;
+        let matchedCount = 0;
+
+        function switchMatchingGroup(groupNum) {
+            currentMatchGroup = groupNum;
+            document.getElementById('btn-group-1').className = `btn-circle ${groupNum === 1 ? 'active' : ''}`;
+            document.getElementById('btn-group-2').className = `btn-circle ${groupNum === 2 ? 'active' : ''}`;
+            renderMatchingColumns();
+        }
+
+        function renderMatchingColumns() {
+            const data = currentMatchGroup === 1 ? group1Match : group2Match;
+            selectedEsBtn = null;
+            selectedEnBtn = null;
+            matchedCount = 0;
+
+            const esCol = document.getElementById('match-col-es');
+            const enCol = document.getElementById('match-col-en');
+            esCol.innerHTML = '';
+            enCol.innerHTML = '';
+
+            const esList = [...data].sort(() => Math.random() - 0.5);
+            const enList = [...data].sort(() => Math.random() - 0.5);
+
+            esList.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-match-item';
+                btn.textContent = item.es;
+                btn.dataset.value = item.es;
+                btn.dataset.pair = item.en;
+                btn.onclick = () => handleMatchClick(btn, 'es');
+                esCol.appendChild(btn);
+            });
+
+            enList.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-match-item';
+                btn.textContent = item.en;
+                btn.dataset.value = item.en;
+                btn.dataset.pair = item.es;
+                btn.onclick = () => handleMatchClick(btn, 'en');
+                enCol.appendChild(btn);
+            });
+        }
+
+        function handleMatchClick(btn, type) {
+            if (btn.classList.contains('matched')) return;
+
+            if (type === 'es') {
+                if (selectedEsBtn) selectedEsBtn.classList.remove('selected');
+                selectedEsBtn = btn;
+                selectedEsBtn.classList.add('selected');
+            } else {
+                if (selectedEnBtn) selectedEnBtn.classList.remove('selected');
+                selectedEnBtn = btn;
+                selectedEnBtn.classList.add('selected');
+            }
+
+            if (selectedEsBtn && selectedEnBtn) {
+                if (selectedEsBtn.dataset.pair === selectedEnBtn.dataset.value) {
+                    selectedEsBtn.className = 'btn-match-item matched';
+                    selectedEnBtn.className = 'btn-match-item matched';
+                    selectedEsBtn = null;
+                    selectedEnBtn = null;
+                    matchedCount++;
+
+                    if (matchedCount === (currentMatchGroup === 1 ? group1Match.length : group2Match.length)) {
+                        if (currentMatchGroup === 1) progressState.matchingCompletedGroup1 = true;
+                        if (currentMatchGroup === 2) progressState.matchingCompletedGroup2 = true;
+                        updateProgressBar();
+                    }
+                } else {
+                    const tempEs = selectedEsBtn;
+                    const tempEn = selectedEnBtn;
+                    selectedEsBtn = null;
+                    selectedEnBtn = null;
+
+                    tempEs.classList.add('shake');
+                    tempEn.classList.add('shake');
+                    setTimeout(() => {
+                        tempEs.classList.remove('selected', 'shake');
+                        tempEn.classList.remove('selected', 'shake');
+                    }, 400);
+                }
+            }
+        }
+
+        function completeLesson() {
+            document.getElementById('progress-bar').style.width = '100%';
+            launchConfetti();
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const colors = ['#FF79AC', '#2EC4B6', '#FF9F1C', '#3B82F6', '#A855F7'];
+
+            for (let i = 0; i < 120; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 10 + 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    rotation: Math.random() * 360
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += 2;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (pieces.some(p => p.y < canvas.height)) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCarousel();
+            initDragDrop();
+            initQuestions();
+            renderMatchingColumns();
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>
