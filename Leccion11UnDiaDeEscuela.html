@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Un día de escuela / Rutinas - Lección 11</title>
+  
+  <!-- Google Fonts: Fredoka and Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rosa-flamenco: #FF79AC;
+      --rosa-oscuro: #D65889;
+      --verde-menta: #2EC4B6;
+      --verde-oscuro: #21998E;
+      --amarillo-sol: #FF9F1C;
+      --amarillo-oscuro: #D8800C;
+      --eerie-black: #121118;
+      --blanco-nube: #F8F9FA;
+      --blanco: #FFFFFF;
+      --rojo-suave: #FF6B6B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: var(--blanco-nube);
+      color: var(--eerie-black);
+      padding: 20px 12px 60px 12px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Header & Progress */
+    header {
+      background: var(--blanco);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .btn-home {
+      background-color: var(--rosa-flamenco);
+      border: none;
+      border-bottom: 5px solid var(--rosa-oscuro);
+      color: var(--blanco);
+      padding: 10px 16px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-home:active {
+      transform: translateY(3px);
+      border-bottom-width: 2px;
+    }
+
+    .header-title {
+      flex-grow: 1;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fredoka', sans-serif;
+      color: var(--eerie-black);
+    }
+
+    h1 {
+      font-size: 1.7rem;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 14px;
+      background-color: #E2E8F0;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var(--verde-menta);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    /* Cards Base Style */
+    .card {
+      background: var(--blanco);
+      padding: 25px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Common Button 3D Style */
+    .btn-3d {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background-color: var(--rosa-flamenco);
+      border-bottom: 5px solid var(--rosa-oscuro);
+      color: var(--blanco);
+    }
+
+    .btn-primary:active {
+      transform: translateY(3px);
+      border-bottom-width: 2px;
+    }
+
+    .btn-accent {
+      background-color: var(--amarillo-sol);
+      border-bottom: 5px solid var(--amarillo-oscuro);
+      color: var(--blanco);
+    }
+
+    .btn-accent:active {
+      transform: translateY(3px);
+      border-bottom-width: 2px;
+    }
+
+    .btn-audio {
+      background-color: #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      color: var(--eerie-black);
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .btn-audio:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    /* 1. Carousel Section */
+    .carousel-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .carousel-card {
+      background: #FFF;
+      border: 3px solid #F1F5F9;
+      border-radius: 20px;
+      padding: 15px;
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .carousel-img-container {
+      width: 100%;
+      height: 240px;
+      border-radius: 16px;
+      overflow: hidden;
+      background-color: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .day-es-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.6rem;
+      color: var(--eerie-black);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .day-en-sub {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #64748B;
+      margin-top: 2px;
+    }
+
+    .carousel-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+      min-height: 50px;
+    }
+
+    .btn-carousel-nav {
+      font-size: 1.5rem;
+      padding: 10px 24px;
+      border-radius: 16px;
+    }
+
+    /* 2. Song Section */
+    .song-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* 3. Drag and Drop Section */
+    .drag-instructions {
+      font-size: 0.95rem;
+      color: #475569;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .drag-target-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .drag-target-slot {
+      background-color: #F1F5F9;
+      border: 2px dashed #CBD5E1;
+      border-radius: 16px;
+      padding: 8px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .drag-target-slot.highlight {
+      border-color: var(--amarillo-sol);
+      background-color: #FFFBEB;
+    }
+
+    .slot-thumb {
+      width: 100%;
+      height: 65px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #E2E8F0;
+    }
+
+    .slot-label {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.85rem;
+      color: #64748B;
+      text-align: center;
+      margin-top: 4px;
+      width: 100%;
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .drag-source-box {
+      background-color: #F8FAFC;
+      border: 2px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      min-height: 70px;
+    }
+
+    .drag-item {
+      background-color: var(--rosa-flamenco);
+      border-bottom: 4px solid var(--rosa-oscuro);
+      color: var(--blanco);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+      padding: 8px 14px;
+      border-radius: 12px;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      transition: transform 0.15s ease, background-color 0.2s ease;
+    }
+
+    .drag-item:active {
+      cursor: grabbing;
+      transform: scale(1.05);
+    }
+
+    .drag-item.correct {
+      background-color: var(--verde-menta) !important;
+      border-bottom: 4px solid var(--verde-oscuro) !important;
+      cursor: default;
+    }
+
+    .drag-item.selected-touch {
+      outline: 3px solid var(--amarillo-sol);
+      transform: translateY(-2px);
+    }
+
+    /* 4. Questions Section */
+    .q-banner {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      background: #F1F5F9;
+    }
+
+    .q-banner img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .q-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .q-card {
+      background-color: #F8FAFC;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #E2E8F0;
+    }
+
+    .q-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.15rem;
+      color: var(--eerie-black);
+    }
+
+    .q-sub {
+      font-size: 0.88rem;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .q-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-q-opt {
+      background: var(--blanco);
+      border: 2px solid #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-q-opt:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .btn-q-opt.correct {
+      background-color: var(--verde-menta);
+      border-color: var(--verde-oscuro);
+      border-bottom: 4px solid var(--verde-oscuro);
+      color: var(--blanco);
+    }
+
+    .btn-q-opt.wrong {
+      background-color: var(--rojo-suave);
+      border-color: #E03131;
+      border-bottom: 4px solid #C92A2A;
+      color: var(--blanco);
+    }
+
+    /* 5. Matching Vocabulary Section */
+    .matching-header-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .btn-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background-color: #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      color: var(--eerie-black);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-circle.active {
+      background-color: var(--amarillo-sol);
+      border-bottom: 4px solid var(--amarillo-oscuro);
+      color: var(--blanco);
+    }
+
+    .btn-circle:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .matching-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .col-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1rem;
+      color: #64748B;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .btn-match-item {
+      background-color: var(--blanco);
+      border: 2px solid #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      padding: 12px 10px;
+      border-radius: 14px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--eerie-black);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-match-item.selected {
+      border-color: var(--amarillo-sol);
+      background-color: #FFFBEB;
+      border-bottom: 4px solid var(--amarillo-oscuro);
+      transform: translateY(-2px);
+    }
+
+    .btn-match-item.matched {
+      background-color: var(--verde-menta) !important;
+      border-color: var(--verde-oscuro) !important;
+      border-bottom: 4px solid var(--verde-oscuro) !important;
+      color: var(--blanco) !important;
+      cursor: default;
+      transform: none !important;
+    }
+
+    .btn-match-item.shake {
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    /* Footer */
+    footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .btn-complete {
+      width: 100%;
+      max-width: 380px;
+      font-size: 1.25rem;
+      padding: 14px;
+    }
+
+    /* Confetti canvas overlay */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 500px) {
+      .matching-columns {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .btn-match-item {
+        font-size: 0.85rem;
+        padding: 8px 4px;
+      }
+      .drag-target-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="container">
+    <!-- Encabezado / Header -->
+    <header>
+      <div class="header-top">
+        <a href="../index.html" class="btn-home" title="Menú Principal">🏠</a>
+        <div class="header-title">
+          <h1>Un día de escuela / Rutinas</h1>
+          <div class="subtitle">Daily Routine Vocabulary • Lección 11</div>
+        </div>
+      </div>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar-fill"></div>
+      </div>
+    </header>
+
+    <!-- Sección 1: Presentación con Imágenes (Carousel) -->
+    <section class="card">
+      <div class="card-header">
+        <h2>📅 1. Aprendizaje (Flashcards)</h2>
+      </div>
+
+      <div class="carousel-wrapper">
+        <div class="carousel-card">
+          <div class="carousel-img-container">
+            <img id="carousel-img" src="" alt="Routine illustration">
+          </div>
+          <div class="day-es-title">
+            <span id="day-name-es">me levanto</span>
+            <button class="btn-audio" onclick="speakSpanishCurrentRoutine()" title="Escuchar pronunciación">🔊</button>
+          </div>
+          <div id="day-name-en" class="day-en-sub">I get up</div>
+        </div>
+
+        <div class="carousel-nav">
+          <button id="btn-carousel-prev" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(-1)" style="display: none;">⬅️</button>
+          <button id="btn-carousel-next" class="btn-3d btn-accent btn-carousel-nav" onclick="navigateCarousel(1)">➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 2: Canción -->
+    <section class="card">
+      <div class="card-header">
+        <h2>🎵 2. Canción Interactiva</h2>
+      </div>
+      <div class="song-container">
+        <div class="video-wrapper">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/X2svInB3mfk?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 3: Arrastrar las rutinas -->
+    <section class="card">
+      <div class="card-header">
+        <h2>🧩 3. Arrastra y Coloca</h2>
+      </div>
+      <p class="drag-instructions">Arrastra o selecciona una palabra del banco de abajo para colocarla en el espacio correcto debajo de cada imagen:</p>
+
+      <div class="drag-target-list" id="drag-targets"></div>
+
+      <div style="font-family: 'Fredoka', sans-serif; font-size: 0.95rem; color: #64748B; margin-bottom: 8px;">Banco de palabras (Word Bank):</div>
+      <div class="drag-source-box" id="drag-source"></div>
+    </section>
+
+    <!-- Sección 4: Preguntas Diarias -->
+    <section class="card">
+      <div class="card-header">
+        <h2>❓ 4. Preguntas Diarias y Conversación</h2>
+      </div>
+
+      <div class="q-banner">
+        <img src="https://imgur.com/VgHQEMV.jpg" alt="Daily questions banner">
+      </div>
+
+      <div class="q-list" id="q-list-container">
+        <!-- Dynamically populated via JS -->
+      </div>
+    </section>
+
+    <!-- Sección 5: Emparejar Vocabulario con Botones Circulares -->
+    <section class="card">
+      <div class="card-header">
+        <h2>🔗 5. Emparejar Vocabulario</h2>
+      </div>
+
+      <div class="matching-header-nav">
+        <span style="font-family: 'Fredoka', sans-serif; font-weight: 600;">Grupo:</span>
+        <button class="btn-circle active" id="btn-group-1" onclick="switchMatchingGroup(1)">1</button>
+        <button class="btn-circle" id="btn-group-2" onclick="switchMatchingGroup(2)">2</button>
+        <button class="btn-circle" id="btn-group-3" onclick="switchMatchingGroup(3)">3</button>
+      </div>
+
+      <div class="matching-columns">
+        <div class="match-col">
+          <div class="col-title">Español</div>
+          <div id="match-col-es" class="match-col"></div>
+        </div>
+        <div class="match-col">
+          <div class="col-title">English</div>
+          <div id="match-col-en" class="match-col"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <button class="btn-3d btn-primary btn-complete" onclick="completeLesson()">🎉 ¡Completar Lección!</button>
+    </footer>
+  </div>
+
+  <script>
+    const vocabList = [
+      { es: "me levanto", en: "I get up", img: "https://imgur.com/uD6SwUj.jpg" },
+      { es: "desayuno", en: "I have breakfast", img: "https://imgur.com/tBqatje.jpg" },
+      { es: "voy a la escuela", en: "I go to school", img: "https://imgur.com/yj5RM5w.jpg" },
+      { es: "como", en: "I eat", img: "https://imgur.com/59OBqej.jpg" },
+      { es: "voy a casa", en: "I go home", img: "https://imgur.com/txe5U5e.jpg" },
+      { es: "estudio", en: "I study", img: "https://imgur.com/gr0KfTg.jpg" },
+      { es: "ceno", en: "I have dinner", img: "https://imgur.com/aN0CZPd.jpg" },
+      { es: "leo", en: "I read", img: "https://imgur.com/sPAcQIa.jpg" },
+      { es: "me acuesto", en: "I go to bed", img: "https://imgur.com/NYLTJYF.jpg" },
+      { es: "duermo", en: "I sleep", img: "https://imgur.com/DrltJCZ.jpg" }
+    ];
+
+    const questionsData = [
+      {
+        id: "q1",
+        title: "¿Cómo estás?",
+        sub: "(How are you?)",
+        options: ["estoy bien", "estoy emocionado", "estoy feliz", "estoy cansado", "estoy triste", "estoy genial"],
+        type: "neutral"
+      },
+      {
+        id: "q2",
+        title: "¿Cuántos años tienes?",
+        sub: "(How old are you?)",
+        options: [],
+        type: "open"
+      },
+      {
+        id: "q3",
+        title: "¿De dónde eres?",
+        sub: "(Where are you from?)",
+        options: [],
+        type: "open"
+      },
+      {
+        id: "q4",
+        title: "¿Qué tiempo hace?",
+        sub: "(What's the weather like?)",
+        options: ["hace sol", "hace calor", "está nublado", "hay nubes", "está lloviendo", "hace viento", "hace frío", "está despejado y azul"],
+        type: "neutral"
+      },
+      {
+        id: "q5",
+        title: "¿En qué mes estamos?",
+        sub: "(What month are we in?)",
+        options: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        type: "neutral",
+        ordered: true
+      },
+      {
+        id: "q6",
+        title: "¿En qué mes es tu cumpleaños?",
+        sub: "(What month is your birthday?)",
+        options: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        type: "neutral",
+        ordered: true
+      },
+      {
+        id: "q7",
+        title: "¿Cómo saludamos por la mañana?",
+        sub: "(How do we greet in the morning?)",
+        options: ["Buenos días", "Buenas tardes", "Buenas noches", "Adiós", "Chao"],
+        correct: "Buenos días",
+        type: "eval"
+      },
+      {
+        id: "q8",
+        title: "¿Cómo saludamos por la tarde?",
+        sub: "(How do we greet in the afternoon?)",
+        options: ["Buenos días", "Buenas tardes", "Buenas noches", "Adiós", "Chao"],
+        correct: "Buenas tardes",
+        type: "eval"
+      },
+      {
+        id: "q9",
+        title: "¿Cómo saludamos por la noche?",
+        sub: "(How do we greet at night?)",
+        options: ["Buenos días", "Buenas tardes", "Buenas noches", "Adiós", "Chao"],
+        correct: "Buenas noches",
+        type: "eval"
+      },
+      {
+        id: "q10",
+        title: "¿Qué debemos hacer después de comer y antes de dormir?",
+        sub: "(What should we do after eating and before sleeping?)",
+        options: ["Me cepillo los dientes", "Me quito la ropa", "Me pongo el pijama", "Me voy a la cama"],
+        correct: "Me cepillo los dientes",
+        type: "eval"
+      },
+      {
+        id: "q11",
+        title: "¿Qué pasa en el invierno?",
+        sub: "(What happens in winter?)",
+        options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"],
+        correct: "hace frío",
+        type: "eval"
+      },
+      {
+        id: "q12",
+        title: "¿Qué pasa en el verano?",
+        sub: "(What happens in summer?)",
+        options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"],
+        correct: "hace calor",
+        type: "eval"
+      },
+      {
+        id: "q13",
+        title: "¿Qué pasa en el otoño?",
+        sub: "(What happens in autumn / fall?)",
+        options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"],
+        correct: "las hojas se caen",
+        type: "eval"
+      },
+      {
+        id: "q14",
+        title: "¿Qué pasa en la primavera?",
+        sub: "(What happens in spring?)",
+        options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"],
+        correct: "hay muchas flores",
+        type: "eval"
+      }
+    ];
+
+    const matchingGroups = {
+      1: [
+        { es: "Me levanto", en: "I get up" },
+        { es: "Desayuno", en: "I have breakfast" },
+        { es: "Voy a la escuela", en: "I go to school" },
+        { es: "Como", en: "I eat" },
+        { es: "Voy a casa", en: "I go home" },
+        { es: "Estudio", en: "I study" }
+      ],
+      2: [
+        { es: "Ceno", en: "I have dinner" },
+        { es: "Leo", en: "I read" },
+        { es: "Me acuesto", en: "I go to bed" },
+        { es: "Duermo", en: "I sleep" },
+        { es: "Me quito la ropa", en: "I take off my clothes" },
+        { es: "Me pongo el pijama", en: "I put on my pajamas" }
+      ],
+      3: [
+        { es: "El verano", en: "Summer" },
+        { es: "El otoño", en: "Autumn / Fall" },
+        { es: "La primavera", en: "Spring" },
+        { es: "El invierno", en: "Winter" },
+        { es: "Está soleado", en: "It is sunny" },
+        { es: "Está nublado", en: "It is cloudy" }
+      ]
+    };
+
+    let progressState = {
+      carouselViewed: new Set([0]),
+      dragSolved: new Set(),
+      questionsAnswered: new Set(),
+      matchingCompleted: { 1: false, 2: false, 3: false }
+    };
+
+    function updateProgressBar() {
+      let totalItems = vocabList.length + vocabList.length + questionsData.length + 3; // carousel + drag + questions + 3 matching groups
+      let currentScore = progressState.carouselViewed.size 
+                       + progressState.dragSolved.size 
+                       + progressState.questionsAnswered.size 
+                       + (progressState.matchingCompleted[1] ? 1 : 0)
+                       + (progressState.matchingCompleted[2] ? 1 : 0)
+                       + (progressState.matchingCompleted[3] ? 1 : 0);
+      
+      let percentage = Math.min(100, Math.round((currentScore / totalItems) * 100));
+      document.getElementById('progress-bar').style.width = percentage + '%';
+    }
+
+    // --- SPEECH API ---
+    function speakSpanish(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function speakSpanishCurrentRoutine() {
+      speakSpanish(vocabList[currentCarouselIndex].es);
+    }
+
+    // --- 1. CAROUSEL ---
+    let currentCarouselIndex = 0;
+
+    function renderCarousel() {
+      const item = vocabList[currentCarouselIndex];
+      document.getElementById('carousel-img').src = item.img;
+      document.getElementById('day-name-es').textContent = item.es;
+      document.getElementById('day-name-en').textContent = item.en;
+
+      const btnPrev = document.getElementById('btn-carousel-prev');
+      btnPrev.style.display = currentCarouselIndex > 0 ? 'inline-flex' : 'none';
+
+      const btnNext = document.getElementById('btn-carousel-next');
+      btnNext.style.display = currentCarouselIndex < vocabList.length - 1 ? 'inline-flex' : 'none';
+
+      progressState.carouselViewed.add(currentCarouselIndex);
+      updateProgressBar();
+    }
+
+    function navigateCarousel(direction) {
+      currentCarouselIndex += direction;
+      if (currentCarouselIndex < 0) currentCarouselIndex = 0;
+      if (currentCarouselIndex >= vocabList.length) currentCarouselIndex = vocabList.length - 1;
+      renderCarousel();
+    }
+
+    // --- 3. DRAG AND DROP / TAP MATCHING ---
+    let selectedDragItem = null;
+
+    function initDragAndDrop() {
+      const targetList = document.getElementById('drag-targets');
+      const sourceBox = document.getElementById('drag-source');
+      targetList.innerHTML = '';
+      sourceBox.innerHTML = '';
+
+      const gameItems = [...vocabList];
+      const shuffledSource = [...gameItems].sort(() => Math.random() - 0.5);
+
+      gameItems.forEach((item, index) => {
+        const slot = document.createElement('div');
+        slot.className = 'drag-target-slot';
+        slot.dataset.correct = item.es;
+        slot.innerHTML = `
+          <img src="${item.img}" class="slot-thumb" alt="Mini">
+          <div class="slot-label"></div>
+        `;
+
+        slot.addEventListener('dragover', (e) => e.preventDefault());
+        slot.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const word = e.dataTransfer.getData('text/plain');
+          evaluateDrop(slot, word);
+        });
+
+        slot.addEventListener('click', () => {
+          if (selectedDragItem) {
+            evaluateDrop(slot, selectedDragItem.dataset.word);
+            selectedDragItem.classList.remove('selected-touch');
+            selectedDragItem = null;
+          }
+        });
+
+        targetList.appendChild(slot);
+      });
+
+      shuffledSource.forEach(item => {
+        const btn = document.createElement('div');
+        btn.className = 'drag-item';
+        btn.draggable = true;
+        btn.textContent = item.es;
+        btn.dataset.word = item.es;
+
+        btn.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', item.es);
+        });
+
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (btn.classList.contains('correct')) return;
+          document.querySelectorAll('.drag-item').forEach(i => i.classList.remove('selected-touch'));
+          btn.classList.add('selected-touch');
+          selectedDragItem = btn;
+        });
+
+        sourceBox.appendChild(btn);
+      });
+    }
+
+    function evaluateDrop(slot, word) {
+      if (slot.dataset.solved === "true") return;
+      const correctWord = slot.dataset.correct;
+
+      const label = slot.querySelector('.slot-label');
+      label.textContent = word;
+
+      if (word.toLowerCase() === correctWord.toLowerCase()) {
+        slot.style.borderColor = "var(--verde-menta)";
+        slot.style.backgroundColor = "#E6FFFA";
+        slot.dataset.solved = "true";
+
+        document.querySelectorAll('.drag-item').forEach(item => {
+          if (item.dataset.word === word) {
+            item.classList.add('correct');
+            item.draggable = false;
+          }
+        });
+
+        progressState.dragSolved.add(correctWord);
+        updateProgressBar();
+      } else {
+        slot.style.borderColor = "var(--rojo-suave)";
+        slot.style.backgroundColor = "#FFF5F5";
+        setTimeout(() => {
+          if (slot.dataset.solved !== "true") {
+            slot.style.borderColor = "#CBD5E1";
+            slot.style.backgroundColor = "#F1F5F9";
+            label.textContent = "";
+          }
+        }, 800);
+      }
+    }
+
+    // --- 4. QUESTIONS ---
+    function initQuestions() {
+      const qListContainer = document.getElementById('q-list-container');
+      qListContainer.innerHTML = '';
+
+      questionsData.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.innerHTML = `
+          <div class="q-title">${index + 1}. ${q.title}</div>
+          <div class="q-sub">${q.sub}</div>
+          <div class="q-options" id="${q.id}-container"></div>
+        `;
+        qListContainer.appendChild(card);
+
+        const container = document.getElementById(`${q.id}-container`);
+        if (q.options.length === 0) {
+          return;
+        }
+
+        const opts = q.ordered ? q.options : [...q.options].sort(() => Math.random() - 0.5);
+
+        opts.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'btn-q-opt';
+          btn.textContent = opt;
+          btn.onclick = () => {
+            const allBtns = container.querySelectorAll('.btn-q-opt');
+
+            if (q.type === 'neutral') {
+              allBtns.forEach(b => b.classList.remove('correct'));
+              btn.classList.add('correct');
+              progressState.questionsAnswered.add(q.id);
+              updateProgressBar();
+            } else if (q.type === 'eval') {
+              allBtns.forEach(b => b.classList.remove('correct', 'wrong'));
+              if (q.correct === null) {
+                btn.classList.add('correct');
+                progressState.questionsAnswered.add(q.id);
+                updateProgressBar();
+              } else if (opt.toLowerCase() === q.correct.toLowerCase()) {
+                btn.classList.add('correct');
+                progressState.questionsAnswered.add(q.id);
+                updateProgressBar();
+              } else {
+                btn.classList.add('wrong');
+              }
+            }
+          };
+          container.appendChild(btn);
+        });
+      });
+    }
+
+    // --- 5. MATCHING VOCABULARY ---
+    let currentMatchingGroupKey = 1;
+    let selectedMatchEs = null;
+    let selectedMatchEn = null;
+
+    function switchMatchingGroup(groupNum) {
+      currentMatchingGroupKey = groupNum;
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`btn-group-${i}`).classList.toggle('active', i === groupNum);
+      }
+      renderMatchingGroup();
+    }
+
+    function renderMatchingGroup() {
+      const items = matchingGroups[currentMatchingGroupKey];
+      const colEs = document.getElementById('match-col-es');
+      const colEn = document.getElementById('match-col-en');
+      colEs.innerHTML = '';
+      colEn.innerHTML = '';
+
+      selectedMatchEs = null;
+      selectedMatchEn = null;
+
+      const shuffledEs = [...items].sort(() => Math.random() - 0.5);
+      const shuffledEn = [...items].sort(() => Math.random() - 0.5);
+
+      shuffledEs.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-match-item';
+        btn.textContent = item.es;
+        btn.dataset.key = item.es;
+        btn.onclick = () => {
+          if (btn.classList.contains('matched')) return;
+          colEs.querySelectorAll('.btn-match-item').forEach(b => {
+            if (!b.classList.contains('matched')) b.classList.remove('selected');
+          });
+          btn.classList.add('selected');
+          selectedMatchEs = btn;
+          checkMatchPair();
+        };
+        colEs.appendChild(btn);
+      });
+
+      shuffledEn.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-match-item';
+        btn.textContent = item.en;
+        btn.dataset.key = item.es; // links back to original es key
+        btn.onclick = () => {
+          if (btn.classList.contains('matched')) return;
+          colEn.querySelectorAll('.btn-match-item').forEach(b => {
+            if (!b.classList.contains('matched')) b.classList.remove('selected');
+          });
+          btn.classList.add('selected');
+          selectedMatchEn = btn;
+          checkMatchPair();
+        };
+        colEn.appendChild(btn);
+      });
+    }
+
+    function checkMatchPair() {
+      if (selectedMatchEs && selectedMatchEn) {
+        if (selectedMatchEs.dataset.key === selectedMatchEn.dataset.key) {
+          selectedMatchEs.classList.remove('selected');
+          selectedMatchEn.classList.remove('selected');
+          selectedMatchEs.classList.add('matched');
+          selectedMatchEn.classList.add('matched');
+
+          selectedMatchEs = null;
+          selectedMatchEn = null;
+
+          // Check if current group is fully matched
+          const colEs = document.getElementById('match-col-es');
+          const unmatched = colEs.querySelectorAll('.btn-match-item:not(.matched)');
+          if (unmatched.length === 0) {
+            progressState.matchingCompleted[currentMatchingGroupKey] = true;
+            updateProgressBar();
+          }
+        } else {
+          selectedMatchEs.classList.add('shake');
+          selectedMatchEn.classList.add('shake');
+          setTimeout(() => {
+            if (selectedMatchEs) selectedMatchEs.classList.remove('selected', 'shake');
+            if (selectedMatchEn) selectedMatchEn.classList.remove('selected', 'shake');
+            selectedMatchEs = null;
+            selectedMatchEn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- COMPLETION & CONFETTI ---
+    function completeLesson() {
+      document.getElementById('progress-bar').style.width = '100%';
+      launchConfetti();
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#FF79AC', '#2EC4B6', '#FF9F1C', '#FF6B6B', '#FFD166'];
+
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.7) * 14,
+          radius: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.015 + 0.008
+        });
+      }
+
+      function updateConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, index) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.3; // gravity
+          p.alpha -= p.decay;
+
+          if (p.alpha <= 0) {
+            particles.splice(index, 1);
+            return;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        if (particles.length > 0) {
+          requestAnimationFrame(updateConfetti);
+        }
+      }
+
+      updateConfetti();
+    }
+
+    // Initialize on load
+    window.onload = function() {
+      renderCarousel();
+      initDragAndDrop();
+      initQuestions();
+      renderMatchingGroup();
+      updateProgressBar();
+    }
+  </script>
+</body>
+</html>
