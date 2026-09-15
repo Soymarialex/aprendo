@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los unicornios - Lección especial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-image: url('https://imgur.com/uF7nz21.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #F8F9FA;
+        }
+        h1, h2, h3, .font-fredoka {
+            font-family: 'Fredoka', cursive;
+        }
+        .card-shadow {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .btn-3d {
+            border-bottom: 5px solid rgba(0,0,0,0.15);
+            transition: all 0.1s ease;
+        }
+        .btn-3d:active {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes bounce-short {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-short {
+            animation: bounce-short 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-[#121118] min-h-screen pb-16">
+
+    <header class="max-w-4xl mx-auto px-4 py-6">
+        <div class="bg-white/95 backdrop-blur rounded-[20px] p-6 card-shadow flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="../index.html" class="bg-[#FF79AC] hover:bg-[#ff5c97] text-white p-3 rounded-[20px] btn-3d flex items-center justify-center transition shadow-md" title="Menú Principal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                </a>
+                <div>
+                    <h1 class="text-3xl font-bold text-[#FF79AC] tracking-wide">Los unicornios</h1>
+                    <p class="text-sm font-semibold text-gray-500">Lección especial • Beginner English-speakers</p>
+                </div>
+            </div>
+            <div class="w-full sm:w-64">
+                <div class="flex justify-between text-xs font-bold mb-1 text-gray-600">
+                    <span>Progreso de Lección</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden p-0.5">
+                    <div id="progress-bar" class="bg-[#2EC4B6] h-full rounded-full transition-all duration-500 w-0"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 space-y-8">
+
+        <!-- Sección 1: Flashcards -->
+        <section class="bg-white/95 backdrop-blur rounded-[20px] p-6 sm:p-8 card-shadow">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sección 1</span>
+                    <h2 class="text-2xl font-bold mt-1 text-[#121118]">Vocabulary / Vocabulario</h2>
+                </div>
+                <span id="carousel-counter" class="text-sm font-bold text-gray-500">1 / 10</span>
+            </div>
+
+            <div class="flex flex-col items-center justify-center max-w-md mx-auto relative">
+                <div class="w-full bg-gray-50 border-2 border-dashed border-[#FF79AC]/40 rounded-[20px] p-6 text-center flex flex-col items-center card-shadow relative min-h-[360px] justify-center">
+                    <div class="w-full h-64 flex items-center justify-center mb-4 bg-white/50 rounded-[16px] p-2 border border-gray-100 shadow-sm overflow-hidden">
+                        <img id="flashcard-img" src="" alt="Vocabulary image" class="w-full h-full object-contain rounded-[12px]" onerror="this.src='https://placehold.co/200x200/FF79AC/ffffff?text=Unicornio'">
+                    </div>
+                    <h3 id="flashcard-en" class="text-2xl font-bold text-[#FF79AC] mb-1"></h3>
+
+                    <button onclick="prevCard()" id="prev-btn" class="absolute left-2 top-1/2 -translate-y-1/2 bg-[#FF79AC] text-white p-3 rounded-full btn-3d shadow-lg hover:bg-[#ff5c97] transition disabled:opacity-30 disabled:cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <button onclick="nextCard()" id="next-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#FF79AC] text-white p-3 rounded-full btn-3d shadow-lg hover:bg-[#ff5c97] transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-4 text-center">Usa las flechas para explorar el vocabulario.</p>
+            </div>
+        </section>
+
+        <!-- Sección 2: Canción Mágica -->
+        <section class="bg-white/95 backdrop-blur rounded-[20px] p-6 sm:p-8 card-shadow">
+            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sección 2</span>
+            <h2 class="text-2xl font-bold mt-1 text-[#121118] mb-4">Canción Mágica 🎶</h2>
+            <div class="aspect-w-16 aspect-h-9 w-full rounded-[20px] overflow-hidden shadow-md bg-black">
+                <iframe class="w-full h-[315px]" src="https://www.youtube.com/embed/iFPag60zaoo?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- Sección 3: Arrastrar y Soltar (Grid 5x2) -->
+        <section class="bg-white/95 backdrop-blur rounded-[20px] p-6 sm:p-8 card-shadow">
+            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sección 3</span>
+            <h2 class="text-2xl font-bold mt-1 text-[#121118] mb-2">Selecciona la palabra correcta</h2>
+            <p class="text-sm text-gray-600 mb-6">Coloca cada palabra en español en su respectiva casilla en inglés.</p>
+
+            <div id="drop-game-grid" class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6"></div>
+
+            <div class="border-t pt-4">
+                <p class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Banco de palabras:</p>
+                <div id="word-bank" class="flex flex-wrap gap-3"></div>
+            </div>
+        </section>
+
+        <!-- Sección 4: Preguntas diarias -->
+        <section class="bg-white/95 backdrop-blur rounded-[20px] p-6 sm:p-8 card-shadow">
+            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sección 4</span>
+            <h2 class="text-2xl font-bold mt-1 text-[#121118] mb-6">Preguntas diarias y expresiones 🌟</h2>
+            
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+        <!-- Sección 5: Emparejar vocabulario -->
+        <section class="bg-white/95 backdrop-blur rounded-[20px] p-6 sm:p-8 card-shadow">
+            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sección 5</span>
+            <h2 class="text-2xl font-bold mt-1 text-[#121118] mb-2">Emparejar vocabulario</h2>
+            <p class="text-sm text-gray-600 mb-4">Conecta el español con su traducción al inglés. Selecciona un nivel:</p>
+            
+            <div class="flex gap-3 mb-6">
+                <button onclick="switchMatchLevel(1)" id="match-level-1-btn" class="bg-[#2EC4B6] text-white px-5 py-2.5 rounded-[14px] font-bold text-sm shadow-md btn-3d transition">Nivel 1</button>
+                <button onclick="switchMatchLevel(2)" id="match-level-2-btn" class="bg-white text-gray-700 border border-gray-200 px-5 py-2.5 rounded-[14px] font-bold text-sm shadow-sm btn-3d transition">Nivel 2</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 mb-3 uppercase">Español</h3>
+                    <div id="match-col-1" class="space-y-3"></div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 mb-3 uppercase">Inglés (Traducción aleatoria)</h3>
+                    <div id="match-col-2" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center pt-4">
+            <button onclick="completeLesson()" class="bg-[#FF79AC] hover:bg-[#ff5c97] text-white font-bold text-lg px-8 py-4 rounded-[20px] btn-3d shadow-xl transition transform hover:scale-105">
+                ✨ ¡Completar Lección! ✨
+            </button>
+        </footer>
+
+    </main>
+
+    <!-- Canvas para confeti -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full hidden"></canvas>
+
+    <script>
+        const vocabData = [
+            { en: "The horn", img: "https://imgur.com/fUmGeLE.jpg" },
+            { en: "The mane / hair", img: "https://imgur.com/hSK0pwN.jpg" },
+            { en: "The eyes", img: "https://imgur.com/uWgMbmN.jpg" },
+            { en: "The tail", img: "https://imgur.com/4hjykxF.jpg" },
+            { en: "The legs / paws", img: "https://imgur.com/rLVe0wS.jpg" },
+            { en: "To walk", img: "https://imgur.com/c4ZwE5m.jpg" },
+            { en: "To run", img: "https://imgur.com/VTCBjb9.jpg" },
+            { en: "To fly", img: "https://imgur.com/ydT0r07.jpg" },
+            { en: "The wings", img: "https://imgur.com/YWqBnui.jpg" },
+            { en: "To jump", img: "https://imgur.com/Cn1TFYE.jpg" }
+        ];
+
+        let currentCardIndex = 0;
+
+        function updateFlashcard() {
+            const item = vocabData[currentCardIndex];
+            document.getElementById('flashcard-img').src = item.img;
+            document.getElementById('flashcard-en').textContent = item.en;
+            document.getElementById('carousel-counter').textContent = `${currentCardIndex + 1} / ${vocabData.length}`;
+            
+            document.getElementById('prev-btn').disabled = currentCardIndex === 0;
+            document.getElementById('next-btn').disabled = currentCardIndex === vocabData.length - 1;
+            updateProgress();
+        }
+
+        function nextCard() {
+            if (currentCardIndex < vocabData.length - 1) {
+                currentCardIndex++;
+                updateFlashcard();
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateFlashcard();
+            }
+        }
+
+        const dragItems = [
+            { es: "el cuerno", target: "The horn" },
+            { es: "la crin / el pelo", target: "The mane / hair" },
+            { es: "los ojos", target: "The eyes" },
+            { es: "la cola", target: "The tail" },
+            { es: "las patas", target: "The legs / paws" },
+            { es: "caminar", target: "To walk" },
+            { es: "correr", target: "To run" },
+            { es: "volar", target: "To fly" },
+            { es: "las alas", target: "The wings" },
+            { es: "saltar", target: "To jump" }
+        ];
+
+        let selectedWordForDrop = null;
+        let completedDropCount = 0;
+
+        function initDropGame() {
+            const grid = document.getElementById('drop-game-grid');
+            const bank = document.getElementById('word-bank');
+            grid.innerHTML = '';
+            bank.innerHTML = '';
+
+            const shuffledTargets = [...dragItems].sort(() => Math.random() - 0.5);
+            shuffledTargets.forEach((item) => {
+                const targetDiv = document.createElement('div');
+                targetDiv.className = "bg-gray-50 border-2 border-gray-200 rounded-[16px] p-3 flex flex-col justify-between items-center min-h-[90px] transition";
+                targetDiv.innerHTML = `
+                    <span class="text-xs font-bold text-gray-500 mb-1 text-center">${item.target}</span>
+                    <div class="drop-slot w-full h-10 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs font-bold text-gray-400 bg-white cursor-pointer"></div>
+                `;
+                
+                const slot = targetDiv.querySelector('.drop-slot');
+                slot.addEventListener('click', () => {
+                    if (slot.classList.contains('bg-[#2EC4B6]')) return;
+                    if (selectedWordForDrop) {
+                        if (selectedWordForDrop === item.es) {
+                            slot.textContent = item.es;
+                            slot.className = "drop-slot w-full h-10 rounded-xl flex items-center justify-center text-xs font-bold text-white bg-[#2EC4B6] shadow-sm animate-bounce-short";
+                            
+                            const btn = Array.from(bank.children).find(b => b.textContent === item.es);
+                            if (btn) {
+                                btn.remove();
+                            }
+                            selectedWordForDrop = null;
+                            completedDropCount++;
+                            updateProgress();
+                        } else {
+                            slot.classList.add('animate-shake', 'border-red-400', 'bg-red-50');
+                            setTimeout(() => {
+                                slot.classList.remove('animate-shake', 'border-red-400', 'bg-red-50');
+                            }, 400);
+                        }
+                    }
+                });
+
+                grid.appendChild(targetDiv);
+            });
+
+            const shuffledWords = [...dragItems].map(d => d.es).sort(() => Math.random() - 0.5);
+            shuffledWords.forEach(word => {
+                const btn = document.createElement('button');
+                btn.className = "bg-white border border-gray-200 text-[#121118] px-4 py-2 rounded-[14px] font-bold text-sm btn-3d shadow-sm hover:bg-gray-100 transition cursor-pointer";
+                btn.textContent = word;
+                btn.addEventListener('click', () => {
+                    Array.from(bank.children).forEach(b => b.classList.remove('ring-4', 'ring-[#FF79AC]'));
+                    btn.classList.add('ring-4', 'ring-[#FF79AC]');
+                    selectedWordForDrop = word;
+                });
+                bank.appendChild(btn);
+            });
+        }
+
+        const quizQuestions = [
+            { q: '¿Cómo se dice “I like” en español?', options: ["soy", "tengo", "no soy", "me llamo", "me gusta"], correct: "me gusta" },
+            { q: '¿Cómo se dice “Let´s play” en español?', options: ["vamos a cantar", "vamos a correr", "vamos a jugar"], correct: "vamos a jugar" },
+            { q: '¿Cómo se dice “Let´s sing” en español?', options: ["vamos a cantar", "vamos a correr", "vamos a saltar"], correct: "vamos a cantar" },
+            { q: '¿Cómo se dice “Let´s jump” en español?', options: ["vamos a correr", "vamos a saltar", "vamos a jugar"], correct: "vamos a saltar" },
+            { q: '¿Cómo saludamos por la mañana?', options: ["Buenos días", "Buenas tardes", "Buenas noches", "Adiós", "Chao"], correct: "Buenos días" },
+            { q: '¿Cómo saludamos por la tarde?', options: ["Buenos días", "Buenas tardes", "Buenas noches", "Adiós", "Chao"], correct: "Buenas tardes" },
+            { q: '¿Cómo saludamos por la noche?', options: ["Buenos días", "Buenas tardes", "Buenas noches", "Adiós", "Chao"], correct: "Buenas noches" },
+            { q: '¿Qué pasa en el invierno?', options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"], correct: "hace frío" },
+            { q: '¿Qué pasa en el verano?', options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"], correct: "hace calor" },
+            { q: '¿Qué pasa en el otoño?', options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"], correct: "las hojas se caen" },
+            { q: '¿Qué pasa en la primavera?', options: ["hace frío", "hace calor", "las hojas se caen", "hay muchas flores"], correct: "hay muchas flores" }
+        ];
+
+        let answeredQuizCount = 0;
+        const answeredQuizQuestions = new Set();
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizQuestions.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "bg-gray-50 border border-gray-200 rounded-[16px] p-5 card-shadow";
+                
+                let html = `<p class="font-bold text-[#121118] mb-3">${index + 1}. ${item.q}</p>`;
+                html += `<div class="flex flex-wrap gap-2 options-group-${index}">`;
+                
+                item.options.forEach(opt => {
+                    html += `<button onclick="checkQuizAnswer(${index}, '${opt}', this)" class="bg-white border border-gray-200 px-4 py-2 rounded-[12px] font-bold text-sm btn-3d shadow-sm hover:bg-gray-100 transition">${opt}</button>`;
+                });
+                
+                html += `</div>`;
+                qDiv.innerHTML = html;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function checkQuizAnswer(qIndex, selectedOpt, btnElement) {
+            const item = quizQuestions[qIndex];
+            const group = document.querySelector(`.options-group-${qIndex}`);
+            
+            if (selectedOpt === item.correct) {
+                group.querySelectorAll('button').forEach(b => {
+                    b.disabled = true;
+                    if (b.textContent === item.correct) {
+                        b.className = "bg-[#2EC4B6] text-white px-4 py-2 rounded-[12px] font-bold text-sm shadow-sm";
+                    } else {
+                        b.className = "bg-gray-100 text-gray-400 px-4 py-2 rounded-[12px] font-bold text-sm opacity-50";
+                    }
+                });
+
+                if (!answeredQuizQuestions.has(qIndex)) {
+                    answeredQuizQuestions.add(qIndex);
+                    answeredQuizCount++;
+                    updateProgress();
+                }
+            } else {
+                btnElement.classList.add('animate-shake', 'bg-red-500', 'text-white', 'border-red-600');
+                setTimeout(() => {
+                    btnElement.classList.remove('animate-shake', 'bg-red-500', 'text-white', 'border-red-600');
+                }, 400);
+            }
+        }
+
+        const matchPairsLevel1 = [
+            { es: "Jugar", en: "To play" },
+            { es: "El cuerno", en: "The horn" },
+            { es: "Las alas", en: "The wings" },
+            { es: "Las patas", en: "The legs / paws" },
+            { es: "Los ojos", en: "The eyes" },
+            { es: "La crin / el pelo", en: "The mane / hair" }
+        ];
+
+        const matchPairsLevel2 = [
+            { es: "Correr", en: "To run" },
+            { es: "Caminar", en: "To walk" },
+            { es: "Saltar", en: "To jump" },
+            { es: "Volar", en: "To fly" },
+            { es: "Cantar", en: "To sing" },
+            { es: "Me gusta", en: "I like" }
+        ];
+
+        let currentMatchLevel = 1;
+        let matchPairs = matchPairsLevel1;
+        let selectedCol1 = null;
+        let selectedCol2 = null;
+        let completedMatches = 0;
+        const totalMatchesTotal = matchPairsLevel1.length + matchPairsLevel2.length;
+        let level1Completed = false;
+        let level2Completed = false;
+
+        function switchMatchLevel(level) {
+            currentMatchLevel = level;
+            matchPairs = (level === 1) ? matchPairsLevel1 : matchPairsLevel2;
+            
+            const btn1 = document.getElementById('match-level-1-btn');
+            const btn2 = document.getElementById('match-level-2-btn');
+            
+            if (level === 1) {
+                btn1.className = "bg-[#2EC4B6] text-white px-5 py-2.5 rounded-[14px] font-bold text-sm shadow-md btn-3d transition";
+                btn2.className = "bg-white text-gray-700 border border-gray-200 px-5 py-2.5 rounded-[14px] font-bold text-sm shadow-sm btn-3d transition";
+            } else {
+                btn2.className = "bg-[#2EC4B6] text-white px-5 py-2.5 rounded-[14px] font-bold text-sm shadow-md btn-3d transition";
+                btn1.className = "bg-white text-gray-700 border border-gray-200 px-5 py-2.5 rounded-[14px] font-bold text-sm shadow-sm btn-3d transition";
+            }
+            
+            selectedCol1 = null;
+            selectedCol2 = null;
+            initMatching();
+        }
+
+        let shuffledCol2Cache = [];
+
+        function initMatching() {
+            const c1Div = document.getElementById('match-col-1');
+            const c2Div = document.getElementById('match-col-2');
+            c1Div.innerHTML = '';
+            c2Div.innerHTML = '';
+
+            matchPairs.forEach((pair) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-white border border-gray-200 p-3.5 rounded-[14px] font-bold text-sm shadow-sm hover:bg-gray-50 transition flex items-center justify-between cursor-pointer";
+                btn.innerHTML = `<span>${pair.es}</span>`;
+                btn.dataset.es = pair.es;
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('bg-[#2EC4B6]')) return;
+                    c1Div.querySelectorAll('button').forEach(b => b.classList.remove('ring-4', 'ring-[#FF79AC]'));
+                    btn.classList.add('ring-4', 'ring-[#FF79AC]');
+                    selectedCol1 = { text: pair.es, element: btn };
+                    checkMatch();
+                });
+                c1Div.appendChild(btn);
+            });
+
+            shuffledCol2Cache = [...matchPairs].map(p => p.en).sort(() => Math.random() - 0.5);
+            shuffledCol2Cache.forEach((enText) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-white border border-gray-200 p-3.5 rounded-[14px] font-bold text-sm shadow-sm hover:bg-gray-50 transition flex items-center justify-between cursor-pointer";
+                btn.innerHTML = `<span>${enText}</span>`;
+                btn.dataset.en = enText;
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('bg-[#2EC4B6]')) return;
+                    c2Div.querySelectorAll('button').forEach(b => b.classList.remove('ring-4', 'ring-[#FF9F1C]'));
+                    btn.classList.add('ring-4', 'ring-[#FF9F1C]');
+                    selectedCol2 = { text: enText, element: btn };
+                    checkMatch();
+                });
+                c2Div.appendChild(btn);
+            });
+        }
+
+        function checkMatch() {
+            if (selectedCol1 && selectedCol2) {
+                const validPair = matchPairs.find(p => p.es === selectedCol1.text && p.en === selectedCol2.text);
+
+                if (validPair) {
+                    selectedCol1.element.className = "w-full text-left bg-[#2EC4B6] text-white p-3.5 rounded-[14px] font-bold text-sm shadow-sm flex items-center justify-between opacity-95";
+                    selectedCol2.element.className = "w-full text-left bg-[#2EC4B6] text-white p-3.5 rounded-[14px] font-bold text-sm shadow-sm flex items-center justify-between opacity-95";
+                    
+                    selectedCol1 = null;
+                    selectedCol2 = null;
+                    completedMatches++;
+
+                    if (currentMatchLevel === 1 && !level1Completed) {
+                        level1Completed = true;
+                    } else if (currentMatchLevel === 2 && !level2Completed) {
+                        level2Completed = true;
+                    }
+
+                    updateProgress();
+                } else {
+                    selectedCol2.element.classList.add('animate-shake', 'bg-red-50', 'border-red-400');
+                    setTimeout(() => {
+                        selectedCol2.element.classList.remove('animate-shake', 'bg-red-50', 'border-red-400');
+                        selectedCol2.element.classList.remove('ring-4', 'ring-[#FF9F1C]');
+                        selectedCol2 = null;
+                    }, 400);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const flashcardProgress = (currentCardIndex + 1) / vocabData.length * 25;
+            const dropProgress = (completedDropCount / dragItems.length) * 25;
+            const quizProgress = (answeredQuizCount / quizQuestions.length) * 25;
+            
+            const matchCountDone = (level1Completed ? matchPairsLevel1.length : 0) + (level2Completed ? matchPairsLevel2.length : 0);
+            const matchProgress = (matchCountDone / totalMatchesTotal) * 25;
+
+            const total = Math.min(100, Math.round(flashcardProgress + dropProgress + quizProgress + matchProgress));
+            document.getElementById('progress-bar').style.width = total + '%';
+            document.getElementById('progress-text').textContent = total + '%';
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.classList.remove('hidden');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const numberOfPieces = 150;
+            const colors = ['#FF79AC', '#2EC4B6', '#FF9F1C', '#FFD166', '#EF476F', '#118AB2'];
+
+            for (let i = 0; i < numberOfPieces; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * 6.28,
+                    spin: Math.random() * 0.2 - 0.1
+                });
+            }
+
+            let animationFrameId;
+            let alpha = 1;
+
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speed;
+                    p.angle += p.spin;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+
+                    if (p.y > canvas.height) {
+                        p.y = -20;
+                        p.x = Math.random() * canvas.width;
+                    }
+                });
+
+                animationFrameId = requestAnimationFrame(update);
+            }
+
+            update();
+
+            setTimeout(() => {
+                cancelAnimationFrame(animationFrameId);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                canvas.classList.add('hidden');
+            }, 4500);
+        }
+
+        function completeLesson() {
+            launchConfetti();
+            const footer = document.querySelector('footer');
+            let banner = document.getElementById('success-banner');
+            if (!banner) {
+                banner = document.createElement('div');
+                banner.id = 'success-banner';
+                banner.className = 'mt-4 bg-[#2EC4B6] text-white p-4 rounded-[16px] font-bold text-center shadow-lg animate-bounce-short';
+                banner.textContent = '🎉 ¡Felicidades! Has completado la lección especial de Los Unicornios.';
+                footer.appendChild(banner);
+            }
+        }
+
+        window.onload = function() {
+            updateFlashcard();
+            initDropGame();
+            initQuiz();
+            initMatching();
+        };
+    </script>
+</body>
+</html>
