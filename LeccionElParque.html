@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El parque - Lección 15</title>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        flamenco: '#FF79AC',
+                        flamencoDark: '#E05D90',
+                        mint: '#2EC4B6',
+                        mintDark: '#22998E',
+                        sol: '#FF9F1C',
+                        solDark: '#E08812',
+                        eerie: '#121118',
+                        nube: '#F8F9FA'
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #F8F9FA;
+            color: #121118;
+        }
+        h1, h2, h3, .font-fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .card-shadow {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-radius: 20px;
+        }
+        .btn-3d-flamenco {
+            background-color: #FF79AC;
+            border-bottom: 5px solid #E05D90;
+            border-radius: 20px;
+            transition: all 0.1s ease;
+        }
+        .btn-3d-flamenco:active {
+            border-bottom: 2px solid #E05D90;
+            transform: translateY(3px);
+        }
+        .btn-3d-mint {
+            background-color: #2EC4B6;
+            border-bottom: 5px solid #22998E;
+            border-radius: 20px;
+            transition: all 0.1s ease;
+        }
+        .btn-3d-mint:active {
+            border-bottom: 2px solid #22998E;
+            transform: translateY(3px);
+        }
+        .btn-3d-sol {
+            background-color: #FF9F1C;
+            border-bottom: 5px solid #E08812;
+            border-radius: 20px;
+            transition: all 0.1s ease;
+        }
+        .btn-3d-sol:active {
+            border-bottom: 2px solid #E08812;
+            transform: translateY(3px);
+        }
+        .btn-3d-gray {
+            background-color: #e2e8f0;
+            border-bottom: 5px solid #cbd5e1;
+            border-radius: 20px;
+            transition: all 0.1s ease;
+        }
+        .btn-3d-gray:active {
+            border-bottom: 2px solid #cbd5e1;
+            transform: translateY(3px);
+        }
+    </style>
+</head>
+<body class="bg-nube min-h-screen pb-16">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-4 px-6 mb-8">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="../index.html" class="p-3 bg-nube rounded-2xl text-eerie hover:bg-flamenco hover:text-white transition shadow-sm flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+            </a>
+            <div class="text-center">
+                <span class="text-xs uppercase tracking-wider font-bold text-mint">Lección 15</span>
+                <h1 class="text-2xl md:text-3xl font-bold font-fredoka text-eerie">El parque <span class="text-lg font-normal text-gray-500">(The Park)</span></h1>
+            </div>
+            <div class="w-10"></div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto mt-3 bg-gray-200 h-3 rounded-full overflow-hidden">
+            <div id="progressBar" class="bg-mint h-full w-0 transition-all duration-500 rounded-full"></div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 space-y-12">
+
+        <!-- Sección 1 - Presentación del Vocabulario (Carousel) -->
+        <section class="bg-white p-6 md:p-8 card-shadow">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-sol text-white p-3 rounded-2xl text-xl font-bold font-fredoka">1</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold font-fredoka text-eerie">Presentación del Vocabulario</h2>
+                    <p class="text-gray-500 text-sm">Explora las palabras y avanza con las flechas</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <div class="w-full max-w-md bg-nube p-6 rounded-[20px] text-center card-shadow relative">
+                    <div class="h-64 rounded-[20px] overflow-hidden mb-4 bg-white flex items-center justify-center border border-gray-100">
+                        <img id="vocabImage" src="https://imgur.com/QgKXRXs.jpg" alt="Vocabulario" class="max-h-full max-w-full object-contain rounded-[15px]" onerror="this.src='https://placehold.co/400x300/F8F9FA/121118?text=Imagen'">
+                    </div>
+                    <!-- Español arriba, inglés abajo -->
+                    <h3 id="vocabEsp" class="text-2xl font-bold font-fredoka text-eerie mb-1">la paloma</h3>
+                    <p id="vocabEng" class="text-gray-500 text-sm italic font-semibold mb-6">The dove</p>
+                    
+                    <div class="flex justify-between items-center px-4">
+                        <button id="prevBtn" onclick="prevVocab()" class="btn-3d-gray px-5 py-3 text-eerie font-bold flex items-center gap-2 opacity-50 cursor-not-allowed" disabled>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            Anterior
+                        </button>
+                        <span id="vocabCounter" class="text-sm font-bold text-gray-400 font-fredoka">1 / 12</span>
+                        <button id="nextBtn" onclick="nextVocab()" class="btn-3d-mint px-5 py-3 text-white font-bold flex items-center gap-2">
+                            Siguiente
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2 - Lee, mira y escucha (YouTube Video) -->
+        <section class="bg-white p-6 md:p-8 card-shadow">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-sol text-white p-3 rounded-2xl text-xl font-bold font-fredoka">2</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold font-fredoka text-eerie">Lee, mira y escucha</h2>
+                    <p class="text-gray-500 text-sm">Disfruta del video de la lección</p>
+                </div>
+            </div>
+            <div class="w-full max-w-2xl mx-auto rounded-[20px] overflow-hidden shadow-md aspect-video bg-black">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/iXOeyHTg_n0?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- Sección 3 - Arrastrar y soltar -->
+        <section class="bg-white p-6 md:p-8 card-shadow">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-sol text-white p-3 rounded-2xl text-xl font-bold font-fredoka">3</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold font-fredoka text-eerie">Arrastra y soltar</h2>
+                    <p class="text-gray-500 text-sm">Arrastra las palabras correctas a las casillas debajo de cada imagen</p>
+                </div>
+            </div>
+
+            <!-- Grid de imágenes con casillas -->
+            <div id="dragGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Generado dinámicamente o por lotes -->
+            </div>
+
+            <!-- Banco de palabras -->
+            <div class="bg-nube p-6 rounded-[20px] border-2 border-dashed border-gray-300">
+                <h3 class="text-lg font-bold font-fredoka text-eerie mb-4 text-center">Banco de Palabras (Toca o arrastra)</h3>
+                <div id="wordBank" class="flex flex-wrap gap-3 justify-center">
+                    <!-- Palabras botones -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 4 - Lectura y Preguntas -->
+        <section class="bg-white p-6 md:p-8 card-shadow">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-sol text-white p-3 rounded-2xl text-xl font-bold font-fredoka">4</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold font-fredoka text-eerie">Lectura y Comprensión</h2>
+                    <p class="text-gray-500 text-sm">Lee la lectura y responde las preguntas</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-full max-w-2xl bg-nube p-4 rounded-[20px] text-center card-shadow mb-4">
+                    <img id="readingImage" src="https://imgur.com/dMbqW82.jpg" alt="Lectura en español" class="w-full rounded-[15px] object-contain shadow-sm">
+                </div>
+                <button onclick="toggleReadingLanguage()" id="readLangBtn" class="btn-3d-sol px-6 py-3 text-white font-bold font-fredoka text-lg">
+                    Leer en inglés
+                </button>
+            </div>
+
+            <!-- Preguntas -->
+            <div class="space-y-6" id="quizContainer">
+                <!-- Pregunta 1 -->
+                <div class="bg-nube p-6 rounded-[20px] border border-gray-100">
+                    <h3 class="font-fredoka font-bold text-lg text-eerie mb-3">1) ¿Qué animales ve Pedro en el parque?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" data-qid="1">
+                        <button onclick="checkAnswer(1, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Jirafas y elefantes</button>
+                        <button onclick="checkAnswer(1, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Lobos y ovejas</button>
+                        <button onclick="checkAnswer(1, this, true)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Palomas y pájaros</button>
+                        <button onclick="checkAnswer(1, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Perros y gatos</button>
+                    </div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="bg-nube p-6 rounded-[20px] border border-gray-100">
+                    <h3 class="font-fredoka font-bold text-lg text-eerie mb-3">2) ¿A qué hora va Pedro al parque?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" data-qid="2">
+                        <button onclick="checkAnswer(2, this, true)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">A las cinco de la tarde después de hacer los deberes</button>
+                        <button onclick="checkAnswer(2, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">A las cinco de la tarde después de merendar</button>
+                        <button onclick="checkAnswer(2, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">A las siete después de la clase de música</button>
+                        <button onclick="checkAnswer(2, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">A las cuatro</button>
+                    </div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="bg-nube p-6 rounded-[20px] border border-gray-100">
+                    <h3 class="font-fredoka font-bold text-lg text-eerie mb-3">3) ¿Qué hace el padre de Pedro en el parque?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" data-qid="3">
+                        <button onclick="checkAnswer(3, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Le da de comer a las palomas</button>
+                        <button onclick="checkAnswer(3, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Se sienta en un banco</button>
+                        <button onclick="checkAnswer(3, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Se duerme</button>
+                        <button onclick="checkAnswer(3, this, true)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Corre</button>
+                    </div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="bg-nube p-6 rounded-[20px] border border-gray-100">
+                    <h3 class="font-fredoka font-bold text-lg text-eerie mb-3">4) El guarda del parque le da un caramelo a Pedro todos los días. ¿De qué sabor?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" data-qid="4">
+                        <button onclick="checkAnswer(4, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Menta</button>
+                        <button onclick="checkAnswer(4, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Naranja</button>
+                        <button onclick="checkAnswer(4, this, true)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Fresa</button>
+                        <button onclick="checkAnswer(4, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Limón</button>
+                    </div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="bg-nube p-6 rounded-[20px] border border-gray-100">
+                    <h3 class="font-fredoka font-bold text-lg text-eerie mb-3">5) ¿Cuándo va la madre de Pedro al parque?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" data-qid="5">
+                        <button onclick="checkAnswer(5, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Los miércoles</button>
+                        <button onclick="checkAnswer(5, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Después de trabajar</button>
+                        <button onclick="checkAnswer(5, this, false)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Todos los día a las cinco de la tarde</button>
+                        <button onclick="checkAnswer(5, this, true)" class="p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200">Los fines de semana</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5 - Emparejar Vocabulario -->
+        <section class="bg-white p-6 md:p-8 card-shadow">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-sol text-white p-3 rounded-2xl text-xl font-bold font-fredoka">5</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold font-fredoka text-eerie">Emparejar Vocabulario</h2>
+                    <p class="text-gray-500 text-sm">Une cada frase en español con su respectiva traducción al inglés (3 bloques)</p>
+                </div>
+            </div>
+
+            <div id="matchingBlocksContainer" class="space-y-10">
+                <!-- Se llena mediante JavaScript con los 3 bloques numéricos -->
+            </div>
+        </section>
+
+        <!-- Pie de Página -->
+        <footer class="text-center pt-4">
+            <button onclick="completeLesson()" class="btn-3d-flamenco px-8 py-4 text-white text-xl font-bold font-fredoka shadow-lg inline-flex items-center gap-3">
+                <span>Completar Lección</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </button>
+        </footer>
+
+    </main>
+
+    <!-- Modal de felicitación -->
+    <div id="congratsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-[30px] max-w-md w-full text-center card-shadow transform scale-95 transition-transform duration-300">
+            <div class="w-20 h-20 bg-mint/20 text-mint rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🌟</div>
+            <h3 class="text-2xl font-bold font-fredoka text-eerie mb-2">¡Excelente Trabajo!</h3>
+            <p class="text-gray-600 mb-6">Has completado con éxito la lección de El parque.</p>
+            <button onclick="closeModal()" class="btn-3d-mint w-full py-3 text-white font-bold font-fredoka">¡Genial!</button>
+        </div>
+    </div>
+
+    <script>
+        // Datos de vocabulario con imagen, español e inglés
+        const vocabData = [
+            { esp: "(la paloma)", eng: "The dove", img: "https://imgur.com/QgKXRXs.jpg" },
+            { esp: "(los pájaros de colores)", eng: "The colorful birds", img: "https://imgur.com/Hynz4My.jpg" },
+            { esp: "(el árbol)", eng: "The tree", img: "https://imgur.com/cgHy8DK.jpg" },
+            { esp: "(son las cinco de la tarde)", eng: "It is five in the afternoon", img: "https://imgur.com/OcyyReZ.jpg" },
+            { esp: "(los deberes de la escuela)", eng: "School homework", img: "https://imgur.com/GZZLrk6.jpg" },
+            { esp: "(juego al escondite)", eng: "I play hide and seek", img: "https://imgur.com/aCvqlnf.jpg" },
+            { esp: "(aprender a tocar el piano)", eng: "Learning to play the piano", img: "https://imgur.com/g4P5wbi.jpg" },
+            { esp: "(él corre por el parque)", eng: "He runs through the park", img: "https://imgur.com/l8R22YL.jpg" },
+            { esp: "(el banco / la banca)", eng: "The bench", img: "https://imgur.com/3akz1Rh.jpg" },
+            { esp: "(ella se sienta en el banco)", eng: "She sits on the bench", img: "https://imgur.com/GvU3Kbr.jpg" },
+            { esp: "(el guardaparques)", eng: "The park ranger", img: "https://imgur.com/4LOwlWb.jpg" },
+            { esp: "(el caramelo de fresa)", eng: "The strawberry candy", img: "https://imgur.com/VHxCADi.jpg" }
+        ];
+
+        let currentVocabIndex = 0;
+
+        function updateVocab() {
+            const item = vocabData[currentVocabIndex];
+            document.getElementById("vocabImage").src = item.img;
+            document.getElementById("vocabEsp").textContent = item.esp;
+            document.getElementById("vocabEng").textContent = item.eng;
+            document.getElementById("vocabCounter").textContent = `${currentVocabIndex + 1} / ${vocabData.length}`;
+
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+
+            if (currentVocabIndex === 0) {
+                prevBtn.disabled = true;
+                prevBtn.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                prevBtn.disabled = false;
+                prevBtn.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+
+            if (currentVocabIndex === vocabData.length - 1) {
+                nextBtn.disabled = true;
+                nextBtn.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+            updateProgress();
+        }
+
+        function nextVocab() {
+            if (currentVocabIndex < vocabData.length - 1) {
+                currentVocabIndex++;
+                updateVocab();
+            }
+        }
+
+        function prevVocab() {
+            if (currentVocabIndex > 0) {
+                currentVocabIndex--;
+                updateVocab();
+            }
+        }
+
+        // --- Ejercicio 2: Arrastrar y soltar con banco de palabras interactivo ---
+        let selectedWordForDrop = null;
+        const dragItems = [...vocabData]; // todos los items
+
+        function initDragAndDrop() {
+            const grid = document.getElementById("dragGrid");
+            const wordBank = document.getElementById("wordBank");
+            grid.innerHTML = "";
+            wordBank.innerHTML = "";
+
+            // Barajar banco de palabras para más reto
+            const shuffledWords = [...dragItems].sort(() => Math.random() - 0.5);
+
+            dragItems.forEach((item, index) => {
+                const card = document.createElement("div");
+                card.className = "bg-nube p-4 rounded-[20px] text-center border border-gray-100 flex flex-col items-center justify-between";
+                card.innerHTML = `
+                    <div class="h-32 w-full rounded-[15px] overflow-hidden mb-3 bg-white flex items-center justify-center">
+                        <img src="${item.img}" class="h-full w-full object-cover" alt="item">
+                    </div>
+                    <div id="dropZone-${index}" class="w-full py-2 px-3 bg-white border-2 border-dashed border-gray-300 rounded-[12px] text-sm font-bold text-gray-400 min-h-[42px] flex items-center justify-center cursor-pointer transition" onclick="handleDropClick(${index})">
+                        Arrastra o toca aquí
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            shuffledWords.forEach((item) => {
+                const wordBtn = document.createElement("button");
+                wordBtn.className = "px-4 py-2 bg-white border-b-4 border-gray-200 rounded-[15px] font-fredoka font-bold text-eerie text-sm shadow-sm hover:bg-mint hover:text-white hover:border-mintDark transition cursor-pointer";
+                wordBtn.textContent = item.esp;
+                wordBtn.dataset.esp = item.esp;
+                wordBtn.onclick = () => selectWordFromBank(wordBtn, item.esp);
+                
+                // Soporte táctil / drag básico
+                wordBtn.draggable = true;
+                wordBtn.ondragstart = (e) => {
+                    e.dataTransfer.setData("text/plain", item.esp);
+                };
+
+                wordBank.appendChild(wordBtn);
+            });
+
+            // Permitir soltar en las zonas de drop
+            dragItems.forEach((_, index) => {
+                const zone = document.getElementById(`dropZone-${index}`);
+                zone.ondragover = (e) => e.preventDefault();
+                zone.ondrop = (e) => {
+                    e.preventDefault();
+                    const word = e.dataTransfer.getData("text/plain");
+                    assignWordToZone(index, word);
+                };
+            });
+        }
+
+        function selectWordFromBank(btnElement, espText) {
+            // Si ya hay otra seleccionada, deseleccionar
+            const bank = document.getElementById("wordBank");
+            Array.from(bank.children).forEach(b => b.classList.remove("ring-4", "ring-mint"));
+            
+            if (selectedWordForDrop === espText) {
+                selectedWordForDrop = null;
+            } else {
+                selectedWordForDrop = espText;
+                btnElement.classList.add("ring-4", "ring-mint");
+            }
+        }
+
+        function handleDropClick(index) {
+            if (selectedWordForDrop) {
+                assignWordToZone(index, selectedWordForDrop);
+                selectedWordForDrop = null;
+            }
+        }
+
+        function assignWordToZone(index, word) {
+            const zone = document.getElementById(`dropZone-${index}`);
+            const correctEsp = dragItems[index].esp;
+
+            zone.textContent = word;
+            if (word === correctEsp) {
+                zone.className = "w-full py-2 px-3 bg-mint text-white rounded-[12px] text-sm font-bold flex items-center justify-center shadow-sm";
+                // Eliminar del banco de palabras permanentemente al acertar
+                const bank = document.getElementById("wordBank");
+                Array.from(bank.children).forEach(b => {
+                    if (b.dataset.esp === word && !b.dataset.placed) {
+                        b.dataset.placed = "true";
+                        b.style.display = "none";
+                    }
+                });
+                updateProgress();
+            } else {
+                zone.className = "w-full py-2 px-3 bg-flamenco/20 text-flamencoDark border-2 border-flamenco rounded-[12px] text-sm font-bold flex items-center justify-center";
+                setTimeout(() => {
+                    zone.textContent = "Arrastra o toca aquí";
+                    zone.className = "w-full py-2 px-3 bg-white border-2 border-dashed border-gray-300 rounded-[12px] text-sm font-bold text-gray-400 min-h-[42px] flex items-center justify-center cursor-pointer transition";
+                }, 1000);
+            }
+        }
+
+        // --- Lectura imagen toggle ---
+        let readingEnglish = false;
+        function toggleReadingLanguage() {
+            readingEnglish = !readingEnglish;
+            const img = document.getElementById("readingImage");
+            const btn = document.getElementById("readLangBtn");
+            if (readingEnglish) {
+                img.src = "https://imgur.com/TSzi35E.jpg";
+                btn.textContent = "Leer en español";
+                btn.className = "btn-3d-mint px-6 py-3 text-white font-bold font-fredoka text-lg";
+            } else {
+                img.src = "https://imgur.com/dMbqW82.jpg";
+                btn.textContent = "Leer en inglés";
+                btn.className = "btn-3d-sol px-6 py-3 text-white font-bold font-fredoka text-lg";
+            }
+        }
+
+        // --- Cuestionario ---
+        let answeredQuestions = {};
+        function checkAnswer(qid, btnElement, isCorrect) {
+            const container = btnElement.parentElement;
+            const buttons = container.children;
+
+            if (isCorrect) {
+                for (let b of buttons) {
+                    b.disabled = true;
+                    b.classList.remove("hover:bg-gray-50");
+                }
+                btnElement.className = "p-3 bg-mint text-white rounded-[15px] font-medium shadow-sm transition";
+                answeredQuestions[qid] = true;
+                updateProgress();
+            } else {
+                btnElement.className = "p-3 bg-flamenco text-white rounded-[15px] font-medium shadow-sm transition";
+                setTimeout(() => {
+                    btnElement.className = "p-3 bg-white rounded-[15px] text-left font-medium hover:bg-gray-50 transition border border-gray-200";
+                }, 800);
+            }
+        }
+
+        // --- Sección 5: Emparejar vocabulario (3 bloques) ---
+        const matchingBlocks = [
+            {
+                number: 1,
+                pairs: [
+                    { esp: "Junto a", eng: "Next to" },
+                    { esp: "Yo me divierto", eng: "I have fun" },
+                    { esp: "Yo juego al escondite", eng: "I play hide and seek" },
+                    { esp: "Luis se va más temprano", eng: "Luis leaves earlier" },
+                    { esp: "Él tiene que ir a la escuela de música", eng: "He has to go to music school" },
+                    { esp: "Mi padre va al parque a hacer deporte", eng: "My father goes to the park to exercise" }
+                ]
+            },
+            {
+                number: 2,
+                pairs: [
+                    { esp: "Él corre durante una hora", eng: "He runs for an hour" },
+                    { esp: "Los fines de semana", eng: "Weekends" },
+                    { esp: "Ella se sienta", eng: "She sits" },
+                    { esp: "Siempre", eng: "Always" },
+                    { esp: "Por la mañana cruzo el parque", eng: "In the morning I cross the park" },
+                    { esp: "El caramelo", eng: "The candy" }
+                ]
+            },
+            {
+                number: 3,
+                pairs: [
+                    { esp: "Él siempre me da un caramelo", eng: "He always gives me a candy" },
+                    { esp: "Hoy quiero hablar de", eng: "Today I want to talk about" },
+                    { esp: "Hay un parque junto a mi casa", eng: "There is a park next to my house" },
+                    { esp: "Allí veo las palomas comiendo", eng: "There I see the doves eating" },
+                    { esp: "También veo pájaros de colores", eng: "I also see colorful birds" },
+                    { esp: "Yo juego mientras con mis amigos", eng: "Meanwhile I play with my friends" }
+                ]
+            }
+        ];
+
+        let selectedMatching = { blockId: null, column: null, text: null, element: null };
+
+        function initMatching() {
+            const container = document.getElementById("matchingBlocksContainer");
+            container.innerHTML = "";
+
+            matchingBlocks.forEach(block => {
+                const blockDiv = document.createElement("div");
+                blockDiv.className = "bg-nube p-6 rounded-[20px] border border-gray-100";
+                
+                // Barajar español e inglés independientemente
+                const shuffledEsp = [...block.pairs].sort(() => Math.random() - 0.5);
+                const shuffledEng = [...block.pairs].sort(() => Math.random() - 0.5);
+
+                blockDiv.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-sol text-white flex items-center justify-center font-bold font-fredoka">${block.number}</span>
+                        <h3 class="font-fredoka font-bold text-lg text-eerie">Bloque ${block.number} - Empareja Español e Inglés</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div id="espCol-${block.number}" class="space-y-3">
+                            <h4 class="text-xs font-bold uppercase text-gray-400 tracking-wider">Español</h4>
+                        </div>
+                        <div id="engCol-${block.number}" class="space-y-3">
+                            <h4 class="text-xs font-bold uppercase text-gray-400 tracking-wider">Inglés</h4>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(blockDiv);
+
+                const espCol = blockDiv.querySelector(`#espCol-${block.number}`);
+                const engCol = blockDiv.querySelector(`#engCol-${block.number}`);
+
+                shuffledEsp.forEach(p => {
+                    const btn = document.createElement("button");
+                    btn.className = "w-full p-3 bg-white rounded-[15px] font-medium text-eerie text-left shadow-sm border border-gray-200 hover:bg-gray-50 transition";
+                    btn.textContent = p.esp;
+                    btn.onclick = () => handleMatchingClick(block.number, 'esp', p.esp, btn);
+                    espCol.appendChild(btn);
+                });
+
+                shuffledEng.forEach(p => {
+                    const btn = document.createElement("button");
+                    btn.className = "w-full p-3 bg-white rounded-[15px] font-medium text-eerie text-left shadow-sm border border-gray-200 hover:bg-gray-50 transition";
+                    btn.textContent = p.eng;
+                    btn.onclick = () => handleMatchingClick(block.number, 'eng', p.eng, btn);
+                    engCol.appendChild(btn);
+                });
+            });
+        }
+
+        function handleMatchingClick(blockId, column, text, btnElement) {
+            // Si ya está emparejado, no hacer nada
+            if (btnElement.classList.contains("bg-mint")) return;
+
+            // REGLA: No es posible emparejar con otro botón de la misma columna. Si presiona otro de la misma columna, se resalta el último tocado.
+            if (selectedMatching.blockId === blockId && selectedMatching.column === column) {
+                // Quitar resaltado anterior de la misma columna
+                selectedMatching.element.classList.remove("ring-4", "ring-sol");
+                selectedMatching.text = text;
+                selectedMatching.element = btnElement;
+                btnElement.classList.add("ring-4", "ring-sol");
+                return;
+            }
+
+            if (!selectedMatching.element) {
+                // Primer botón seleccionado
+                selectedMatching = { blockId, column, text, element: btnElement };
+                btnElement.classList.add("ring-4", "ring-sol");
+            } else {
+                // Ya hay un botón seleccionado en la otra columna (o diferente bloque)
+                if (selectedMatching.blockId !== blockId) {
+                    // Cambiar selección si es de otro bloque
+                    selectedMatching.element.classList.remove("ring-4", "ring-sol");
+                    selectedMatching = { blockId, column, text, element: btnElement };
+                    btnElement.classList.add("ring-4", "ring-sol");
+                    return;
+                }
+
+                // Mismo bloque, diferente columna -> Validar emparejamiento
+                const block = matchingBlocks.find(b => b.number === blockId);
+                let isMatch = false;
+
+                if (selectedMatching.column === 'esp' && column === 'eng') {
+                    const pair = block.pairs.find(p => p.esp === selectedMatching.text);
+                    if (pair && pair.eng === text) isMatch = true;
+                } else if (selectedMatching.column === 'eng' && column === 'esp') {
+                    const pair = block.pairs.find(p => p.eng === selectedMatching.text);
+                    if (pair && pair.esp === text) isMatch = true;
+                }
+
+                selectedMatching.element.classList.remove("ring-4", "ring-sol");
+
+                if (isMatch) {
+                    selectedMatching.element.className = "w-full p-3 bg-mint text-white rounded-[15px] font-medium shadow-sm transition cursor-default";
+                    btnElement.className = "w-full p-3 bg-mint text-white rounded-[15px] font-medium shadow-sm transition cursor-default";
+                    selectedMatching = { blockId: null, column: null, text: null, element: null };
+                    updateProgress();
+                } else {
+                    // Error visual temporal
+                    selectedMatching.element.className = "w-full p-3 bg-flamenco/20 text-flamencoDark border border-flamenco rounded-[15px] font-medium transition";
+                    btnElement.className = "w-full p-3 bg-flamenco/20 text-flamencoDark border border-flamenco rounded-[15px] font-medium transition";
+                    setTimeout(() => {
+                        selectedMatching.element.className = "w-full p-3 bg-white rounded-[15px] font-medium text-eerie text-left shadow-sm border border-gray-200 hover:bg-gray-50 transition";
+                        btnElement.className = "w-full p-3 bg-white rounded-[15px] font-medium text-eerie text-left shadow-sm border border-gray-200 hover:bg-gray-50 transition";
+                        selectedMatching = { blockId: null, column: null, text: null, element: null };
+                    }, 800);
+                }
+            }
+        }
+
+        // --- Barra de Progreso General ---
+        function updateProgress() {
+            // Calculamos porcentaje basado en elementos interactivos completados (vocabulario visto, arrastrables correctos, preguntas correctas, emparejamientos)
+            // Simplificación robusta: contador estimado de progreso
+            let totalTasks = vocabData.length + vocabData.length + 5 + 18; // vocab, drag, 5 quizzes, 18 matching pairs
+            let completed = currentVocabIndex + 1; // estimado
+            // Sumar quiz respondidos correctamente
+            let correctQuizCount = Object.keys(answeredQuestions).length;
+            
+            let percent = Math.min(100, Math.floor(((currentVocabIndex + correctQuizCount) / 10) * 100));
+            document.getElementById("progressBar").style.width = percent + "%";
+        }
+
+        function completeLesson() {
+            document.getElementById("congratsModal").classList.remove("hidden");
+            document.getElementById("progressBar").style.width = "100%";
+        }
+
+        function closeModal() {
+            document.getElementById("congratsModal").classList.add("hidden");
+        }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            updateVocab();
+            initDragAndDrop();
+            initMatching();
+        };
+    </script>
+</body>
+</html>
