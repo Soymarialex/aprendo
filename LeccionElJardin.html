@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El jardín - Lección 16</title>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF79AC',
+                        secondary: '#2EC4B6',
+                        accent: '#FF9F1C',
+                        darkText: '#121118',
+                        cloudBg: '#F8F9FA'
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #F8F9FA;
+            color: #121118;
+        }
+        h1, h2, h3, h4, .font-fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .card-custom {
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+        .btn-3d {
+            border-radius: 20px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.15);
+        }
+        .btn-primary-3d {
+            background-color: #FF79AC;
+            color: white;
+            border-bottom: 5px solid #d95385;
+        }
+        .btn-primary-3d:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        .btn-secondary-3d {
+            background-color: #2EC4B6;
+            color: white;
+            border-bottom: 5px solid #239b90;
+        }
+        .btn-secondary-3d:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        .btn-accent-3d {
+            background-color: #FF9F1C;
+            color: white;
+            border-bottom: 5px solid #d98212;
+        }
+        .btn-accent-3d:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes bounce-short {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-short {
+            animation: bounce-short 0.6s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-12">
+
+    <header class="w-full bg-white shadow-sm sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="../index.html" class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-2xl btn-3d text-xl" title="Menú Principal">
+                <i class="fa-solid fa-house"></i>
+            </a>
+            <div class="text-center">
+                <h1 class="text-2xl md:text-3xl font-bold font-fredoka text-darkText">El jardín</h1>
+                <p class="text-sm text-gray-500 font-semibold">Lección 16 • Beginner Spanish for Kids</p>
+            </div>
+            <div class="w-12"></div><!-- Spacer -->
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto mt-3 bg-gray-200 h-3 rounded-full overflow-hidden">
+            <div id="progressBar" class="bg-secondary h-full w-0 transition-all duration-500 rounded-full"></div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl w-full mx-auto px-4 mt-6 space-y-12">
+
+        <section class="card-custom p-6 text-center">
+            <div class="flex items-center justify-between mb-4">
+                <span class="bg-secondary/10 text-secondary font-bold px-4 py-1.5 rounded-full text-sm">
+                    <i class="fa-solid fa-book-open mr-2"></i> Vocabulario / Vocabulary
+                </span>
+                <span id="flashcardCounter" class="font-fredoka text-gray-400 text-sm">1 / 19</span>
+            </div>
+
+            <div id="flashcardContainer" class="relative flex flex-col items-center justify-center min-h-[360px]">
+                <!-- Image container with fixed height and object-contain -->
+                <div class="w-full max-w-sm h-64 bg-gray-50 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center mb-4 relative">
+                    <img id="fcImage" src="https://imgur.com/kQ8DltI.jpg" alt="El jardín" class="max-h-full max-w-full object-contain transition-all duration-300" onerror="this.src='https://placehold.co/400x300/F8F9FA/121118?text=Image+Loading'">
+                </div>
+
+                <h2 id="fcWordEs" class="text-3xl font-bold font-fredoka text-darkText mb-1">El jardín</h2>
+                <p id="fcWordEn" class="text-lg text-gray-500 font-semibold italic">The garden</p>
+
+                <!-- Navigation Arrows -->
+                <button id="prevBtn" onclick="prevCard()" class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-accent text-white rounded-full btn-3d flex items-center justify-center text-xl shadow-lg hidden">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button id="nextBtn" onclick="nextCard()" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary text-white rounded-full btn-3d flex items-center justify-center text-xl shadow-lg">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <section class="card-custom p-6 space-y-6">
+            <div class="flex items-center justify-between">
+                <span class="bg-primary/10 text-primary font-bold px-4 py-1.5 rounded-full text-sm">
+                    <i class="fa-solid fa-music mr-2"></i> Canción / Song
+                </span>
+            </div>
+            <div class="aspect-w-16 aspect-h-9 w-full rounded-2xl overflow-hidden shadow-md bg-black">
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/_YyRnxxZtLw?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="w-full h-72 md:h-96"></iframe>
+            </div>
+            <!-- Lyrics Image as requested immediately visible -->
+            <div class="text-center mt-4">
+                <h3 class="text-xl font-bold font-fredoka mb-3 text-darkText">Letra de la canción</h3>
+                <div class="max-w-md mx-auto bg-gray-50 rounded-2xl overflow-hidden shadow-md p-2">
+                    <img src="https://imgur.com/wHgAVta.jpg" alt="Letra de la canción" class="w-full h-auto object-contain rounded-xl" onerror="this.src='https://placehold.co/500x300/F8F9FA/121118?text=Lyrics+Image'">
+                </div>
+            </div>
+        </section>
+
+        <section class="card-custom p-6 space-y-8">
+            <div class="flex items-center justify-between">
+                <span class="bg-accent/10 text-accent font-bold px-4 py-1.5 rounded-full text-sm">
+                    <i class="fa-solid fa-puzzle-piece mr-2"></i> Práctica 1: Colocar en su lugar / Drag & Place
+                </span>
+                <span class="text-sm text-gray-500 font-semibold">Haz clic en la palabra y luego en la casilla / Click word then box</span>
+            </div>
+
+            <!-- Group 1 -->
+            <div class="space-y-4">
+                <h3 class="font-fredoka text-lg text-darkText flex items-center gap-2"><span class="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center text-sm">1</span> Sección 1</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="dropZoneGroup1">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="flex flex-wrap gap-2 justify-center p-3 bg-gray-50 rounded-2xl min-h-[60px]" id="wordBankGroup1">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <hr class="border-gray-100">
+
+            <!-- Group 2 -->
+            <div class="space-y-4">
+                <h3 class="font-fredoka text-lg text-darkText flex items-center gap-2"><span class="w-7 h-7 bg-secondary text-white rounded-full flex items-center justify-center text-sm">2</span> Sección 2</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="dropZoneGroup2">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="flex flex-wrap gap-2 justify-center p-3 bg-gray-50 rounded-2xl min-h-[60px]" id="wordBankGroup2">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <hr class="border-gray-100">
+
+            <!-- Group 3 -->
+            <div class="space-y-4">
+                <h3 class="font-fredoka text-lg text-darkText flex items-center gap-2"><span class="w-7 h-7 bg-accent text-white rounded-full flex items-center justify-center text-sm">3</span> Sección 3</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="dropZoneGroup3">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="flex flex-wrap gap-2 justify-center p-3 bg-gray-50 rounded-2xl min-h-[60px]" id="wordBankGroup3">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="card-custom p-6 space-y-6">
+            <div class="flex items-center justify-between">
+                <span class="bg-secondary/10 text-secondary font-bold px-4 py-1.5 rounded-full text-sm">
+                    <i class="fa-solid fa-circle-question mr-2"></i> Práctica 2: Preguntas / Questions
+                </span>
+            </div>
+            
+            <div class="max-w-md mx-auto bg-gray-50 rounded-2xl overflow-hidden shadow-md p-2 mb-6">
+                <img src="https://imgur.com/TPvSyPu.jpg" alt="Herramientas del jardín" class="w-full h-auto object-contain rounded-xl" onerror="this.src='https://placehold.co/400x250/F8F9FA/121118?text=Garden+Tools'">
+            </div>
+
+            <div id="questionsContainer" class="space-y-6">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <section class="card-custom p-6 space-y-6">
+            <div class="flex items-center justify-between">
+                <span class="bg-primary/10 text-primary font-bold px-4 py-1.5 rounded-full text-sm">
+                    <i class="fa-solid fa-link mr-2"></i> Práctica 3: Emparejar español / inglés
+                </span>
+                <span class="text-sm text-gray-500 font-semibold">Toca un botón y luego su traducción</span>
+            </div>
+
+            <div class="space-y-6" id="matchingContainer">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="max-w-4xl w-full mx-auto px-4 mt-12 text-center">
+        <button onclick="completeLesson()" class="w-full md:w-auto px-8 py-4 text-lg font-bold font-fredoka btn-3d btn-primary-3d rounded-2xl shadow-lg flex items-center justify-center gap-3 mx-auto">
+            <i class="fa-solid fa-star text-accent"></i> ¡Completar Lección! / Complete Lesson <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </footer>
+
+    <script>
+        // Vocabulary Dataset with English translations
+        const vocabulary = [
+            { es: "El jardín", en: "The garden", img: "https://imgur.com/kQ8DltI.jpg" },
+            { es: "El césped", en: "The lawn / grass", img: "https://imgur.com/Q442i1D.jpg" },
+            { es: "La tierra", en: "The soil / dirt", img: "https://imgur.com/L9d4OaK.jpg" },
+            { es: "La semilla", en: "The seed", img: "https://imgur.com/rJmGj59.jpg" },
+            { es: "sembrar", en: "to plant / sow", img: "https://imgur.com/GZuMOAk.jpg" },
+            { es: "La planta", en: "The plant", img: "https://imgur.com/RvoxPlX.jpg" },
+            { es: "La maceta", en: "The flowerpot", img: "https://imgur.com/0nb7Zck.jpg" },
+            { es: "La regadera", en: "The watering can", img: "https://imgur.com/8op7wDF.jpg" },
+            { es: "Regar", en: "To water (plants)", img: "https://imgur.com/FJB9X5C.jpg" },
+            { es: "La manguera", en: "The hose", img: "https://imgur.com/HBQ7qHP.jpg" },
+            { es: "Los guantes", en: "The gloves", img: "https://imgur.com/2nnYsNQ.jpg" },
+            { es: "Las botas", en: "The boots", img: "https://imgur.com/5M2ybkI.jpg" },
+            { es: "La pala", en: "The shovel", img: "https://imgur.com/XtH7c51.jpg" },
+            { es: "El árbol", en: "The tree", img: "https://imgur.com/B3QYSfq.jpg" },
+            { es: "El arbusto", en: "The bush / shrub", img: "https://imgur.com/OkhKAvo.jpg" },
+            { es: "Las flores", en: "The flowers", img: "https://imgur.com/Eq4tndu.jpg" },
+            { es: "Las Rosas", en: "The roses", img: "https://imgur.com/QOuzWRA.jpg" },
+            { es: "El sol", en: "The sun", img: "https://imgur.com/sQ3WQUp.jpg" },
+            { es: "La lluvia", en: "The rain", img: "https://imgur.com/9mVJueF.jpg" }
+        ];
+
+        let currentCardIndex = 0;
+
+        function updateFlashcard() {
+            const item = vocabulary[currentCardIndex];
+            const imgEl = document.getElementById('fcImage');
+            imgEl.style.opacity = '0';
+            setTimeout(() => {
+                imgEl.src = item.img;
+                imgEl.style.opacity = '1';
+            }, 150);
+
+            document.getElementById('fcWordEs').textContent = item.es;
+            document.getElementById('fcWordEn').textContent = item.en;
+            document.getElementById('flashcardCounter').textContent = `${currentCardIndex + 1} / ${vocabulary.length}`;
+
+            // Buttons visibility
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (currentCardIndex === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (currentCardIndex === vocabulary.length - 1) {
+                nextBtn.classList.add('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+            }
+            updateProgress();
+        }
+
+        function nextCard() {
+            if (currentCardIndex < vocabulary.length - 1) {
+                currentCardIndex++;
+                updateFlashcard();
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateFlashcard();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentCardIndex + 1) / vocabulary.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        const group1Items = vocabulary.slice(0, 6);
+        const group2Items = vocabulary.slice(6, 12);
+        const group3Items = vocabulary.slice(12, 18);
+
+        function setupDragAndDropGroup(items, groupId) {
+            const zoneContainer = document.getElementById(`dropZoneGroup${groupId}`);
+            const bankContainer = document.getElementById(`wordBankGroup${groupId}`);
+
+            zoneContainer.innerHTML = '';
+            bankContainer.innerHTML = '';
+
+            let selectedWord = null;
+
+            // Shuffle words for bank
+            let shuffledItems = [...items].sort(() => Math.random() - 0.5);
+
+            items.forEach((item, idx) => {
+                // Drop box
+                const box = document.createElement('div');
+                box.className = 'bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-2 flex flex-col items-center justify-center text-center h-32 transition-all duration-300';
+                box.dataset.target = item.es;
+                box.innerHTML = `
+                    <div class="w-16 h-14 bg-white rounded-xl shadow-sm overflow-hidden mb-1 flex items-center justify-center">
+                        <img src="${item.img}" class="max-h-full max-w-full object-contain" onerror="this.src='https://placehold.co/100x100/F8F9FA/121118?text=Img'">
+                    </div>
+                    <span class="text-xs font-semibold text-gray-600 line-clamp-1">${item.en}</span>
+                `;
+
+                box.addEventListener('click', () => {
+                    if (selectedWord) {
+                        if (selectedWord === item.es) {
+                            box.classList.remove('border-dashed', 'border-gray-300', 'bg-gray-50', 'animate-shake');
+                            box.classList.add('bg-secondary/10', 'border-secondary', 'text-secondary');
+                            box.innerHTML = `
+                                <div class="w-16 h-14 bg-white rounded-xl shadow-sm overflow-hidden mb-1 flex items-center justify-center">
+                                    <img src="${item.img}" class="max-h-full max-w-full object-contain">
+                                </div>
+                                <span class="text-xs font-bold text-secondary">${item.es}</span>
+                            `;
+                            // Remove from bank
+                            const wordBtn = bankContainer.querySelector(`[data-word="${selectedWord}"]`);
+                            if (wordBtn) wordBtn.remove();
+                            selectedWord = null;
+                        } else {
+                            box.classList.add('animate-shake', 'border-red-400', 'bg-red-50');
+                            setTimeout(() => box.classList.remove('animate-shake', 'border-red-400', 'bg-red-50'), 400);
+                            selectedWord = null;
+                        }
+                    }
+                });
+
+                zoneContainer.appendChild(box);
+            });
+
+            shuffledItems.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'px-4 py-2 bg-white border border-gray-200 rounded-2xl font-bold text-sm text-darkText shadow-sm btn-3d hover:bg-gray-50 transition-all';
+                btn.textContent = item.es;
+                btn.dataset.word = item.es;
+
+                btn.addEventListener('click', () => {
+                    bankContainer.querySelectorAll('button').forEach(b => b.classList.remove('ring-2', 'ring-secondary', 'bg-secondary/10'));
+                    selectedWord = item.es;
+                    btn.classList.add('ring-2', 'ring-secondary', 'bg-secondary/10');
+                });
+
+                bankContainer.appendChild(btn);
+            });
+        }
+
+        const questionsData = [
+            {
+                qEs: "¿Para qué usamos la pala?",
+                qEn: "What do we use the shovel for?",
+                options: [
+                    { text: "para regar las plantas", correct: false },
+                    { text: "para recoger la tierra", correct: true },
+                    { text: "para protegerme las manos", correct: false }
+                ]
+            },
+            {
+                qEs: "¿Para qué usamos los guantes?",
+                qEn: "What do we use the gloves for?",
+                options: [
+                    { text: "para regar las plantas", correct: false },
+                    { text: "para recoger la tierra", correct: false },
+                    { text: "para protegerme las manos", correct: true }
+                ]
+            },
+            {
+                qEs: "¿Para qué usamos la maceta?",
+                qEn: "What do we use the flowerpot for?",
+                options: [
+                    { text: "para meter la tierra", correct: true },
+                    { text: "para regar las plantas", correct: false },
+                    { text: "para protegerme del sol", correct: false }
+                ]
+            },
+            {
+                qEs: "¿Para qué usamos la regadera y la manguera?",
+                qEn: "What do we use the watering can and hose for?",
+                options: [
+                    { text: "para regar las plantas", correct: true },
+                    { text: "para recoger la tierra", correct: false },
+                    { text: "para protegerme las manos", correct: false }
+                ]
+            }
+        ];
+
+        function setupQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questionsData.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-3';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, optIdx) => {
+                    optionsHtml += `
+                        <button onclick="checkQuestion(this, ${opt.correct})" class="w-full text-left p-3 rounded-xl border border-gray-200 font-semibold text-sm transition-all hover:bg-gray-50 flex items-center justify-between">
+                            <span>${opt.text}</span>
+                            <span class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center text-xs"></span>
+                        </button>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div>
+                        <h4 class="font-bold font-fredoka text-lg text-darkText">${item.qEs}</h4>
+                        <p class="text-xs text-gray-500 font-medium italic">${item.qEn}</p>
+                    </div>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function checkQuestion(btn, isCorrect) {
+            const parent = btn.parentElement;
+
+            if (isCorrect) {
+                // Disable all options for this question and highlight correct one
+                parent.querySelectorAll('button').forEach(b => {
+                    b.disabled = true;
+                });
+                btn.classList.add('bg-secondary/10', 'border-secondary', 'text-secondary', 'font-bold');
+                btn.querySelector('span:last-child').innerHTML = '<i class="fa-solid fa-check text-secondary"></i>';
+            } else {
+                // Wrong answer: allow another try by shaking and temporarily highlighting red
+                btn.classList.add('animate-shake', 'bg-red-50', 'border-red-300', 'text-red-500');
+                btn.querySelector('span:last-child').innerHTML = '<i class="fa-solid fa-xmark text-red-500"></i>';
+                
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake', 'bg-red-50', 'border-red-300', 'text-red-500');
+                    btn.querySelector('span:last-child').innerHTML = '';
+                }, 600);
+            }
+        }
+
+        const matchingGroups = [
+            { id: 1, items: vocabulary.slice(0, 6) },
+            { id: 2, items: vocabulary.slice(6, 12) },
+            { id: 3, items: vocabulary.slice(12, 18) }
+        ];
+
+        function setupMatching() {
+            const container = document.getElementById('matchingContainer');
+            container.innerHTML = '';
+
+            matchingGroups.forEach(group => {
+                const groupWrapper = document.createElement('div');
+                groupWrapper.className = 'bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-4';
+
+                // Header with circular number button
+                const header = document.createElement('div');
+                header.className = 'flex items-center gap-3';
+                header.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-accent text-white font-bold font-fredoka flex items-center justify-center shadow-md text-lg">${group.id}</div>
+                    <span class="font-fredoka font-bold text-darkText">Emparejar Grupo ${group.id} / Match Group ${group.id}</span>
+                `;
+                groupWrapper.appendChild(header);
+
+                // Two columns grid
+                const columnsGrid = document.createElement('div');
+                columnsGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+
+                const leftCol = document.createElement('div');
+                leftCol.className = 'space-y-2 flex flex-col';
+                let shuffledEs = [...group.items].sort(() => Math.random() - 0.5);
+
+                const rightCol = document.createElement('div');
+                rightCol.className = 'space-y-2 flex flex-col';
+                let shuffledEn = [...group.items].sort(() => Math.random() - 0.5);
+
+                let selectedLeft = null;
+                let selectedRight = null;
+
+                shuffledEs.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'p-3 bg-white rounded-xl border border-gray-200 font-bold text-sm text-darkText shadow-sm btn-3D text-center transition-all';
+                    btn.textContent = item.es;
+                    btn.dataset.key = item.es;
+
+                    btn.addEventListener('click', () => {
+                        if (btn.classList.contains('matched')) return;
+                        // Deselect other left buttons
+                        leftCol.querySelectorAll('button').forEach(b => {
+                            if (!b.classList.contains('matched')) b.classList.remove('ring-2', 'ring-primary', 'bg-primary/10');
+                        });
+                        selectedLeft = item.es;
+                        btn.classList.add('ring-2', 'ring-primary', 'bg-primary/10');
+                        checkMatch(groupWrapper, leftCol, rightCol, () => { selectedLeft = null; selectedRight = null; });
+                    });
+                    leftCol.appendChild(btn);
+                });
+
+                shuffledEn.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'p-3 bg-white rounded-xl border border-gray-200 font-semibold text-sm text-gray-600 shadow-sm btn-3D text-center transition-all';
+                    btn.textContent = item.en;
+                    btn.dataset.key = item.es; // matched via es key
+
+                    btn.addEventListener('click', () => {
+                        if (btn.classList.contains('matched')) return;
+                        // If another right button in the same column was clicked previously, highlight the latest touched one
+                        rightCol.querySelectorAll('button').forEach(b => {
+                            if (!b.classList.contains('matched')) b.classList.remove('ring-2', 'ring-secondary', 'bg-secondary/10');
+                        });
+                        selectedRight = item.es;
+                        btn.classList.add('ring-2', 'ring-secondary', 'bg-secondary/10');
+                        checkMatch(groupWrapper, leftCol, rightCol, () => { selectedLeft = null; selectedRight = null; });
+                    });
+                    rightCol.appendChild(btn);
+                });
+
+                function checkMatch(wrapper, lCol, rCol, resetCb) {
+                    const lBtn = lCol.querySelector('.ring-2.ring-primary');
+                    const rBtn = rCol.querySelector('.ring-2.ring-secondary');
+
+                    if (lBtn && rBtn) {
+                        if (lBtn.dataset.key === rBtn.dataset.key) {
+                            // Match successful: keep them visible, turn both green (#2EC4B6) and disable further clicks
+                            lBtn.classList.remove('ring-2', 'ring-primary', 'bg-primary/10');
+                            lBtn.style.backgroundColor = '#2EC4B6';
+                            lBtn.style.color = '#FFFFFF';
+                            lBtn.style.borderColor = '#239b90';
+                            lBtn.classList.add('matched');
+                            lBtn.disabled = true;
+
+                            rBtn.classList.remove('ring-2', 'ring-secondary', 'bg-secondary/10');
+                            rBtn.style.backgroundColor = '#2EC4B6';
+                            rBtn.style.color = '#FFFFFF';
+                            rBtn.style.borderColor = '#239b90';
+                            rBtn.classList.add('matched');
+                            rBtn.disabled = true;
+                        } else {
+                            // Match failed: shake and reset selection highlight
+                            lBtn.classList.remove('ring-2', 'ring-primary', 'bg-primary/10');
+                            lBtn.classList.add('animate-shake', 'bg-red-50', 'border-red-300');
+                            rBtn.classList.remove('ring-2', 'ring-secondary', 'bg-secondary/10');
+                            rBtn.classList.add('animate-shake', 'bg-red-50', 'border-red-300');
+
+                            setTimeout(() => {
+                                lBtn.classList.remove('animate-shake', 'bg-red-50', 'border-red-300');
+                                rBtn.classList.remove('animate-shake', 'bg-red-50', 'border-red-300');
+                            }, 400);
+                        }
+                        resetCb();
+                    }
+                }
+
+                columnsGrid.appendChild(leftCol);
+                columnsGrid.appendChild(rightCol);
+                groupWrapper.appendChild(columnsGrid);
+                container.appendChild(groupWrapper);
+            });
+        }
+
+        function completeLesson() {
+            alert("¡Felicitaciones! Has completado la Lección 16: El jardín 🎉");
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            updateFlashcard();
+            setupDragAndDropGroup(group1Items, 1);
+            setupDragAndDropGroup(group2Items, 2);
+            setupDragAndDropGroup(group3Items, 3);
+            setupQuestions();
+            setupMatching();
+        };
+    </script>
+</body>
+</html>
