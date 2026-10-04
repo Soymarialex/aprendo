@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Primera Clase de Español</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        
+        /* Paleta de colores: 
+           - Principal (Rosa): #FF79AC (255, 121, 172)
+           - Secundario Oscuro (Negro): #000000 
+           - Fondo de la página: #fef0f6 (Rosa muy pálido)
+           - Fondo de ejercicios: #ffe4ef (Rosa pálido) 
+        */
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fef0f6; /* Fondo de la página: Rosa muy pálido */
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #000000; /* Negro para el título principal */
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF79AC; /* Rosa de acento para títulos de sección */
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #FF79AC; /* Borde rosa de acento */
+        }
+        .word-pair {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #f5c0d2; /* Línea de división rosa clara */
+        }
+        .word-pair:last-child {
+            border-bottom: none;
+        }
+        .word-spanish {
+            font-weight: 700;
+            color: #000000; /* Negro para palabras en español */
+        }
+        .word-english {
+            color: #6b7280;
+        }
+        .exercise {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #ffe4ef; /* Fondo de ejercicios: Rosa pálido */
+            border-radius: 0.75rem;
+        }
+        .exercise-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #FF79AC; /* Rosa de acento */
+            margin-bottom: 1rem;
+        }
+        .dialogue-item {
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .dialogue-question {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+        .dialogue-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .dialogue-btn {
+            background-color: #FF79AC; /* Rosa de acento para botones */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: left;
+        }
+        .dialogue-btn:hover {
+            background-color: #f75d97; /* Rosa un poco más oscuro al pasar el ratón */
+        }
+        .dialogue-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .correct-answer {
+            background-color: #d1fae5; /* Verde claro para respuesta correcta (manteniendo accesibilidad) */
+            color: #065f46;
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* Rojo claro para respuesta incorrecta (manteniendo accesibilidad) */
+            color: #991b1b;
+        }
+        /* Styles for the matching game */
+        .matching-game {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .match-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .match-item {
+            padding: 0.75rem;
+            background-color: #fff;
+            border: 1px solid #f5c0d2; /* Borde rosa claro */
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s, box-shadow 0.2s;
+            text-align: center;
+        }
+        .match-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .english-box {
+            background-color: #ffe4ef; /* Rosa pálido para la columna de inglés */
+        }
+        .selected {
+            border: 2px solid #FF79AC; /* Borde rosa de acento para la selección */
+            box-shadow: 0 0 8px rgba(255, 121, 172, 0.5);
+        }
+        .matched {
+            background-color: #d1fae5 !important; /* Verde claro para correcto (manteniendo accesibilidad) */
+            color: #065f46;
+            cursor: default;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Mi Primera Clase de Español</h1>
+            <p class="text-lg text-gray-600 mt-2">¡Bienvenido! Empecemos con lo básico.</p>
+        </header>
+
+        <section>
+            <h2 class="section-title">Saludos y Despedidas (Greetings and Goodbyes)</h2>
+            <div class="space-y-2 mt-4">
+                <div class="word-pair">
+                    <span class="word-spanish">Hola</span>
+                    <span class="word-english">hello</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Buenos días</span>
+                    <span class="word-english">good morning</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Buenas tardes</span>
+                    <span class="word-english">good afternoon</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Buenas noches</span>
+                    <span class="word-english">good evening / good night</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Buenas</span>
+                    <span class="word-english">a short way to say "good morning, afternoon, evening"</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Hasta pronto</span>
+                    <span class="word-english">see you soon</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Hasta luego</span>
+                    <span class="word-english">see you later</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Hasta mañana</span>
+                    <span class="word-english">see you tomorrow</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Nos vemos</span>
+                    <span class="word-english">see you</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Adiós / Chao</span>
+                    <span class="word-english">goodbye / bye</span>
+                </div>
+            </div>
+            <div class="exercise">
+                <h3 class="exercise-title">Test de Emparejar (Matching Test)</h3>
+                <p class="mb-4 text-sm text-gray-600">Haz clic en una palabra en la columna de español y luego en su traducción en la columna de inglés para emparejarlas.</p>
+                <div class="matching-game" id="match-section-1">
+                    </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2 class="section-title">Frases Clave (Key Phrases)</h2>
+            <div class="space-y-2 mt-4">
+                <div class="word-pair">
+                    <span class="word-spanish">Por favor</span>
+                    <span class="word-english">please</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Gracias</span>
+                    <span class="word-english">thanks</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Disculpe</span>
+                    <span class="word-english">excuse me</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Perdón</span>
+                    <span class="word-english">sorry</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Bienvenido</span>
+                    <span class="word-english">welcome</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Genial</span>
+                    <span class="word-english">great</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">También</span>
+                    <span class="word-english">too</span>
+                </div>
+            </div>
+            <div class="exercise">
+                <h3 class="exercise-title">Test de Emparejar (Matching Test)</h3>
+                <p class="mb-4 text-sm text-gray-600">Haz clic en una palabra en la columna de español y luego en su traducción en la columna de inglés para emparejarlas.</p>
+                <div class="matching-game" id="match-section-2">
+                    </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Para Conocer a Alguien (Getting to Know Someone)</h2>
+            <div class="space-y-2 mt-4">
+                <div class="word-pair">
+                    <span class="word-spanish">¿Cómo estás?</span>
+                    <span class="word-english">how are you?</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Estoy bien</span>
+                    <span class="word-english">I'm fine</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿Cómo te llamas?</span>
+                    <span class="word-english">what's your name?</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Me llamo...</span>
+                    <span class="word-english">my name is...</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿Y tú?</span>
+                    <span class="word-english">and you?</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Yo soy...</span>
+                    <span class="word-english">I am...</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Mucho gusto</span>
+                    <span class="word-english">nice to meet you</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Igualmente</span>
+                    <span class="word-english">likewise / same here</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿De dónde eres?</span>
+                    <span class="word-english">where are you from?</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">Soy de...</span>
+                    <span class="word-english">I'm from...</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿A qué te dedicas?</span>
+                    <span class="word-english">what do you do for a living?</span>
+                </div>
+            </div>
+            <div class="exercise">
+                <h3 class="exercise-title">Test de Emparejar (Matching Test)</h3>
+                <p class="mb-4 text-sm text-gray-600">Haz clic en una palabra en la columna de español y luego en su traducción en la columna de inglés para emparejarlas.</p>
+                <div class="matching-game" id="match-section-3">
+                    </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">En el aula (In the Classroom)</h2>
+            <div class="space-y-2 mt-4">
+                <div class="word-pair">
+                    <span class="word-spanish">No entiendo</span>
+                    <span class="word-english">I don't understand</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿Puedes repetir por favor?</span>
+                    <span class="word-english">can you repeat that please?</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿Qué significa LIBRO?</span>
+                    <span class="word-english">what does BOOK mean?</span>
+                </div>
+                <div class="word-pair">
+                    <span class="word-spanish">¿Cómo se dice CAT en español?</span>
+                    <span class="word-english">how do you say CAT in Spanish?</span>
+                </div>
+            </div>
+            <div class="exercise">
+                <h3 class="exercise-title">Test de Emparejar (Matching Test)</h3>
+                <p class="mb-4 text-sm text-gray-600">Haz clic en una palabra en la columna de español y luego en su traducción en la columna de inglés para emparejarlas.</p>
+                <div class="matching-game" id="match-section-4">
+                    </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Diálogos interactivos</h2>
+            <p class="mb-4 text-sm text-gray-600">Elige la respuesta correcta para completar el diálogo.
+            <div class="exercise">
+                <h3 class="exercise-title">Elige la respuesta correcta</h3>
+                <div id="dialogue-exercises">
+                    </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Data for each matching exercise
+        const matchingData = {
+            'match-section-1': [
+                { spanish: 'Hola', english: 'hello' },
+                { spanish: 'Buenos días', english: 'good morning' },
+                { spanish: 'Buenas noches', english: 'good evening' },
+                { spanish: 'Adiós', english: 'goodbye' },
+                { spanish: 'Hasta luego', english: 'see you later' }
+            ],
+            'match-section-2': [
+                { spanish: 'Por favor', english: 'please' },
+                { spanish: 'Gracias', english: 'thanks' },
+                { spanish: 'Perdón', english: 'sorry' },
+                { spanish: 'Genial', english: 'great' },
+                { spanish: 'También', english: 'too' }
+            ],
+            'match-section-3': [
+                { spanish: '¿Cómo estás?', english: 'how are you?' },
+                { spanish: 'Estoy bien', english: 'I\'m fine' },
+                { spanish: 'Mucho gusto', english: 'nice to meet you' },
+                { spanish: '¿De dónde eres?', english: 'where are you from?' },
+                { spanish: 'Soy de...', english: 'I\'m from...' }
+            ],
+            'match-section-4': [
+                { spanish: 'No entiendo', english: 'I don\'t understand' },
+                { spanish: '¿Puedes repetir por favor?', english: 'can you repeat that please?' },
+                { spanish: '¿Qué significa LIBRO?', english: 'what does BOOK mean?' },
+                { spanish: '¿Cómo se dice CAT en español?', english: 'how do you say CAT in Spanish?' }
+            ]
+        };
+
+        const dialogueData = [
+            { question: "Hola, ¿cómo estás?", correct: "Estoy bien, gracias, ¿y tú?", incorrect: "Adiós" },
+            { question: "Me llamo Sofia, ¿y tú?", correct: "Me llamo Juan.", incorrect: "Mucho gusto." },
+            { question: "Mucho gusto.", correct: "Igualmente.", incorrect: "Gracias." },
+            { question: "¡Hasta mañana!", correct: "Nos vemos.", incorrect: "Perdón." },
+            { question: "¿De dónde eres?", correct: "Soy de México.", incorrect: "Soy profesor." },
+            { question: "¿A qué te dedicas?", correct: "Soy estudiante.", incorrect: "Soy de España." },
+            { question: "¿Qué significa 'LIBRO'?", correct: "Significa 'book'.", incorrect: "Significa 'teacher'." },
+            { question: "Buenas tardes.", correct: "Buenas tardes.", incorrect: "Hasta luego." }
+        ];
+
+        let selectedItem = null;
+
+        // Function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Function to handle the click events for the matching game
+        function handleMatchClick(e) {
+            const clickedItem = e.target;
+            const container = clickedItem.closest('.matching-game');
+
+            // Do nothing if the item is already matched or not a valid match item
+            if (clickedItem.classList.contains('matched') || !clickedItem.classList.contains('match-item') || !container) {
+                return;
+            }
+
+            if (!selectedItem) {
+                // First click: select the item
+                selectedItem = clickedItem;
+                selectedItem.classList.add('selected');
+            } else {
+                // Second click: check for a match
+                const isSelectedSpanish = selectedItem.dataset.spanish;
+                const isClickedSpanish = clickedItem.dataset.spanish;
+
+                // Reset selection if the user clicks a word in the same language column
+                if ((isSelectedSpanish && isClickedSpanish) || (!isSelectedSpanish && !isClickedSpanish)) {
+                    selectedItem.classList.remove('selected');
+                    selectedItem = clickedItem;
+                    selectedItem.classList.add('selected');
+                    return;
+                }
+                
+                let isMatch = false;
+                const firstWord = isSelectedSpanish ? isSelectedSpanish : selectedItem.dataset.english;
+                const secondWord = isClickedSpanish ? isClickedSpanish : clickedItem.dataset.english;
+                
+                const currentSectionData = matchingData[container.id];
+                for (const item of currentSectionData) {
+                    if ((item.spanish === firstWord && item.english === secondWord) || (item.spanish === secondWord && item.english === firstWord)) {
+                        isMatch = true;
+                        break;
+                    }
+                }
+
+                if (isMatch) {
+                    // Correct match: turn both green and lock them
+                    selectedItem.classList.remove('selected');
+                    selectedItem.classList.add('matched');
+                    clickedItem.classList.add('matched');
+                    selectedItem = null;
+                } else {
+                    // Incorrect match: briefly highlight red and reset
+                    selectedItem.classList.remove('selected');
+                    selectedItem.style.border = '2px solid #ef4444';
+                    clickedItem.style.border = '2px solid #ef4444';
+                    setTimeout(() => {
+                        selectedItem.style.border = '1px solid #f5c0d2'; /* Volver al color de borde rosa claro */
+                        clickedItem.style.border = '1px solid #f5c0d2';
+                        selectedItem = null;
+                    }, 500);
+                }
+            }
+        }
+
+        // Function to render each matching game
+        function renderMatchingGame(containerId) {
+            const container = document.getElementById(containerId);
+            const data = matchingData[containerId];
+
+            if (!container || !data) return;
+
+            const spanishWords = data.map(item => ({ word: item.spanish, type: 'spanish' }));
+            const englishWords = data.map(item => ({ word: item.english, type: 'english' }));
+            
+            shuffleArray(englishWords); // Shuffle the English words to randomize the order
+
+            const spanishColumn = document.createElement('div');
+            spanishColumn.className = 'match-column';
+
+            const englishColumn = document.createElement('div');
+            englishColumn.className = 'match-column';
+
+            // Create Spanish words column
+            spanishWords.forEach(item => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'match-item';
+                wordElement.textContent = item.word;
+                wordElement.dataset.spanish = item.word;
+                wordElement.onclick = handleMatchClick;
+                spanishColumn.appendChild(wordElement);
+            });
+
+            // Create English words column
+            englishWords.forEach(item => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'match-item english-box';
+                wordElement.textContent = item.word;
+                wordElement.dataset.english = item.word;
+                wordElement.onclick = handleMatchClick;
+                englishColumn.appendChild(wordElement);
+            });
+
+            container.appendChild(spanishColumn);
+            container.appendChild(englishColumn);
+        }
+
+        // Function to handle dialogue answer click
+        function checkDialogueAnswer(button, isCorrect) {
+            const dialogueItem = button.closest('.dialogue-item');
+            const buttons = dialogueItem.querySelectorAll('.dialogue-btn');
+            
+            if (isCorrect) {
+                button.classList.add('correct-answer');
+            } else {
+                button.classList.add('incorrect-answer');
+                setTimeout(() => {
+                    button.classList.remove('incorrect-answer');
+                }, 1000);
+            }
+
+            buttons.forEach(btn => btn.disabled = true);
+        }
+
+        // Function to render dialogue exercises
+        function renderDialogueExercises() {
+            const container = document.getElementById('dialogue-exercises');
+            if (!container) return;
+
+            shuffleArray(dialogueData);
+            
+            dialogueData.forEach(dialogue => {
+                const dialogueItem = document.createElement('div');
+                dialogueItem.className = 'dialogue-item';
+                
+                const questionPara = document.createElement('p');
+                questionPara.className = 'dialogue-question';
+                questionPara.textContent = dialogue.question;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'dialogue-options';
+                
+                const options = [
+                    { text: dialogue.correct, isCorrect: true },
+                    { text: dialogue.incorrect, isCorrect: false }
+                ];
+                shuffleArray(options);
+
+                options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.className = 'dialogue-btn';
+                    button.textContent = option.text;
+                    button.onclick = () => checkDialogueAnswer(button, option.isCorrect);
+                    optionsDiv.appendChild(button);
+                });
+
+                dialogueItem.appendChild(questionPara);
+                dialogueItem.appendChild(optionsDiv);
+                container.appendChild(dialogueItem);
+            });
+        }
+
+        // Initialize all games on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const id in matchingData) {
+                renderMatchingGame(id);
+            }
+            renderDialogueExercises();
+        });
+    </script>
+
+</body>
+</html>
