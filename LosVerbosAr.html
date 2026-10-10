@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulario y Práctica: Verbos Regulares -AR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF79AC;
+            --secondary: #FFB3D1;
+            --text-main: #121118;
+            --bg-white: #FFFFFF;
+            --divider: #E0E0E0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #121118; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Urbanist', 'Roboto', sans-serif;
+            margin: 0;
+        }
+
+        .presentation-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide {
+            display: none; 
+            width: 1280px;
+            max-width: 95vw;
+            height: 720px;
+            max-height: 82vh;
+            background-color: var(--bg-white);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            position: absolute;
+            animation: fadeIn 0.5s ease-out;
+            margin: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-wrapper {
+            max-width: 1050px;
+            width: 100%;
+            margin: 0 auto;
+            height: 100%;
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        h2.slide-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 500;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            width: auto;
+        }
+
+        p, li, td, th {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .lesson-number {
+            font-size: 3rem;
+            color: white;
+            background-color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            display: inline-block;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+        }
+
+        .vocab-item {
+            background-color: var(--secondary);
+            padding: 10px 16px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+            font-size: 1rem;
+        }
+
+        .bg-shape {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background-color: var(--secondary);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .interactive-field {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            padding: 0 5px;
+            font-size: 1.1rem;
+            width: 130px;
+            outline: none;
+            background: transparent;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .practice-context {
+            background: #fdfdfd;
+            padding: 1.8rem;
+            border-radius: 12px;
+            border: 1px dashed var(--primary);
+            line-height: 2.2;
+            font-size: 1.15rem;
+        }
+
+        .whiteboard-container {
+            background: #1e1e24;
+            border: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            color: #fff;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        .whiteboard-input {
+            width: 100%;
+            height: 120px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-family: 'Urbanist', 'Roboto', sans-serif;
+            resize: none;
+            outline: none;
+        }
+
+        .reference-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+            border-top: 1px dashed rgba(255,121,172,0.4);
+            padding-top: 12px;
+        }
+
+        .pill {
+            background: rgba(255,121,172,0.2);
+            border: 1px solid var(--primary);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .pill.highlight {
+            background: var(--primary);
+            font-weight: 700;
+            color: #121118;
+        }
+
+        .nav-controls {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(18, 17, 24, 0.95);
+            padding: 8px 25px;
+            border-radius: 50px;
+            z-index: 100;
+            border: 1px solid var(--primary);
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            background: #444;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            color: white;
+            font-weight: 500;
+            min-width: 80px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .title-layout {
+            text-align: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+    
+    <!-- 1. Portada -->
+    <div class="slide active" id="slide-1">
+        <div class="bg-shape" style="top: -150px; right: -150px;"></div>
+        <div class="content-wrapper title-layout">
+            <div class="lesson-number">01</div>
+            <h1>Vocabulario y Verbos Regulares</h1>
+            <p style="text-align: center; font-size: 1.4rem;">Guía de Estudio y Práctica Interactiva</p>
+        </div>
+    </div>
+
+    <!-- 2. Vocabulario 1 -->
+    <div class="slide" id="slide-2">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Vocabulario: Verbos de Acción</h2>
+            <div class="vocab-grid">
+                <div class="vocab-item"><strong>hablar</strong> – to speak, to talk</div>
+                <div class="vocab-item"><strong>bailar</strong> – to dance</div>
+                <div class="vocab-item"><strong>tomar</strong> – to take, to drink</div>
+                <div class="vocab-item"><strong>ayudar</strong> – to help</div>
+                <div class="vocab-item"><strong>comprar</strong> – to buy</div>
+                <div class="vocab-item"><strong>preparar</strong> – to prepare</div>
+                <div class="vocab-item"><strong>escuchar</strong> – to hear</div>
+                <div class="vocab-item"><strong>viajar</strong> – to travel</div>
+                <div class="vocab-item"><strong>caminar</strong> – to walk</div>
+                <div class="vocab-item"><strong>llegar</strong> – to arrive</div>
+                <div class="vocab-item"><strong>estudiar</strong> – to study</div>
+                <div class="vocab-item"><strong>cantar</strong> – to sing</div>
+                <div class="vocab-item"><strong>cocinar</strong> – to cook</div>
+                <div class="vocab-item"><strong>ordenar</strong> – to order</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Vocabulario 2 -->
+    <div class="slide" id="slide-3">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Vocabulario: Conectores y Palabras Clave</h2>
+            <div class="vocab-grid">
+                <div class="vocab-item"><strong>y</strong> – and</div>
+                <div class="vocab-item"><strong>o</strong> – or</div>
+                <div class="vocab-item"><strong>sí</strong> – yes</div>
+                <div class="vocab-item"><strong>no</strong> – no, not</div>
+                <div class="vocab-item"><strong>pero</strong> – but</div>
+                <div class="vocab-item"><strong>ahora</strong> – now</div>
+                <div class="vocab-item"><strong>con</strong> – with</div>
+                <div class="vocab-item"><strong>sin</strong> – without</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Pronombres -->
+    <div class="slide" id="slide-4">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Pronombres Personales</h2>
+            <div class="vocab-grid">
+                <div class="vocab-item"><strong>yo</strong> – I</div>
+                <div class="vocab-item"><strong>tú</strong> – you</div>
+                <div class="vocab-item"><strong>él</strong> – he</div>
+                <div class="vocab-item"><strong>ella</strong> – she</div>
+                <div class="vocab-item"><strong>nosotros</strong> – we</div>
+                <div class="vocab-item"><strong>nosotras</strong> – we</div>
+                <div class="vocab-item"><strong>ellos</strong> – they</div>
+                <div class="vocab-item"><strong>ellas</strong> – they</div>
+                <div class="vocab-item" style="grid-column: span 2;"><strong>ustedes</strong> – you [plural]</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Adjetivos -->
+    <div class="slide" id="slide-5">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Adjetivos Descriptivos</h2>
+            <div class="vocab-grid">
+                <div class="vocab-item"><strong>alto - alta</strong> – tall</div>
+                <div class="vocab-item"><strong>bajo - baja</strong> – short</div>
+                <div class="vocab-item"><strong>simpático - simpática</strong> – nice</div>
+                <div class="vocab-item"><strong>antipático - antipática</strong> – unfriendly</div>
+                <div class="vocab-item"><strong>bonito - bonita</strong> – pretty</div>
+                <div class="vocab-item"><strong>feo - fea</strong> – ugly</div>
+                <div class="vocab-item"><strong>joven</strong> – young</div>
+                <div class="vocab-item"><strong>viejo - vieja</strong> – old</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Práctica: Hablar y Bailar -->
+    <div class="slide" id="slide-6">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Práctica: Hablar y Bailar</h2>
+            <div class="practice-context" style="line-height: 2.5;">
+                <p><strong>hablar</strong> – to speak, to talk</p>
+                <p>yo – I &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tú – you</p>
+                <p>yo + hablar = <strong>yo hablo</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tú + hablar = <strong>tú hablas</strong></p>
+                <br>
+                <p><strong>bailar</strong> – to dance</p>
+                <p>yo + bailar = <input type="text" class="interactive-field" placeholder="_____"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tú + bailar = <input type="text" class="interactive-field" placeholder="_____"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Práctica: Tomar y Ayudar -->
+    <div class="slide" id="slide-7">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Práctica: Tomar y Ayudar</h2>
+            <div class="practice-context" style="line-height: 2.5;">
+                <p><strong>tomar</strong> – to take, to drink</p>
+                <p>yo + tomar = yo <input type="text" class="interactive-field" placeholder="_____"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tú + tomar = tú <input type="text" class="interactive-field" placeholder="_____"></p>
+                <br>
+                <p><strong>ayudar</strong> – to help</p>
+                <p>yo + ayudar = yo <input type="text" class="interactive-field" placeholder="_____"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tú + ayudar = tú <input type="text" class="interactive-field" placeholder="_____"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Práctica: Comprar y Preparar -->
+    <div class="slide" id="slide-8">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Práctica: Comprar y Preparar</h2>
+            <div class="practice-context" style="line-height: 2.5;">
+                <p>él – he &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ella – she</p>
+                <p><strong>comprar</strong> – to buy</p>
+                <p>él + comprar = él compra &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ella + comprar = ella compra</p>
+                <br>
+                <p><strong>preparar</strong> – to prepare</p>
+                <p>él + preparar = él prepara &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ella + preparar = ella <input type="text" class="interactive-field" placeholder="_____"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Práctica: Escuchar y Viajar -->
+    <div class="slide" id="slide-9">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Práctica: Escuchar y Viajar</h2>
+            <div class="practice-context" style="line-height: 2.2;">
+                <p><strong>escuchar</strong> – to hear</p>
+                <p>él + escuchar = él <input type="text" class="interactive-field" placeholder="_____"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ella + escuchar = ella <input type="text" class="interactive-field" placeholder="_____"></p>
+                <br>
+                <p><strong>viajar</strong> – to travel (nosotros / nosotras – we)</p>
+                <p>nosotros + viajar = nosotros viajamos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nosotras + viajar = nosotras viajamos</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Práctica: Caminar y Llegar -->
+    <div class="slide" id="slide-10">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Práctica: Caminar y Llegar</h2>
+            <div class="practice-context" style="line-height: 2.5;">
+                <p><strong>caminar</strong> – to walk</p>
+                <p>nosotros + caminar = nosotros caminamos &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nosotras + caminar = nosotras <input type="text" class="interactive-field" placeholder="_____"></p>
+                <br>
+                <p><strong>llegar</strong> – to arrive</p>
+                <p>nosotros + llegar = nosotros <input type="text" class="interactive-field" placeholder="_____"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nosotras + llegar = nosotras <input type="text" class="interactive-field" placeholder="_____"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. Práctica: Estudiar, Cantar y Cocinar -->
+    <div class="slide" id="slide-11">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Práctica Grupal: -AR</h2>
+            <div class="practice-context" style="line-height: 2.2; font-size: 1.05rem;">
+                <p><strong>estudiar</strong> | ellos estudian / ellas estudian / ustedes estudian</p>
+                <p><strong>cantar</strong> | ellos cantan / ellas <input type="text" class="interactive-field" placeholder="_____"> / ustedes <input type="text" class="interactive-field" placeholder="_____"></p>
+                <p><strong>cocinar</strong> | ellos <input type="text" class="interactive-field" placeholder="_____"> / ellas <input type="text" class="interactive-field" placeholder="_____"> / ustedes <input type="text" class="interactive-field" placeholder="_____"></p>
+                <p><strong>ordenar</strong> | él ordena / ella <input type="text" class="interactive-field" placeholder="_____"> / ellos ordenan / ellas <input type="text" class="interactive-field" placeholder="_____"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. Pizarra Interactiva -->
+    <div class="slide" id="slide-12">
+        <div class="content-wrapper">
+            <h2 class="slide-title">Pizarra Interactiva de Práctica</h2>
+            <p style="margin-bottom: 12px; font-size: 1rem;">Escribe libremente tus ejercicios, conjugaciones o notas usando el teclado:</p>
+            
+            <div class="whiteboard-container">
+                <textarea class="whiteboard-input" placeholder="Haz clic aquí y escribe tus conjugaciones libremente..."></textarea>
+                
+                <div class="reference-pills">
+                    <span style="font-size: 0.85rem; align-self: center; margin-right: 5px; color: var(--secondary);">Verbos destacados:</span>
+                    <span class="pill highlight">hablar – to speak, to talk</span>
+                    <span class="pill highlight">bailar – to dance</span>
+                    <span class="pill highlight">tomar – to take, to drink</span>
+                </div>
+                <div class="reference-pills" style="margin-top: 8px;">
+                    <span style="font-size: 0.85rem; align-self: center; margin-right: 5px; color: var(--secondary);">Pronombres:</span>
+                    <span class="pill">yo – I</span>
+                    <span class="pill">tú – you</span>
+                    <span class="pill">él – he</span>
+                    <span class="pill">ella – she</span>
+                    <span class="pill">nosotros – we</span>
+                    <span class="pill">nosotras – we</span>
+                    <span class="pill">ellos – they</span>
+                    <span class="pill">ellas – they</span>
+                    <span class="pill">ustedes – you [plural]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Controles de Navegación -->
+<div class="nav-controls">
+    <button class="nav-btn" id="prevBtn" title="Anterior">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="slide-indicator" id="indicator">1 / 12</div>
+    <button class="nav-btn" id="nextBtn" title="Siguiente">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 12;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const indicator = document.getElementById('indicator');
+
+    function updateSlides() {
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.classList.remove('active');
+        });
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        indicator.textContent = `${currentSlide} / ${totalSlides}`;
+        prevBtn.disabled = currentSlide === 1;
+        nextBtn.disabled = currentSlide === totalSlides;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 1) { currentSlide--; updateSlides(); }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < totalSlides) { currentSlide++; updateSlides(); }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        // Ignorar si el usuario está escribiendo en un input o textarea
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        if (e.key === 'ArrowRight') {
+            if (currentSlide < totalSlides) { currentSlide++; updateSlides(); }
+        }
+        if (e.key === 'ArrowLeft') {
+            if (currentSlide > 1) { currentSlide--; updateSlides(); }
+        }
+    });
+
+    const fields = document.querySelectorAll('.interactive-field');
+    fields.forEach((field, index) => {
+        field.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const nextField = fields[index + 1];
+                if (nextField) { nextField.focus(); }
+            }
+        });
+    });
+
+    updateSlides();
+</script>
+
+</body>
+</html>
+```eof
