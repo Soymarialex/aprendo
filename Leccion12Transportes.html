@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lección 12: Transportes</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rosa-flamenco: #FF79AC;
+      --rosa-oscuro: #d65889;
+      --verde-menta: #2EC4B6;
+      --verde-oscuro: #21998e;
+      --amarillo-sol: #FF9F1C;
+      --amarillo-oscuro: #d8800c;
+      --eerie-black: #121118;
+      --blanco-nube: #F8F9FA;
+      --blanco: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: var(--blanco-nube);
+      color: var(--eerie-black);
+      padding: 20px 10px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* Header */
+    header {
+      background: var(--blanco);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+    }
+
+    .btn-home {
+      background-color: var(--rosa-flamenco);
+      border: none;
+      border-bottom: 5px solid var(--rosa-oscuro);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-home:active {
+      transform: translateY(4px);
+      border-bottom-width: 1px;
+    }
+
+    .header-title {
+      flex-grow: 1;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fredoka', sans-serif;
+      color: var(--eerie-black);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 20px;
+      height: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--verde-menta);
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 20px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--blanco);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* 1. Carrusel de Vocabulario */
+    .carousel-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .carousel-img-wrapper {
+      width: 100%;
+      max-width: 380px;
+      height: 280px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .vocab-label {
+      text-align: center;
+    }
+
+    .vocab-en {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
+      color: var(--eerie-black);
+      font-weight: bold;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background-color: var(--amarillo-sol);
+      border: none;
+      border-bottom: 5px solid var(--amarillo-oscuro);
+      color: white;
+      font-size: 1.4rem;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .btn-nav:active {
+      transform: translateY(4px);
+      border-bottom-width: 1px;
+    }
+
+    /* 2 & 5. Video Container */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 20px;
+    }
+
+    /* 3. Arrastrar y Soltar */
+    .drag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .drag-target-card {
+      background: var(--blanco-nube);
+      border: 2px dashed #ccc;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-height: 240px;
+      justify-content: space-between;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+      overflow: hidden;
+    }
+
+    .drag-target-card.highlight {
+      border-color: var(--amarillo-sol);
+      background-color: #fff9f0;
+    }
+
+    .drag-img-container {
+      width: 100%;
+      height: 130px;
+      overflow: hidden;
+      border-radius: 14px;
+      position: relative;
+    }
+
+    .drag-target-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      object-position: 50% 100%;
+      border-radius: 14px;
+      pointer-events: none;
+      margin-top: -35px;
+    }
+
+    .target-slot {
+      width: 100%;
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .word-bank {
+      background: var(--blanco-nube);
+      padding: 15px;
+      border-radius: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      min-height: 70px;
+    }
+
+    .draggable-word {
+      background-color: var(--rosa-flamenco);
+      border: none;
+      border-bottom: 5px solid var(--rosa-oscuro);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      font-family: 'Quicksand', sans-serif;
+      transition: all 0.1s ease;
+      font-size: 0.95rem;
+    }
+
+    .draggable-word:active {
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+    }
+
+    .draggable-word.correct {
+      background-color: var(--verde-menta) !important;
+      border-bottom-color: var(--verde-oscuro) !important;
+      cursor: default;
+      transform: none !important;
+    }
+
+    .draggable-word.shake {
+      animation: shake 0.3s ease;
+      background-color: #ff6b6b !important;
+      border-bottom-color: #c92a2a !important;
+    }
+
+    .draggable-word.dragging-touch {
+      opacity: 0.8;
+      position: fixed;
+      z-index: 1000;
+      pointer-events: none;
+      transform: scale(1.05);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    /* 4. Preguntas Diarias */
+    .banner-img-container {
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .banner-img-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .open-q-item {
+      background: var(--blanco-nube);
+      padding: 15px 20px;
+      border-radius: 20px;
+      border-left: 5px solid var(--amarillo-sol);
+    }
+
+    .open-q-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: var(--eerie-black);
+    }
+
+    .open-q-en {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    /* 6. Emparejar Vocabulario */
+    .matching-nav {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .btn-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      background-color: var(--rosa-flamenco);
+      border-bottom: 4px solid var(--rosa-oscuro);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Fredoka', sans-serif;
+      transition: all 0.1s ease;
+    }
+
+    .btn-circle:active {
+      transform: translateY(2px);
+      border-bottom-width: 1px;
+    }
+
+    .btn-circle.active {
+      background-color: var(--amarillo-sol);
+      border-bottom-color: var(--amarillo-oscuro);
+    }
+
+    .match-group-container {
+      display: none;
+    }
+
+    .match-group-container.active {
+      display: block;
+    }
+
+    .match-columns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-match {
+      background: var(--blanco-nube);
+      border: none;
+      border-bottom: 4px solid #ced4da;
+      padding: 12px 10px;
+      border-radius: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      text-align: center;
+      transition: all 0.1s ease;
+      min-height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--eerie-black);
+    }
+
+    .btn-match:active {
+      transform: translateY(2px);
+      border-bottom-width: 1px;
+    }
+
+    .btn-match.selected {
+      background-color: var(--amarillo-sol);
+      border-bottom-color: var(--amarillo-oscuro);
+      color: white;
+    }
+
+    .btn-match.matched {
+      background-color: var(--verde-menta) !important;
+      border-bottom-color: var(--verde-oscuro) !important;
+      color: white;
+      cursor: default;
+      transform: none !important;
+    }
+
+    /* Modal / Popup de Éxito */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 2000;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transform: scale(0.8);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-card h3 {
+      font-size: 1.8rem;
+      color: var(--eerie-black);
+      margin-bottom: 10px;
+    }
+
+    .modal-card p {
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .btn-modal {
+      background-color: var(--rosa-flamenco);
+      border: none;
+      border-bottom: 5px solid var(--rosa-oscuro);
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      padding: 10px 25px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .btn-finish {
+      background-color: var(--rosa-flamenco);
+      border: none;
+      border-bottom: 5px solid var(--rosa-oscuro);
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      padding: 12px 30px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .btn-finish:active {
+      transform: translateY(4px);
+      border-bottom-width: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <a href="../index.html" class="btn-home" aria-label="Inicio">🏠</a>
+      <div class="header-title">
+        <h1>Transportes</h1>
+        <div class="subtitle">Lección 12 • Transport</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. Presentación de Vocabulario -->
+    <section class="card">
+      <h2>🚗 1. Presentación de Vocabulario</h2>
+      <div class="carousel-container">
+        <div class="carousel-img-wrapper">
+          <img id="carousel-img" src="" alt="Transporte">
+        </div>
+        <div class="vocab-label">
+          <div id="vocab-en" class="vocab-en"></div>
+        </div>
+        <div class="nav-buttons">
+          <button id="btn-prev" class="btn-nav" onclick="changeSlide(-1)" style="display: none;">⬅️</button>
+          <button id="btn-next" class="btn-nav" onclick="changeSlide(1)">➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Canción -->
+    <section class="card">
+      <h2>🎵 2. Canción de los Transportes</h2>
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/yZD1vHMmpjE?rel=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- 3. Arrastrar y Soltar -->
+    <section class="card">
+      <h2>🧩 3. Arrastra la palabra en español</h2>
+      <p style="margin-bottom: 15px; font-size: 0.95rem; color: #555;">Coloca el nombre correcto debajo de cada imagen:</p>
+      
+      <div class="drag-grid" id="drag-grid"></div>
+      <div class="word-bank" id="word-bank"></div>
+    </section>
+
+    <!-- 4. Preguntas diarias -->
+    <section class="card">
+      <div class="banner-img-container">
+        <img src="https://imgur.com/OEVq9nY.jpg" alt="Banner preguntas diarias">
+      </div>
+
+      <div class="questions-list">
+        <div class="open-q-item">
+          <div class="open-q-title">¿Cómo estás?</div>
+          <div class="open-q-en">(How are you?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿Cómo te llamas?</div>
+          <div class="open-q-en">(What is your name?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿Cuántos años tienes?</div>
+          <div class="open-q-en">(How old are you?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿De dónde eres?</div>
+          <div class="open-q-en">(Where are you from?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿Dónde vives?</div>
+          <div class="open-q-en">(Where do you live?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿Qué tiempo hace?</div>
+          <div class="open-q-en">(What is the weather like?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿Te gusta viajar?</div>
+          <div class="open-q-en">(Do you like to travel?)</div>
+        </div>
+
+        <div class="open-q-item">
+          <div class="open-q-title">¿En cuáles medios de transporte te gusta viajar?</div>
+          <div class="open-q-en">(Which means of transport do you like to travel in?)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Historia corta en Español -->
+    <section class="card">
+      <h2>📖 5. Historia corta en Español</h2>
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/z3DpQpZ_gNg?rel=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- 6. Emparejar Vocabulario -->
+    <section class="card">
+      <h2>🔗 6. Emparejar Vocabulario</h2>
+      <p style="margin-bottom: 15px; font-size: 0.95rem; color: #555;">Selecciona el grupo con los botones circulares y empareja el español con el inglés:</p>
+      
+      <div class="matching-nav">
+        <button class="btn-circle active" onclick="switchMatchGroup(1)" id="btn-mg1">1</button>
+        <button class="btn-circle" onclick="switchMatchGroup(2)" id="btn-mg2">2</button>
+        <button class="btn-circle" onclick="switchMatchGroup(3)" id="btn-mg3">3</button>
+      </div>
+
+      <div id="mgroup-1" class="match-group-container active"></div>
+      <div id="mgroup-2" class="match-group-container"></div>
+      <div id="mgroup-3" class="match-group-container"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <button class="btn-finish" onclick="showCompletionModal()">Completar Lección 🌟</button>
+    </footer>
+  </div>
+
+  <!-- Modal / Popup -->
+  <div class="modal-overlay" id="modal-completion">
+    <div class="modal-card">
+      <h3>¡Excelente trabajo! 🎉</h3>
+      <p>Has completado la Lección 12: Transportes con éxito.</p>
+      <button class="btn-modal" onclick="closeCompletionModal()">¡Fantástico!</button>
+    </div>
+  </div>
+
+  <script>
+    /* --- 1. VOCABULARIO Y CARRUSEL --- */
+    const vocabData = [
+      { es: "a mí me gusta viajar", en: "I like to travel", img: "https://imgur.com/4X4EAEA.jpg" },
+      { es: "en barco", en: "by boat", img: "https://imgur.com/T7G6Ahp.jpg" },
+      { es: "en elefante", en: "by elephant", img: "https://imgur.com/tMesohZ.jpg" },
+      { es: "en tren", en: "by train", img: "https://imgur.com/mkcuocN.jpg" },
+      { es: "en bici", en: "by bike", img: "https://imgur.com/nJHroPZ.jpg" },
+      { es: "en coche", en: "by car", img: "https://imgur.com/8wcGyjp.jpg" },
+      { es: "en avión", en: "by plane", img: "https://imgur.com/xP49qHP.jpg" },
+      { es: "en autobús", en: "by bus", img: "https://imgur.com/ndeuIcx.jpg" }
+    ];
+
+    let currentSlide = 0;
+    const completedTasks = new Set();
+
+    function updateCarousel() {
+      document.getElementById('carousel-img').src = vocabData[currentSlide].img;
+      document.getElementById('vocab-en').textContent = vocabData[currentSlide].en;
+
+      document.getElementById('btn-prev').style.display = currentSlide === 0 ? 'none' : 'inline-block';
+      document.getElementById('btn-next').style.display = currentSlide === vocabData.length - 1 ? 'none' : 'inline-block';
+      
+      markTaskCompleted(`slide-${currentSlide}`);
+    }
+
+    function changeSlide(dir) {
+      currentSlide += dir;
+      updateCarousel();
+    }
+
+    /* --- 3. ARRASTRAR Y SOLTAR (Soporte Mouse y Touch) --- */
+    function initDragAndDrop() {
+      const grid = document.getElementById('drag-grid');
+      const bank = document.getElementById('word-bank');
+
+      // Generar tarjetas de destino
+      vocabData.forEach(item => {
+        const target = document.createElement('div');
+        target.className = 'drag-target-card';
+        target.dataset.es = item.es;
+        
+        target.innerHTML = `
+          <div class="drag-img-container">
+            <img src="${item.img}" alt="${item.en}">
+          </div>
+          <div class="target-slot"></div>
+        `;
+
+        // Eventos Drag y Drop (Mouse)
+        target.addEventListener('dragover', e => {
+          e.preventDefault();
+          target.classList.add('highlight');
+        });
+
+        target.addEventListener('dragleave', () => {
+          target.classList.remove('highlight');
+        });
+
+        target.addEventListener('drop', e => {
+          e.preventDefault();
+          target.classList.remove('highlight');
+          const draggedEs = e.dataTransfer.getData('text/plain');
+          const draggedElem = document.getElementById(`drag-${draggedEs}`);
+          if (draggedElem) {
+            checkDrop(draggedElem, target);
+          }
+        });
+
+        grid.appendChild(target);
+      });
+
+      // Generar botones arrastrabes
+      const shuffled = [...vocabData].sort(() => Math.random() - 0.5);
+      shuffled.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'draggable-word';
+        btn.draggable = true;
+        btn.id = `drag-${item.es}`;
+        btn.textContent = item.es;
+
+        // Desktop Drag
+        btn.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', item.es);
+        });
+
+        // Click como alternativa
+        btn.onclick = () => {
+          if (btn.classList.contains('correct')) return;
+          const targets = grid.querySelectorAll('.drag-target-card');
+          for (let t of targets) {
+            const slot = t.querySelector('.target-slot');
+            if (t.dataset.es === item.es && slot.children.length === 0) {
+              checkDrop(btn, t);
+              break;
+            }
+          }
+        };
+
+        // Touch Drag soporte móvil
+        setupTouchDrag(btn, grid);
+
+        bank.appendChild(btn);
+      });
+    }
+
+    function checkDrop(draggedElem, targetCard) {
+      const draggedEs = draggedElem.id.replace('drag-', '');
+      const slot = targetCard.querySelector('.target-slot');
+
+      if (draggedEs === targetCard.dataset.es) {
+        slot.appendChild(draggedElem);
+        draggedElem.classList.add('correct');
+        draggedElem.draggable = false;
+        markTaskCompleted(`drag-${draggedEs}`);
+      } else {
+        draggedElem.classList.add('shake');
+        setTimeout(() => draggedElem.classList.remove('shake'), 400);
+      }
+    }
+
+    function setupTouchDrag(btn, grid) {
+      let touchClone = null;
+
+      btn.addEventListener('touchstart', e => {
+        if (btn.classList.contains('correct')) return;
+        const touch = e.touches[0];
+        
+        touchClone = btn.cloneNode(true);
+        touchClone.classList.add('dragging-touch');
+        document.body.appendChild(touchClone);
+        
+        positionTouchClone(touchClone, touch);
+      }, { passive: false });
+
+      btn.addEventListener('touchmove', e => {
+        if (!touchClone) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        positionTouchClone(touchClone, touch);
+      }, { passive: false });
+
+      btn.addEventListener('touchend', e => {
+        if (!touchClone) return;
+        const touch = e.changedTouches[0];
+        touchClone.remove();
+        touchClone = null;
+
+        const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (elemBelow) {
+          const targetCard = elemBelow.closest('.drag-target-card');
+          if (targetCard) {
+            checkDrop(btn, targetCard);
+          }
+        }
+      });
+    }
+
+    function positionTouchClone(clone, touch) {
+      clone.style.left = `${touch.clientX - 50}px`;
+      clone.style.top = `${touch.clientY - 20}px`;
+    }
+
+    /* --- 6. EMPAREJAR VOCABULARIO --- */
+    const matchGroups = {
+      1: [
+        { es: "A mí me gusta viajar", en: "I like to travel" },
+        { es: "Barco", en: "Boat" },
+        { es: "Elefante", en: "Elephant" },
+        { es: "Tren", en: "Train" },
+        { es: "Bici", en: "Bike" },
+        { es: "Coche", en: "Car" }
+      ],
+      2: [
+        { es: "Avión", en: "Plane" },
+        { es: "Autobús", en: "Bus" },
+        { es: "Nave espacial", en: "Spaceship" },
+        { es: "Globo", en: "Hot air balloon" },
+        { es: "Timbo necesita un transporte", en: "Timbo needs a transport" },
+        { es: "Timbo quiere ir a casa de Ayla", en: "Timbo wants to go to Ayla's house" }
+      ],
+      3: [
+        { es: "Timbo va al garaje", en: "Timbo goes to the garage" },
+        { es: "La rueda de la bici está pinchada", en: "The bike wheel is flat" },
+        { es: "¿Cómo puedo ir a casa de Ayla?", en: "How can I go to Ayla's house?" },
+        { es: "Voy a ir en avión", en: "I am going by plane" },
+        { es: "Pero tú no tienes un avión", en: "But you don't have a plane" },
+        { es: "En nuestro planeta no hay trenes", en: "On our planet there are no trains" }
+      ]
+    };
+
+    let selectedEsBtn = null;
+    let selectedEnBtn = null;
+
+    function renderMatchGroup(groupNum) {
+      const container = document.getElementById(`mgroup-${groupNum}`);
+      const pairs = matchGroups[groupNum];
+
+      const grid = document.createElement('div');
+      grid.className = 'match-columns-grid';
+
+      const colEs = document.createElement('div');
+      colEs.className = 'match-column';
+
+      const colEn = document.createElement('div');
+      colEn.className = 'match-column';
+
+      const shuffledEs = [...pairs].sort(() => Math.random() - 0.5);
+      const shuffledEn = [...pairs].sort(() => Math.random() - 0.5);
+
+      shuffledEs.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-match';
+        btn.textContent = item.es;
+        btn.dataset.es = item.es;
+        btn.dataset.en = item.en;
+        btn.onclick = () => selectMatchBtn(btn, 'es', container);
+        colEs.appendChild(btn);
+      });
+
+      shuffledEn.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-match';
+        btn.textContent = item.en;
+        btn.dataset.en = item.en;
+        btn.onclick = () => selectMatchBtn(btn, 'en', container);
+        colEn.appendChild(btn);
+      });
+
+      grid.appendChild(colEs);
+      grid.appendChild(colEn);
+      container.appendChild(grid);
+    }
+
+    function selectMatchBtn(btn, type, container) {
+      if (btn.classList.contains('matched')) return;
+
+      if (type === 'es') {
+        container.querySelectorAll('.match-column:first-child .btn-match').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedEsBtn = btn;
+      } else {
+        container.querySelectorAll('.match-column:last-child .btn-match').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedEnBtn = btn;
+      }
+
+      if (selectedEsBtn && selectedEnBtn) {
+        if (selectedEsBtn.dataset.en === selectedEnBtn.dataset.en) {
+          selectedEsBtn.classList.remove('selected');
+          selectedEnBtn.classList.remove('selected');
+          selectedEsBtn.classList.add('matched');
+          selectedEnBtn.classList.add('matched');
+
+          markTaskCompleted(`match-${selectedEsBtn.dataset.es}`);
+          selectedEsBtn = null;
+          selectedEnBtn = null;
+        } else {
+          setTimeout(() => {
+            if (selectedEsBtn) selectedEsBtn.classList.remove('selected');
+            if (selectedEnBtn) selectedEnBtn.classList.remove('selected');
+            selectedEsBtn = null;
+            selectedEnBtn = null;
+          }, 300);
+        }
+      }
+    }
+
+    function switchMatchGroup(groupNum) {
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`mgroup-${i}`).classList.toggle('active', i === groupNum);
+        document.getElementById(`btn-mg${i}`).classList.toggle('active', i === groupNum);
+      }
+      selectedEsBtn = null;
+      selectedEnBtn = null;
+    }
+
+    /* --- PROGRESO GENERAL --- */
+    const TOTAL_TASKS = vocabData.length + vocabData.length + 18; // Carrusel + Arrastrar + 18 parejas
+
+    function markTaskCompleted(taskId) {
+      if (!completedTasks.has(taskId)) {
+        completedTasks.add(taskId);
+        const percent = Math.min(100, Math.round((completedTasks.size / TOTAL_TASKS) * 100));
+        document.getElementById('progress-fill').style.width = `${percent}%`;
+      }
+    }
+
+    /* --- MODAL DE FINALIZACIÓN --- */
+    function showCompletionModal() {
+      document.getElementById('modal-completion').classList.add('active');
+    }
+
+    function closeCompletionModal() {
+      document.getElementById('modal-completion').classList.remove('active');
+    }
+
+    // Inicialización al cargar la página
+    window.onload = () => {
+      updateCarousel();
+      initDragAndDrop();
+      renderMatchGroup(1);
+      renderMatchGroup(2);
+      renderMatchGroup(3);
+    };
+  </script>
+</body>
+</html>
